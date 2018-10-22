@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:clickable="true">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:gravity="fill_horizontal|center"
+        android:minHeight="88dp"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ru.asedias.vkbugtracker.ui.text.RegularTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            tools:text="VK для Android" />
+
+        <ru.asedias.vkbugtracker.ui.text.RegularTextView
+            android:id="@+id/subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/darker_gray"
+            android:textSize="12sp"
+            tools:text="11,308 reports, 877 suggestions" />
+
+        <Button
+            android:id="@+id/cancel"
+            style="@style/Button.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignLeft="@+id/container"
+            android:layout_below="@+id/container"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/icon"
+            android:background="?buttonBackground"
+            android:elevation="0dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:stateListAnimator="@null"
+            android:text="@android:string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/join"
+            style="@style/Button.Blue"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignLeft="@+id/container"
+            android:layout_below="@+id/container"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_blue_rounded"
+            android:elevation="0dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:stateListAnimator="@null"
+            android:text="@string/join"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/icon"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignTop="@id/container"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitStart"
+        app:srcCompat="@drawable/ic_doc" />
+
+
+</RelativeLayout>

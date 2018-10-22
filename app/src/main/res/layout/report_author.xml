@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        app:srcCompat="@drawable/placeholder_user" />
+
+    <LinearLayout
+        android:id="@+id/info_wrap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/icon"
+        android:orientation="vertical">
+
+        <ru.asedias.vkbugtracker.ui.text.MediumTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="?primaryTextColor"
+            android:textSize="14sp"
+            tools:text="Pavel Durov" />
+
+        <ru.asedias.vkbugtracker.ui.text.RegularTextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/darker_gray"
+            android:textSize="12sp"
+            tools:text="today at 12:00" />
+
+    </LinearLayout>
+
+</RelativeLayout>

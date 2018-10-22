@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidUnknownAttribute -->
+<vector xmlns:api24="http://schemas.android.com/apk/res/android" xmlns:android="http://schemas.android.com/apk/res/android"
+    android:viewportWidth="112"
+    android:viewportHeight="112"
+    android:width="112dp"
+    android:height="112dp">
+    <group>
+        <clip-path
+            android:pathData="M0 0l112 0 0 112 -112 0z" />
+        <group
+            android:translateX="16"
+            android:translateY="12">
+            <path
+                android:pathData="M16 4l48 0c6.648 0 12 5.352 12 12l0 56c0 6.648 -5.352 12 -12 12L16 84C9.352 84 4 78.648 4 72L4 16C4 9.352 9.352 4 16 4Z"
+                android:strokeWidth="8"
+                android:strokeColor="#000000" />
+        </group>
+        <group
+            android:translateX="32"
+            android:translateY="28">
+            <path
+                android:pathData="M4 0l24 0c2.216 0 4 1.784 4 4 0 2.216 -1.784 4 -4 4L4 8C1.784 8 0 6.216 0 4 0 1.784 1.784 0 4 0Z"
+                android:fillColor="#000000" />
+        </group>
+        <group
+            android:translateX="32"
+            android:translateY="44">
+            <path
+                android:pathData="M4 0l40 0a4 4 0 0 1 0 8L4 8A4 4 0 0 1 4 0Z"
+                android:fillColor="#000000" />
+        </group>
+        <group
+            android:translateX="32"
+            android:translateY="60">
+            <path
+                android:pathData="M4 0l14 0a4 4 0 0 1 0 8L4 8A4 4 0 0 1 4 0Z"
+                android:fillColor="#000000" />
+        </group>
+        <group
+            android:translateX="61"
+            android:translateY="60">
+            <path
+                android:pathData="M1 0l14 0a4 4 0 0 1 0 8L1 8A4 4 0 0 1 1 0Z"
+                android:fillColor="#000000" />
+        </group>
+    </group>
+</vector>

@@ -1,0 +1,77 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="?selectableItemBackground"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/author"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignTop="@+id/title"
+        android:layout_marginLeft="16dp"
+        app:srcCompat="@drawable/placeholder_user" />
+
+    <ImageView
+        android:id="@+id/product"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignTop="@+id/tags_layout"
+        android:layout_marginLeft="16dp"
+        app:srcCompat="@drawable/ic_doc_text" />
+
+    <ru.asedias.vkbugtracker.ui.text.MediumTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@id/author"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="?primaryTextColor"
+        android:textSize="14sp"
+        tools:text="При отписке от сообщества воспроизведение" />
+
+    <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title"
+        android:layout_below="@+id/title"
+        android:layout_marginBottom="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/darker_gray"
+        android:textSize="12sp"
+        tools:text="today at 12:09 am" />
+
+    <ru.asedias.vkbugtracker.ui.FlowLayout
+        android:id="@+id/tags_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title"
+        android:layout_below="@+id/time"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:minHeight="30dp"
+        android:orientation="horizontal">
+
+    </ru.asedias.vkbugtracker.ui.FlowLayout>
+
+    <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        android:id="@+id/state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tags_layout"
+        android:layout_marginRight="@dimen/text_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/darker_gray"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="open" />
+
+</RelativeLayout>

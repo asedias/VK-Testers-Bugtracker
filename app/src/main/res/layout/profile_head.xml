@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@+id/profile_head" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.vkontakte.android.ui.ProportionalFrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:heightRatio="0.6666666">
+
+        <ImageView
+            android:id="@+id/profile_photo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            app:srcCompat="@drawable/placeholder_user" />
+
+        <View
+            android:id="@+id/profile_scrim1"
+            android:layout_width="fill_parent"
+            android:layout_height="112.0dip"
+            android:alpha="0.5"
+            android:background="@drawable/scrim_top" />
+
+        <View
+            android:id="@+id/profile_scrim2"
+            android:layout_width="fill_parent"
+            android:layout_height="112.0dip"
+            android:layout_alignParentBottom="true"
+            android:alpha="0.5"
+            android:background="@drawable/scrim_bottom" />
+
+        <ru.asedias.vkbugtracker.ui.text.RegularTextView
+            android:id="@+id/profile_last_seen"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:fadingEdgeLength="10.0dip"
+            android:paddingBottom="16.0dip"
+            android:paddingLeft="16.0dip"
+            android:singleLine="true"
+            android:text="last seen 32 mar 2012"
+            android:textColor="#d9ffffff"
+            android:textSize="15.0dip" />
+
+        <View
+            android:id="@+id/profile_photo_overlay"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:alpha="0.0"
+            android:background="?colorPrimary" />
+
+        <ru.asedias.vkbugtracker.ui.text.RegularTextView
+            android:id="@+id/profile_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/profile_last_seen"
+            android:gravity="bottom|center|left"
+            android:maxLines="3"
+            android:paddingLeft="16.0dip"
+            android:text="User Name"
+            android:textColor="#ffffffff"
+            android:textSize="24.0dip" />
+    </com.vkontakte.android.ui.ProportionalFrameLayout>
+    <LinearLayout android:orientation="horizontal" android:id="@+id/profile_buttons_wrap" android:paddingLeft="16.0dip" android:paddingTop="12.0dip" android:paddingRight="8.0dip" android:paddingBottom="12.0dip" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/profile_btn1"
+            style="@style/Button.Blue"
+            android:layout_width="match_parent"
+            android:layout_height="32.0dip"
+            android:layout_marginRight="8.0dip"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/message" />
+
+        <Button
+            android:id="@+id/profile_btn2"
+            style="@style/Button.Gray"
+            android:layout_width="match_parent"
+            android:layout_height="32.0dip"
+            android:layout_marginRight="8.0dip"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/open_in_browser" />
+
+        <Button
+            android:id="@+id/profile_btn3"
+            style="@style/Button.Gray"
+            android:layout_width="wrap_content"
+            android:layout_height="32.0dip"
+            android:layout_marginRight="8.0dip"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Wow2"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

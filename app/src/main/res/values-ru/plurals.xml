@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="good_comments">
+        <item quantity="many">%,d комментариев</item>
+        <item quantity="other">%,d комментариев</item>
+        <item quantity="one">%,d комментарий</item>
+        <item quantity="few">%,d комментария</item>
+    </plurals>
+</resources>

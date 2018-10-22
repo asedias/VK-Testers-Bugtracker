@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="14sp"
+        tools:text="Версия продукта:" />
+
+    <ru.asedias.vkbugtracker.ui.text.MediumTextView
+        android:id="@+id/data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/label"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="160dp"
+        android:layout_marginRight="@dimen/text_margin"
+        android:text="VK Messenger"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <ru.asedias.vkbugtracker.ui.text.MediumTextView
+        android:id="@+id/subdata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/data"
+        android:layout_alignParentRight="false"
+        android:layout_alignRight="@+id/data"
+        android:layout_below="@+id/data"
+        android:layout_marginBottom="8dp"
+        android:text="Version 1.0"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+</RelativeLayout>

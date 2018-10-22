@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        app:srcCompat="@drawable/placeholder_user" />
+
+    <ru.asedias.vkbugtracker.ui.text.MediumTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/icon"
+        android:layout_toRightOf="@+id/icon"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="?primaryTextColor"
+        android:textSize="14sp"
+        tools:text="Pavel Durov" />
+
+    <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        android:id="@+id/meta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_toRightOf="@+id/icon"
+        android:background="@drawable/bg_tag"
+        android:text="TextView"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:visibility="visible"
+        tools:text="New report status – Needs correction" />
+
+    <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        android:id="@+id/comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/meta"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/icon"
+        android:text="TextView"
+        android:textColor="?primaryTextColor"
+        android:textSize="15sp"
+        tools:text="Comment" />
+
+    <LinearLayout
+        android:id="@+id/attachments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/comment"
+        android:layout_below="@+id/comment"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="2dp"
+        android:orientation="vertical" />
+
+    <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/attachments"
+        android:layout_marginBottom="8dp"
+        android:layout_toRightOf="@+id/icon"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/darker_gray"
+        android:textSize="12sp"
+        tools:text="today at 12:00" />
+</RelativeLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ru.asedias.vkbugtracker.ui.text.RegularTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/text_margin"
+    android:text="18602 reports found"
+    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+    android:textColor="?primaryTextColor"
+    android:textSize="16sp">
+
+</ru.asedias.vkbugtracker.ui.text.RegularTextView>

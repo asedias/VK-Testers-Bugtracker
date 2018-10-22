@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="months_full">
+		<item>января</item>
+		<item>февраля</item>
+		<item>марта</item>
+		<item>апреля</item>
+		<item>мая</item>
+		<item>июня</item>
+		<item>июля</item>
+		<item>августа</item>
+		<item>сентября</item>
+		<item>октября</item>
+		<item>ноября</item>
+		<item>декабря</item>
+	</string-array>
+	<string-array name="months_short">
+		<item>янв</item>
+		<item>фев</item>
+		<item>мар</item>
+		<item>апр</item>
+		<item>мая</item>
+		<item>июн</item>
+		<item>июл</item>
+		<item>авг</item>
+		<item>сен</item>
+		<item>окт</item>
+		<item>ноя</item>
+		<item>дек</item>
+	</string-array>
+</resources>
