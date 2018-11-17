@@ -48,9 +48,6 @@ public class ErrorController {
         webView = dialogView.findViewById(R.id.dialog_webview);
         title = dialogView.findViewById(R.id.dialog_title);
         description = dialogView.findViewById(R.id.dialog_description);
-        if(Integer.parseInt(UserData.getUID()) == 0) {
-
-        }
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -67,7 +64,7 @@ public class ErrorController {
                     editor.putString("cookies", cookies);
                     editor.apply();
                     description.setText(R.string.updating_user_info);
-                    new GetUserInfo(86185582, new Callback<UserInfo>() {
+                    new GetUserInfo(Integer.parseInt(UserData.getUID()), new Callback<UserInfo>() {
                         @Override
                         public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                             UserInfo data = response.body();
@@ -85,7 +82,6 @@ public class ErrorController {
 
                         }
                     }).execute();
-
                 }
             }
         });
