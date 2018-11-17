@@ -17,7 +17,6 @@ import android.webkit.WebViewClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.asedias.vkbugtracker.api.Helper;
 import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 
@@ -34,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSharedPreferences("user", 0).getString("user_link", "").isEmpty()) clearCookies();
+        if(getSharedPreferences("user", 0).getString("user_id", "").isEmpty()) clearCookies();
         //clearAndFillCookies();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -74,14 +73,12 @@ public class LoginActivity extends AppCompatActivity {
                 UserInfo data = response.body();
                 try {
                     UserInfo.User user = data.getResponse().get(0);
-                    Prefs();
                     UserData.updateUserData(user);
-                } catch (NullPointerException e) {
-                    Helper.LogAPIError(data);
-                }
+                } catch (NullPointerException e) {}
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                Prefs();
                 dialog.cancel();
                 finish();
             }

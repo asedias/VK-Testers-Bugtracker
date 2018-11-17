@@ -63,4 +63,7 @@
     <string name="tomorrow">Завтра</string>
     <string name="yesterday">Вчера</string>
     <string name="yesterday_at">Вчера в</string>
+    <string name="updating_cookies">Обновление данных авторизации</string>
+    <string name="updating_user_info">Обновление информации об аккаунте</string>
+    <string name="reproduced">Воспроизвелось</string>
 </resources>

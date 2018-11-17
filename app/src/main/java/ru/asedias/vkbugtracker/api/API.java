@@ -1,12 +1,10 @@
 package ru.asedias.vkbugtracker.api;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.Interceptor;
@@ -24,8 +22,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import ru.asedias.vkbugtracker.BugTrackerApp;
-import ru.asedias.vkbugtracker.LoginActivity;
+import ru.asedias.vkbugtracker.ErrorController;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
+import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
 import ru.asedias.vkbugtracker.api.webmethods.models.TrackerMember;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
@@ -64,7 +63,7 @@ public class API {
         SharedPreferences prefs = BugTrackerApp.context.getSharedPreferences("user", Context.MODE_PRIVATE);
         Cookie = prefs.getString("cookies", "");
         access_token = prefs.getString("access_token", "");
-        uid = prefs.getString("user_id", "");
+        uid = prefs.getString("user_id", "0");
     }
     public interface VKApi {
         @GET("{method}")
@@ -86,6 +85,9 @@ public class API {
 
         @POST("bugtracker")
         Call<ProductList> GetProducts(@QueryMap Map<String, String> options);
+
+        @POST("bugtracker")
+        Call<Report> GetReportInfo(@QueryMap Map<String, String> options);
     }
 
     public class CookieInterceptor implements Interceptor {
@@ -100,9 +102,7 @@ public class API {
                 Log.e("Request", response.request().url().toString());
             }
             if(response.request().url().toString().contains("login")) {
-                Intent intent = new Intent(BugTrackerApp.context, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                BugTrackerApp.context.startActivity(intent);
+                ErrorController.updateCookie();
             }
             return response;
         }

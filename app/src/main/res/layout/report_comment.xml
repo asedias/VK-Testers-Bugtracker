@@ -7,9 +7,9 @@
     android:background="?selectableItemBackground">
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:id="@+id/photo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
@@ -19,11 +19,11 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/icon"
-        android:layout_toRightOf="@+id/icon"
+        android:layout_alignTop="@+id/photo"
+        android:layout_toRightOf="@+id/photo"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="?primaryTextColor"
+        android:textColor="?attr/colorAccent"
         android:textSize="14sp"
         tools:text="Pavel Durov" />
 
@@ -35,11 +35,16 @@
         android:layout_marginBottom="2dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="2dp"
-        android:layout_toRightOf="@+id/icon"
-        android:background="@drawable/bg_tag"
+        android:layout_toRightOf="@+id/photo"
+        android:background="@drawable/bg_cmt_meta"
+        android:gravity="center_vertical"
+        android:paddingBottom="6dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="6dp"
         android:text="TextView"
         android:textColor="@color/colorPrimary"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:visibility="visible"
         tools:text="New report status – Needs correction" />
 
@@ -49,11 +54,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/meta"
         android:layout_marginRight="16dp"
-        android:layout_toRightOf="@+id/icon"
+        android:layout_toRightOf="@+id/photo"
         android:text="TextView"
         android:textColor="?primaryTextColor"
-        android:textSize="15sp"
-        tools:text="Comment" />
+        android:textSize="14sp"
+        tools:text="Насколько я помню, было, и не только со стикером" />
 
     <LinearLayout
         android:id="@+id/attachments"
@@ -64,7 +69,8 @@
         android:layout_marginBottom="2dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="2dp"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:visibility="gone" />
 
     <ru.asedias.vkbugtracker.ui.text.RegularTextView
         android:id="@+id/subtitle"
@@ -72,10 +78,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/attachments"
         android:layout_marginBottom="8dp"
-        android:layout_toRightOf="@+id/icon"
+        android:layout_toRightOf="@+id/photo"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/darker_gray"
-        android:textSize="12sp"
+        android:textSize="14sp"
         tools:text="today at 12:00" />
 </RelativeLayout>

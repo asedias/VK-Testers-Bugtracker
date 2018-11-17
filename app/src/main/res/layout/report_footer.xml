@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/photosWrap"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/reproduce"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="false"
+        android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@+id/like"
+        android:layout_toRightOf="@+id/photosWrap"
+        android:gravity="center_vertical"
+        android:text="@string/reproduced" />
+
+    <ImageView
+        android:id="@+id/like"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/reproduce"
+        android:layout_alignTop="@+id/reproduce"
+        android:layout_toLeftOf="@+id/share"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:padding="15dp"
+        app:srcCompat="@drawable/ic_like_outline_24dp" />
+
+    <ImageView
+        android:id="@+id/share"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/reproduce"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/reproduce"
+        android:layout_marginLeft="4dp"
+        android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:padding="15dp"
+        app:srcCompat="@drawable/ic_share_outline_24dp" />
+</RelativeLayout>

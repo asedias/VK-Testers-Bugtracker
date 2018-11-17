@@ -26,10 +26,6 @@ public class ReportsAdapter extends RecyclerView.Adapter<BindableHolder> {
     private LayoutInflater mInflater;
     private ReportList data = new ReportList();
 
-    public ReportsAdapter(LayoutInflater mInflater) {
-        this.mInflater = mInflater;
-    }
-
     public void setData(ReportList data) {
         this.data = data;
         notifyDataSetChanged();
@@ -37,6 +33,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<BindableHolder> {
 
     public void appendItems(List<ReportList.ReportItem> data) {
         this.data.reports.addAll(data);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -45,7 +42,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<BindableHolder> {
         if(mInflater == null) {
             mInflater = ((Activity) parent.getContext()).getLayoutInflater();
         }
-        if(viewType == TYPE_HEADER) return new HeaderHolder(mInflater.inflate(R.layout.report_header, null));
+        if(viewType == TYPE_HEADER) return new HeaderHolder(mInflater);
         return new ReportItemHolder(mInflater.inflate(R.layout.report_item, null), mInflater);
     }
 

@@ -11,10 +11,10 @@
     <color name="dark_blue">#363738</color>
     <color name="light_gray">#aaaeb3</color>
     <color name="colorPrimaryLight">#ffffff</color>
-    <color name="colorNavIconsLight">#7a7d83</color>
-    <color name="colorIconsLight">#606060</color>
+    <color name="colorNavIconsLight">#95999b</color>
+    <color name="colorIconsLight">#ff6c737a</color>
     <color name="colorPrimaryDark">#303030</color>
-    <color name="bottom_divider">#E2E2E2</color>
+    <color name="bottom_divider">#a8acae</color>
     <color name="tag">#AAAAAA</color>
 	<color name="search">#EBEBEB</color>
 </resources>

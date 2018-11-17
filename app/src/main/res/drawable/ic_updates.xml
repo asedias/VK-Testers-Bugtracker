@@ -1,8 +1,5 @@
-<!-- drawable/bell.xml -->
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="24dp"
-    android:width="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path android:fillColor="#b1b1b1" android:pathData="M12,22A2,2 0 0,0 14,20H10A2,2 0 0,0 12,22M18,16V11C18,7.93 16.36,5.36 13.5,4.68V4A1.5,1.5 0 0,0 12,2.5A1.5,1.5 0 0,0 10.5,4V4.68C7.63,5.36 6,7.92 6,11V16L4,18V19H20V18L18,16Z" />
+<vector android:height="24dp" android:viewportHeight="112.0"
+    android:viewportWidth="112.0" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#a8acae" android:pathData="M51,16h1s0.01,-4.02 4,-4 4,4 4,4h1C76.46,16 86,34.54 86,50L86,69.21C86,72.4 96,78.13 96,83s-6.3,5.19 -6.3,5.19L22.28,88.19S15.9,87.87 15.9,83 26,72.24 26,69.21L26,50C26,34.54 35.54,16 51,16Z"/>
+    <path android:fillColor="#a8acae" android:pathData="M68,92v0.5c0,5.25 -5.37,9.5 -12,9.5S44,97.75 44,92.5L44,92Z"/>
 </vector>

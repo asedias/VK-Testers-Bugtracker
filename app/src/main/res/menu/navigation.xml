@@ -3,11 +3,11 @@
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_report_list"
+        android:icon="@drawable/ic_reports"
         android:title="@string/title_dashboard" />
     <item
         android:id="@+id/navigation_products"
-        android:icon="@drawable/ic_products"
+        android:icon="@drawable/ic_detail"
         android:title="@string/prefs_products" />
     <item
         android:id="@+id/navigation_members"

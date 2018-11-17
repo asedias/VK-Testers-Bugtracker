@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Bug tracker</string>
     <string name="title_home">My Card</string>
@@ -66,4 +67,7 @@
     <string name="tomorrow">tomorrow</string>
     <string name="yesterday">yesterday</string>
     <string name="yesterday_at">yesterday at</string>
+    <string name="updating_cookies">Updating authorization data</string>
+    <string name="updating_user_info">Updating account info</string>
+    <string name="reproduced">Reproduced</string>
 </resources>

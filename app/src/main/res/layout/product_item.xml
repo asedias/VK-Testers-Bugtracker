@@ -11,7 +11,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/icon"
+        android:layout_toRightOf="@+id/photo"
         android:gravity="fill_horizontal|center"
         android:minHeight="88dp"
         android:orientation="vertical"
@@ -46,7 +46,7 @@
             android:layout_alignLeft="@+id/container"
             android:layout_below="@+id/container"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@+id/icon"
+            android:layout_toRightOf="@+id/photo"
             android:background="?buttonBackground"
             android:elevation="0dp"
             android:paddingLeft="24dp"
@@ -80,7 +80,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/icon"
+        android:id="@+id/photo"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignTop="@id/container"

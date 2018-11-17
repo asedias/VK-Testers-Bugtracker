@@ -10,7 +10,7 @@
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/design_navigation_view"
+        android:id="@+id/coordinator"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fitsSystemWindows="true">
@@ -19,26 +19,35 @@
             android:id="@id/appBarLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            android:animateLayoutChanges="true">
 
             <include layout="@layout/appkit_toolbar" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabTextAppearance="@style/AppTheme.Tab"
+                android:visibility="gone"/>
+
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
             android:id="@+id/appkit_content"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1.0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="56dp"
+            android:animateLayoutChanges="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </android.support.design.widget.CoordinatorLayout>
 
     <ru.asedias.vkbugtracker.ui.BottomNavigationViewEx
         android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:background="@drawable/bg_bottom_nav"
-        app:elevation="0dp"
         app:itemIconTint="@color/bottom_nav_icon_tint"
         app:itemTextColor="@color/bottom_nav_icon_tint"
         app:menu="@menu/navigation" />

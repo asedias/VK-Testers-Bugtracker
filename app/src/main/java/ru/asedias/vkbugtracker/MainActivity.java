@@ -3,32 +3,33 @@ package ru.asedias.vkbugtracker;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import ru.asedias.vkbugtracker.api.webmethods.GetProducts;
-import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
-import ru.asedias.vkbugtracker.ui.UIHelper;
+import ru.asedias.vkbugtracker.ui.UIController;
 
 public class MainActivity extends AppCompatActivity {
+
+    UIController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BugTrackerApp.setAppDisplayMetrix(this);        if(!LoginActivity.isLoggedOnAndActual()) {
+        BugTrackerApp.setAppDisplayMetrix(this);
+        if(!LoginActivity.isLoggedOnAndActual()) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
             return;
         }
+        ErrorController.Setup(this);
         setContentView(R.layout.activity_main);
+        this.controller = new UIController().Setup(this);
         if(savedInstanceState == null) {
-            getFragmentManager().beginTransaction().replace(R.id.appkit_content, new ReportListFragment()).commit();
+            this.controller.ReplaceFragment(new ReportListFragment());
+            //getFragmentManager().beginTransaction().replace(R.id.appkit_content, ).commit();
         }
-        UIHelper.Setup(this);
+    }
+
+    public UIController getController() {
+        return this.controller;
     }
 }

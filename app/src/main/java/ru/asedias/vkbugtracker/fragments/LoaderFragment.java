@@ -1,6 +1,7 @@
 package ru.asedias.vkbugtracker.fragments;
 
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -10,14 +11,18 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Response;
 import ru.asedias.vkbugtracker.R;
+import ru.asedias.vkbugtracker.UserData;
 import ru.asedias.vkbugtracker.api.WebRequest;
 
 /**
  * Created by rorom on 20.10.2018.
  */
 
-public class LoaderFragment extends Fragment {
+public class LoaderFragment extends UICFragment {
 
     protected View mContainer;
     protected FrameLayout mContent;
@@ -25,6 +30,8 @@ public class LoaderFragment extends Fragment {
     protected boolean mRequestDone;
     protected View mLoading;
     protected View mErrorView;
+    protected boolean mRequestRunning;
+    protected boolean isRefreshing = false;
 
     @Nullable
     @Override
@@ -67,6 +74,17 @@ public class LoaderFragment extends Fragment {
         this.mLoading.setVisibility(View.GONE);
         this.mContent.setVisibility(View.VISIBLE);
         this.mRequestDone = true;
+        this.mRequestRunning = false;
+        this.isRefreshing = false;
+    }
+
+    protected void showProgress() {
+        this.mErrorView.setVisibility(View.GONE);
+        this.mLoading.setVisibility(View.VISIBLE);
+        this.mContent.setVisibility(View.GONE);
+        this.mRequestDone = false;
+        this.mRequestRunning = true;
+        this.isRefreshing = false;
     }
 
     public WebRequest getRequest() {
@@ -87,17 +105,40 @@ public class LoaderFragment extends Fragment {
         return mRequestDone;
     }
 
+    public boolean isRequestRunning() { return mRequestRunning; }
+
+    public void processUrl(Call call, Response response) {
+        if(!response.raw().request().url().toString().equals(call.request().url().toString())) {
+            showError("REDIRECT: " + response.raw().request().url().toString());
+            //Log.e("Request", "REDIRECT: " + response.raw().request().url().toString());
+        }
+    }
+
     public void showError(String text) {
+        this.mErrorView.setVisibility(View.VISIBLE);
+        this.mLoading.setVisibility(View.GONE);
+        this.mContent.setVisibility(View.GONE);
         ((TextView)this.mErrorView.findViewById(R.id.error_text)).setText(text);
         this.mErrorView.findViewById(R.id.error_retry).setOnClickListener(v -> {
-            executeRequestIfNeeded();
+            reExecuteRequest();
         });
         this.mRequestDone = false;
+        this.mRequestRunning = false;
+        this.isRefreshing = false;
+    }
+
+    public void reExecuteRequest() {
+        showProgress();
+        this.request.cancel();
+        this.request = getRequest();
+        this.request.execute();
+        this.mRequestRunning = true;
     }
 
     public void executeRequestIfNeeded() {
-        if(request != null && !isRequestDone()) {
+        if(request != null && !isRequestDone() && !isRequestRunning()) {
             request.execute();
+            this.mRequestRunning = true;
         }
     }
 }

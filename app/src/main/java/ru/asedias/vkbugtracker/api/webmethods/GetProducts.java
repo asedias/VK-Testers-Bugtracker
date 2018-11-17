@@ -13,9 +13,10 @@ import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 
 public class GetProducts extends WebRequest<ProductList> {
 
-    public GetProducts(Callback<ProductList> callback) {
+    public GetProducts(boolean all, Callback<ProductList> callback) {
         super(callback, false);
         this.params.put("act", "products");
+        if(all) this.params.put("section", "all");
         this.call = API.WebApi.GetProducts(params);
     }
 }

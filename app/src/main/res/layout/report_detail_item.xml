@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="?selectableItemBackground"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center|left|top"
+        android:layout_marginTop="8.0dip"
+        android:tint="@color/light_gray"
+        app:srcCompat="@drawable/ic_like_outline_24dp" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/icon"
+        android:layout_weight="1.0"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="2.0dip"
+        android:maxLines="3"
+        android:minHeight="40.0dip"
+        android:paddingBottom="8.0dip"
+        android:paddingLeft="16.0dip"
+        android:paddingRight="16.0dip"
+        android:paddingTop="8.0dip"
+        android:text="9000 friends"
+        android:textColor="#ff6a6f75"
+        android:textSize="14.0dip" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_weight="1.0"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="2.0dip"
+        android:maxLines="3"
+        android:minHeight="40.0dip"
+        android:paddingBottom="8.0dip"
+        android:paddingTop="8.0dip"
+        android:text="5.6 2032"
+        android:textColor="#ff6a6f75"
+        android:textSize="14.0dip" />
+
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="28dp"
+        android:layout_height="28.0dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="6dp"
+        app:srcCompat="@drawable/placeholder_user" />
+</RelativeLayout>

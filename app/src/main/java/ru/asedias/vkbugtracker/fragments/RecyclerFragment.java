@@ -1,6 +1,8 @@
 package ru.asedias.vkbugtracker.fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import ru.asedias.vkbugtracker.R;
 
@@ -22,7 +28,6 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
     protected I mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     protected SwipeRefreshLayout mSwipeRefresh;
-    protected boolean isRefreshing = false;
 
     @Override
     protected View OnCreateContentView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
         this.mEmptyView = tempContent.findViewById(R.id.empty);
         this.mSwipeRefresh = tempContent.findViewById(R.id.refresh_layout);
         this.mSwipeRefresh.setOnRefreshListener(this);
+        this.mSwipeRefresh.setRefreshing(isRefreshing);
         this.mList.setLayoutManager(getLayoutManager());
         this.mList.setAdapter(getAdapter());
         return tempContent;
@@ -46,6 +52,14 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(getAdapter() != null) {
+            getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    @Override
     protected void showContent() {
         isRefreshing = false;
         this.mSwipeRefresh.setRefreshing(isRefreshing);
@@ -54,8 +68,8 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
 
     @Override
     public void onRefresh() {
-        isRefreshing = true;
-        request = getRequest();
+        this.isRefreshing = true;
+        this.request = getRequest();
         if(request != null) {
             request.execute();
         }

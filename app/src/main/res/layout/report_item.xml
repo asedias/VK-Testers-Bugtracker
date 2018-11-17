@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/author"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignTop="@+id/title"
         android:layout_marginLeft="16dp"
         app:srcCompat="@drawable/placeholder_user" />
@@ -19,8 +19,9 @@
         android:id="@+id/product"
         android:layout_width="28dp"
         android:layout_height="28dp"
+        android:layout_alignLeft="@+id/title"
         android:layout_alignTop="@+id/tags_layout"
-        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
         app:srcCompat="@drawable/ic_doc_text" />
 
     <ru.asedias.vkbugtracker.ui.text.MediumTextView
@@ -52,10 +53,10 @@
         android:id="@+id/tags_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/time"
         android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/product"
         android:minHeight="30dp"
         android:orientation="horizontal">
 

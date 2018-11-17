@@ -10,8 +10,11 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
+import ru.asedias.vkbugtracker.fragments.TestFragment;
+import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.FlowLayout;
 import ru.asedias.vkbugtracker.ui.Fonts;
@@ -46,6 +49,7 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
 
     @Override
     public void bind(ReportList.ReportItem report) {
+        super.bind(report);
         this.mTitle.setText(report.title);
         this.mTime.setText(report.details);
         this.mState.setText(report.status);
@@ -62,7 +66,7 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
         this.mTagsLayout.removeAllViews();
         float textPadding = BugTrackerApp.dp(24);
         float fullwidth = 0;
-        float width = BugTrackerApp.mMetrics.widthPixels - BugTrackerApp.dp(85);
+        float width = BugTrackerApp.mMetrics.widthPixels - BugTrackerApp.dp(115);
         for(int i = 1; i < report.tags.size(); i++) {
             final TextView temp = (TextView) mInflater.inflate(R.layout.tag_item, null);
             fullwidth += temp.getPaint().measureText(report.tags.get(i).label) + textPadding;
@@ -71,5 +75,10 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
             temp.setTypeface(Fonts.Regular);
             this.mTagsLayout.addView(temp, mTagLP);
         }
+    }
+
+    @Override
+    public void click(View v) {
+        ((MainActivity)v.getContext()).getController().ReplaceFragment(ViewReportFragment.newInstance(data.id));
     }
 }

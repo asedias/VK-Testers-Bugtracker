@@ -7,6 +7,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.R;
+import ru.asedias.vkbugtracker.UserData;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
@@ -22,7 +25,8 @@ import ru.asedias.vkbugtracker.ui.adapters.ReportsAdapter;
 
 public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
     public ReportListFragment() {
-        this.mAdapter = new ReportsAdapter(null);
+        this.mAdapter = new ReportsAdapter();
+        this.setTitleNeeded = false;
     }
 
     @Override
@@ -30,6 +34,7 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
         return new GetReportList("0", "0", false, new Callback<ReportList>() {
             @Override
             public void onResponse(Call<ReportList> call, Response<ReportList> response) {
+                processUrl(call, response);
                 try {
                     ReportList body = response.body();
                     if(body.reports.size() > 0) getUsers(body);
@@ -37,7 +42,9 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
                     Log.e("RESPONSE", "Catch Exception", e.fillInStackTrace());
                 }
             }
-            @Override public void onFailure(Call<ReportList> call, Throwable t) { Log.e("RESPONSE", "ERROR", t); }
+            @Override public void onFailure(Call<ReportList> call, Throwable t) {
+                showError(BugTrackerApp.String(R.string.network_error_description));
+            }
         });
     }
 
