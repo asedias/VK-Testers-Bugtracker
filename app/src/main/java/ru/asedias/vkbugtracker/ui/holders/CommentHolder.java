@@ -28,10 +28,10 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
     private TextView meta;
     private TextView comment;
     private LinearLayout attachments;
-    private TextView date;
+    public TextView date;
 
     public CommentHolder(LayoutInflater inflater) {
-        super(inflater.inflate(R.layout.report_comment, null));
+        super(inflater.inflate(R.layout.report_comment, null, false));
         this.photo = itemView.findViewById(R.id.photo);
         this.name = itemView.findViewById(R.id.title);
         this.meta = itemView.findViewById(R.id.meta);
@@ -42,6 +42,7 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
 
     @Override
     public void bind(Report.Comment data) {
+        super.bind(data);
         Picasso.with(BugTrackerApp.context)
                 .load(data.author_photo.contains("http") ? data.author_photo : "https://vk.com"+data.author_photo)
                 .transform(new CropCircleTransformation())

@@ -13,7 +13,7 @@ import ru.asedias.vkbugtracker.R;
 
 public class HeaderHolder extends BindableHolder<String> {
     public HeaderHolder(LayoutInflater inflater) {
-        super(inflater.inflate(R.layout.report_header, null));
+        super(inflater.inflate(R.layout.report_header, null, false));
     }
 
     @Override

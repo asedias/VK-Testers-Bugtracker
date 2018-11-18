@@ -27,7 +27,7 @@ public class DetailItemHolder extends BindableHolder<Report.Detail> {
     private int type;
 
     public DetailItemHolder(LayoutInflater inflater, int type) {
-        super(inflater.inflate(R.layout.report_detail_item, null));
+        super(inflater.inflate(R.layout.report_detail_item, null, false));
         this.type = type;
         this.icon = itemView.findViewById(R.id.icon);
         this.photo = itemView.findViewById(R.id.photo);
@@ -37,6 +37,7 @@ public class DetailItemHolder extends BindableHolder<Report.Detail> {
 
     @Override
     public void bind(Report.Detail data) {
+        super.bind(data);
         if(type == 0) {
             ColorStateList color = this.title.getTextColors();
             TextViewCompat.setTextAppearance(this.title, R.style.TextAppearance_AppCompat_Body2);

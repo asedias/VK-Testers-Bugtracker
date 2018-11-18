@@ -25,6 +25,7 @@ public class PhotosGridHolder extends BindableHolder<List<Report.Photo>> {
 
     @Override
     public void bind(List<Report.Photo> data) {
+        super.bind(data);
         if(data.size() > 0) new ImageGridParser(activity, data, (ViewGroup) itemView);
     }
 }

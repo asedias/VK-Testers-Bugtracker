@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
-        android:background="@drawable/bg_bottom_nav"
+        android:background="?navBackground"
         app:itemIconTint="@color/bottom_nav_icon_tint"
         app:itemTextColor="@color/bottom_nav_icon_tint"
         app:menu="@menu/navigation" />

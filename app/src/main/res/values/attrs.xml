@@ -2,5 +2,6 @@
 <resources>
     <attr name="primaryTextColor" format="color" />
     <attr name="buttonBackground" format="reference" />
+    <attr name="navBackground" format="reference" />
     <attr name="heightRatio" format="float" />
 </resources>

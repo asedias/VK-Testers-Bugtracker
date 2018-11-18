@@ -3,71 +3,96 @@ package ru.asedias.vkbugtracker.ui;
 import android.animation.LayoutTransition;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Stack;
+import java.util.function.BiConsumer;
+
 import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.UserData;
+import ru.asedias.vkbugtracker.fragments.ProductListFragment;
+import ru.asedias.vkbugtracker.fragments.RecyclerFragment;
+import ru.asedias.vkbugtracker.fragments.ReportListFragment;
+import ru.asedias.vkbugtracker.fragments.TestFragment;
+import ru.asedias.vkbugtracker.fragments.UpdateListFragment;
 
 /**
  * Created by rorom on 20.10.2018.
  */
 
-public class UIController {
+public class UIController implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private MainActivity main;
     private FragmentManager fm;
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private BottomNavigationViewEx bottomNavView;
     private AppBarLayout appbar;
     private FrameLayout searchView;
+    private HashMap<Integer, Stack<Fragment>> mStacks = new HashMap<>();
+    private List<String> queue = new ArrayList<>();
+    private int currentID = R.id.navigation_reports;
+    private int navIconRes = R.drawable.ic_logo;
+    private View.OnClickListener navClick = v -> {
+        if(navIconRes == R.drawable.ic_ab_back_arrow_dark) main.onBackPressed();
+    };
 
     public UIController Setup(MainActivity Main) {
-        fm = Main.getFragmentManager();
-        /*fm.addOnBackStackChangedListener(() -> {
-            if(fm.getBackStackEntryCount() == 0) {
-                Main.finish();
-            }
-        });*/
+        this.main = Main;
+        this.fm = Main.getFragmentManager();
         if (Build.VERSION.SDK_INT >= 21) {
             int visibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN + View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             if(Build.VERSION.SDK_INT >= 26) {
-                visibility += View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-                Main.getWindow().setNavigationBarColor(-1);
+                //visibility += View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                Main.getWindow().setNavigationBarColor(BugTrackerApp.AttrColor(R.attr.colorPrimary));
             }
             Main.getWindow().getDecorView().setSystemUiVisibility(visibility);
         }
-        appbar = Main.findViewById(R.id.appBarLayout);
+        this.appbar = Main.findViewById(R.id.appBarLayout);
         FrameLayout content = Main.findViewById(R.id.appkit_content);
         content.getLayoutTransition().setDuration(50);
         content.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-        tabLayout = Main.findViewById(R.id.tabs);
-        toolbar = Main.findViewById(R.id.toolbar);
-        toolbar.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-        toolbar.inflateMenu(R.menu.main);
-        searchView = Main.findViewById(R.id.search_wrap);
-        bottomNavView = Main.findViewById(R.id.navigation);
-        bottomNavView.enableAnimation(false);
-        bottomNavView.enableShiftingMode(false);
-        bottomNavView.enableItemShiftingMode(false);
-        bottomNavView.setIconSize(24, 24);
-        bottomNavView.setIconsMarginTop(24);
-        //bottomNavView.setTextVisibility(false);
-        bottomNavView.setTextSize(14);
-        bottomNavView.setTextTypeface(Fonts.Medium);
+        this.tabLayout = Main.findViewById(R.id.tabs);
+        this.toolbar = Main.findViewById(R.id.toolbar);
+        this.toolbar.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        this.toolbar.inflateMenu(R.menu.main);
+        this.searchView = Main.findViewById(R.id.search_wrap);
+        this.bottomNavView = Main.findViewById(R.id.navigation);
+        this.bottomNavView.enableAnimation(false);
+        this.bottomNavView.enableShiftingMode(false);
+        this.bottomNavView.enableItemShiftingMode(false);
+        this.bottomNavView.setIconSize(24, 24);
+        this.bottomNavView.setIconsMarginTop(24);
+        this.bottomNavView.setTextSize(14);
+        this.bottomNavView.setTextTypeface(Fonts.Medium);
+        this.bottomNavView.setOnNavigationItemSelectedListener(this);
+        this.toolbar.setNavigationOnClickListener(navClick);
         LoadUserPhoto();
+        this.mStacks.put(R.id.navigation_reports, new Stack<Fragment>());
+        this.mStacks.put(R.id.navigation_products, new Stack<Fragment>());
+        this.mStacks.put(R.id.navigation_members, new Stack<Fragment>());
+        this.mStacks.put(R.id.navigation_updates, new Stack<Fragment>());
         return this;
     }
 
@@ -80,6 +105,18 @@ public class UIController {
                 .into((ImageView) toolbar.getMenu().getItem(0).getActionView());
     }
 
+    public boolean onBackPressed() {
+        mStacks.get(currentID).pop();
+        if(mStacks.get(currentID).size() == 0) {
+            queue.remove(String.valueOf(currentID));
+            if(queue.size() == 0) return false;
+            currentID = Integer.valueOf(queue.get(queue.size()-1));
+        }
+        ShowFragment(mStacks.get(currentID).lastElement());
+        getBottomNavView().setSelectedItemId(currentID);
+        return true;
+    }
+
     public FragmentManager getFragmentManager() {
         return fm;
     }
@@ -90,6 +127,16 @@ public class UIController {
 
     public void HideSearch() {
         searchView.setVisibility(View.GONE);
+    }
+
+    public void ShowNavBack() {
+        navIconRes = R.drawable.ic_ab_back_arrow_dark;
+        getToolbar().setNavigationIcon(navIconRes);
+    }
+
+    public void ShowNavLogo() {
+        navIconRes = R.drawable.ic_logo;
+        getToolbar().setNavigationIcon(navIconRes);
     }
 
     public void ShowTabBar(String... resids) {
@@ -115,8 +162,18 @@ public class UIController {
         tabLayout.removeAllTabs();
     }
 
-    public void ReplaceFragment(Fragment fragment) {
-        fm.beginTransaction().replace(R.id.appkit_content, fragment).addToBackStack(fragment.getTag()).commit();
+    public void ShowFragment(Fragment fragment) {
+        fm.beginTransaction().replace(R.id.appkit_content, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+    }
+
+    public void ReplaceFragment(Fragment fragment, int navID) {
+        navID = navID == 0 ? currentID: navID;
+        mStacks.get(navID).push(fragment);
+        queue.remove(String.valueOf(navID));
+        queue.add(String.valueOf(navID));
+        if(fragment.getArguments() == null) fragment.setArguments(new Bundle());
+        fragment.getArguments().putBoolean("top", mStacks.get(navID).size() == 1);
+        ShowFragment(fragment);
     }
 
     public Toolbar getToolbar() {
@@ -133,5 +190,51 @@ public class UIController {
 
     public AppBarLayout getAppbar() {
         return appbar;
+    }
+
+    public int getCurrentID() {
+        return currentID;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if(currentID == item.getItemId()) {
+            if(mStacks.get(item.getItemId()).size() > 1) {
+                mStacks.get(item.getItemId()).setSize(1);
+                ShowFragment(mStacks.get(item.getItemId()).lastElement());
+            } else {
+                Fragment fr = mStacks.get(item.getItemId()).lastElement();
+                if(fr instanceof RecyclerFragment) {
+                    ((RecyclerFragment)fr).setScrollToTop();
+                }
+            }
+            return true;
+        }
+        currentID = item.getItemId();
+        if(mStacks.get(item.getItemId()).size() > 0) {
+            queue.remove(String.valueOf(item.getItemId()));
+            queue.add(String.valueOf(item.getItemId()));
+            ShowFragment(mStacks.get(item.getItemId()).lastElement());
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.navigation_reports: {
+                ReplaceFragment(new ReportListFragment(), item.getItemId());
+                return true;
+            }
+            case R.id.navigation_products: {
+                ReplaceFragment(ProductListFragment.newInstance(true), item.getItemId());
+                return true;
+            }
+            case R.id.navigation_members: {
+                ReplaceFragment(new TestFragment(), item.getItemId());
+                return true;
+            }
+            case R.id.navigation_updates: {
+                ReplaceFragment(UpdateListFragment.newInstance(false), item.getItemId());
+                return true;
+            }
+        }
+        return false;
     }
 }

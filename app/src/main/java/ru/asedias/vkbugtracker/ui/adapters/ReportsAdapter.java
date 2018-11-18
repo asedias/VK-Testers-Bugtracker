@@ -39,11 +39,9 @@ public class ReportsAdapter extends RecyclerView.Adapter<BindableHolder> {
     @NonNull
     @Override
     public BindableHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(mInflater == null) {
-            mInflater = ((Activity) parent.getContext()).getLayoutInflater();
-        }
+        mInflater = ((Activity) parent.getContext()).getLayoutInflater();
         if(viewType == TYPE_HEADER) return new HeaderHolder(mInflater);
-        return new ReportItemHolder(mInflater.inflate(R.layout.report_item, null), mInflater);
+        return new ReportItemHolder(mInflater.inflate(R.layout.report_item, null, false), mInflater);
     }
 
     @Override

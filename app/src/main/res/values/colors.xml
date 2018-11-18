@@ -16,5 +16,5 @@
     <color name="colorPrimaryDark">#303030</color>
     <color name="bottom_divider">#a8acae</color>
     <color name="tag">#AAAAAA</color>
-	<color name="search">#EBEBEB</color>
+	<color name="search">#1e000000</color>
 </resources>

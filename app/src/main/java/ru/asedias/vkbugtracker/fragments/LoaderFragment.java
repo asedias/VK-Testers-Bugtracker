@@ -36,11 +36,12 @@ public class LoaderFragment extends UICFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        if(!isViewCreated()) {
-            this.mContainer = inflater.inflate(R.layout.appkit_loader_fragment, null);
+        if(this.mContainer == null) {
+            this.mContainer = inflater.inflate(R.layout.appkit_loader_fragment, container, false);
             this.mLoading = this.mContainer.findViewById(R.id.loading);
             this.mErrorView = this.mContainer.findViewById(R.id.error);
             this.mContent = this.mContainer.findViewById(R.id.content_stub);
+            this.mContent.removeAllViews();
             this.mContent.addView(OnCreateContentView(inflater, container, savedInstanceState));
             mRequestDone = savedInstanceState != null && savedInstanceState.getBoolean("mRequestDone", false);
         }
@@ -63,6 +64,17 @@ public class LoaderFragment extends UICFragment {
     public void onDestroy() {
         super.onDestroy();
         this.request.cancel();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (this.mContainer != null) {
+            ViewGroup parent = (ViewGroup) this.mContainer.getParent();
+            if (parent != null) {
+                parent.removeView(this.mContainer);
+            }
+        }
     }
 
     protected View OnCreateContentView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

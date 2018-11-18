@@ -31,7 +31,7 @@ public class FooterHolder extends BindableHolder<Report.Footer> {
     private int rid = 0;
 
     public FooterHolder(LayoutInflater inflater, int rid) {
-        super(inflater.inflate(R.layout.report_footer, null));
+        super(inflater.inflate(R.layout.report_footer, null, false));
         this.inflater = inflater;
         this.rid = rid;
         this.reproduce = itemView.findViewById(R.id.reproduce);
@@ -42,6 +42,7 @@ public class FooterHolder extends BindableHolder<Report.Footer> {
 
     @Override
     public void bind(Report.Footer data) {
+        super.bind(data);
         photos.removeAllViews();
         int size = BugTrackerApp.dp(24);
         int margin = BugTrackerApp.dp(3);

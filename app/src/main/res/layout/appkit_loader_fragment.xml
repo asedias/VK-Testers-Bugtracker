@@ -6,7 +6,8 @@
         android:id="@+id/appkit_loader_content"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="?android:attr/windowBackground">
 
         <include
             android:id="@+id/loading"

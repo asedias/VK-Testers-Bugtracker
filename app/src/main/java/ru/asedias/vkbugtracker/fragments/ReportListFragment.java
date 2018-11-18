@@ -69,13 +69,15 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
                 }
                 getProducts(body);
             }
-            @Override public void onFailure(Call<UserInfo> call, Throwable t) { }
+            @Override public void onFailure(Call<UserInfo> call, Throwable t) {
+                showError(t.getLocalizedMessage());
+            }
         });
         request.execute();
     }
 
     private void getProducts(ReportList body) {
-        this.request = new GetProducts(new Callback<ProductList>() {
+        this.request = new GetProducts(false, new Callback<ProductList>() {
             @Override
             public void onResponse(Call<ProductList> call, Response<ProductList> response) {
                 ProductList data = response.body();
@@ -95,7 +97,7 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
 
             @Override
             public void onFailure(Call<ProductList> call, Throwable t) {
-
+                showError(t.getLocalizedMessage());
             }
         });
         this.request.execute();

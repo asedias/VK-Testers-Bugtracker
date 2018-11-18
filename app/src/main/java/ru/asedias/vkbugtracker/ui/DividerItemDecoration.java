@@ -91,7 +91,7 @@ public class DividerItemDecoration extends ItemDecoration {
          int margin = 0;
          RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) var6.getLayoutParams();
          int var5 = var7.getPosition(var6);
-         if(this.provider.needMarginBottom(var5)) {
+         if(this.provider != null && this.provider.needMarginBottom(var5)) {
             margin = lp.bottomMargin;
          }
          int left = var6.getLeft() + this.paddingLeft;

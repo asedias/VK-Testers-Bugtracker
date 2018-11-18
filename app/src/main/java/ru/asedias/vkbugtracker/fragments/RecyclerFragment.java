@@ -31,7 +31,7 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
 
     @Override
     protected View OnCreateContentView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View tempContent = inflater.inflate(R.layout.appkit_recycler_fragment, null);
+        View tempContent = inflater.inflate(R.layout.appkit_recycler_fragment, null, false);
         this.mList = tempContent.findViewById(R.id.list);
         this.mEmptyView = tempContent.findViewById(R.id.empty);
         this.mSwipeRefresh = tempContent.findViewById(R.id.refresh_layout);
@@ -57,6 +57,11 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
         if(getAdapter() != null) {
             getAdapter().notifyDataSetChanged();
         }
+        if(isRequestRunning()||!isRequestDone()) showProgress();
+    }
+
+    public void setScrollToTop() {
+        mLayoutManager.smoothScrollToPosition(mList, null, 0);
     }
 
     @Override

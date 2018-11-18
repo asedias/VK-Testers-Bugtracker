@@ -18,6 +18,7 @@ import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.FlowLayout;
 import ru.asedias.vkbugtracker.ui.Fonts;
+import ru.asedias.vkbugtracker.ui.UIController;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -79,6 +80,7 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
 
     @Override
     public void click(View v) {
-        ((MainActivity)v.getContext()).getController().ReplaceFragment(ViewReportFragment.newInstance(data.id));
+        UIController uic = ((MainActivity)v.getContext()).getController();
+        uic.ReplaceFragment(ViewReportFragment.newInstance(data.id), 0);
     }
 }

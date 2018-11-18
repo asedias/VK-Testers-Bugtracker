@@ -17,34 +17,40 @@ public class UICFragment extends Fragment {
     protected UIController UIC;
     protected String title;
     protected boolean setTitleNeeded = true;
+    protected boolean top = false;
+    protected int catID = 0;
+
+    public UICFragment setCategory(int catID) {
+        this.catID = catID;
+        return this;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UIC = ((MainActivity)getActivity()).getController();
+        top = getArguments().getBoolean("top");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(UIC.getFragmentManager().getBackStackEntryCount() == 0) {
-            getActivity().finish();
-        }
     }
 
     public void updateUIState() {
+        if(catID != 0) UIC.getBottomNavView().setSelectedItemId(catID);
         UIC.getAppbar().setExpanded(true, true);
-        if(setTitleNeeded) {
+        if(setTitleNeeded || !top) {
             UIC.HideSearch();
             UIC.getToolbar().setTitle(title);
         } else {
             UIC.ShowSearch();
             UIC.getToolbar().setTitle("");
         }
-        if(UIC.getFragmentManager().getBackStackEntryCount() > 1) {
-            UIC.getToolbar().setNavigationIcon(R.drawable.ic_ab_back_arrow_dark);
+        if(!top) {
+            UIC.ShowNavBack();
         } else {
-            UIC.getToolbar().setNavigationIcon(R.drawable.ic_logo);
+            UIC.ShowNavLogo();
         }
     }
 

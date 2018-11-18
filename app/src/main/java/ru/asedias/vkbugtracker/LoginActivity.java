@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getInfoAndStart() {
         final ProgressDialog dialog = ProgressDialog.show(this, BugTrackerApp.String(R.string.title_activity_login), BugTrackerApp.String(R.string.loading));
-        new GetUserInfo(86185582, new Callback<UserInfo>() {
+        new GetUserInfo(Integer.parseInt(UserData.getUID()), new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 UserInfo data = response.body();

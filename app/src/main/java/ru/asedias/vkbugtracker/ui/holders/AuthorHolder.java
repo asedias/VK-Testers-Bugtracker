@@ -22,7 +22,7 @@ public class AuthorHolder extends BindableHolder<Report.Author> {
     private TextView date;
 
     public AuthorHolder(LayoutInflater inflater) {
-        super(inflater.inflate(R.layout.report_author, null));
+        super(inflater.inflate(R.layout.report_author, null, false));
         this.photo = itemView.findViewById(R.id.photo);
         this.name = itemView.findViewById(R.id.title);
         this.date = itemView.findViewById(R.id.subtitle);
@@ -30,6 +30,7 @@ public class AuthorHolder extends BindableHolder<Report.Author> {
 
     @Override
     public void bind(Report.Author data) {
+        super.bind(data);
         Picasso.with(BugTrackerApp.context).load(data.author_photo.contains("http") ? data.author_photo : "https://vk.com"+data.author_photo).transform(new CropCircleTransformation()).into(this.photo);
         this.name.setText(data.author_name);
         this.date.setText(data.date);

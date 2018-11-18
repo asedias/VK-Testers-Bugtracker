@@ -18,7 +18,7 @@ public class AttachmentHolder extends BindableHolder<Report.Attachment> {
     private TextView subtitle;
 
     public AttachmentHolder(LayoutInflater inflater) {
-        super(inflater.inflate(R.layout.report_doc, null));
+        super(inflater.inflate(R.layout.report_doc, null, false));
         this.icon = itemView.findViewById(R.id.photo);
         this.name = itemView.findViewById(R.id.title);
         this.subtitle = itemView.findViewById(R.id.subtitle);
@@ -26,6 +26,7 @@ public class AttachmentHolder extends BindableHolder<Report.Attachment> {
 
     @Override
     public void bind(Report.Attachment data) {
+        super.bind(data);
         this.name.setText(data.title);
         this.subtitle.setText(data.description);
         int icon_id = R.drawable.ic_doc;

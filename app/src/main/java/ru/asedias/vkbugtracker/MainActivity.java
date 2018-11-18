@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import java.util.List;
+
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
 import ru.asedias.vkbugtracker.ui.UIController;
 
@@ -13,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //setTheme(R.style.AppTheme_Dark);
         super.onCreate(savedInstanceState);
         BugTrackerApp.setAppDisplayMetrix(this);
         if(!LoginActivity.isLoggedOnAndActual()) {
@@ -24,9 +27,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.controller = new UIController().Setup(this);
         if(savedInstanceState == null) {
-            this.controller.ReplaceFragment(new ReportListFragment());
-            //getFragmentManager().beginTransaction().replace(R.id.appkit_content, ).commit();
+            this.controller.ReplaceFragment(new ReportListFragment(), R.id.navigation_reports);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!controller.onBackPressed()) super.onBackPressed();
     }
 
     public UIController getController() {

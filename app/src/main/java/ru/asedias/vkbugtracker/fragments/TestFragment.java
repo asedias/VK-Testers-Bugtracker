@@ -55,8 +55,8 @@ public class TestFragment extends LoaderFragment {
                     Report ttt = response.body();
                     String format = "%s (%s)\n%s\n%s\n%s %s\nComments: %d";
                     String out = String.format(Locale.getDefault(), format, ttt.author.author_name, ttt.author.author_photo, ttt.title, ttt.description, ttt.details.get(0).title, ttt.details.get(0).description, ttt.attachments.size());
-                    Log.e("RESULT", out);
-                    Toast.makeText(getActivity(), out, Toast.LENGTH_LONG).show();
+                    //Log.e("RESULT", out);
+                    //Toast.makeText(getActivity(), out, Toast.LENGTH_LONG).show();
                     text.setText(out);
                 } catch(Exception e) {
                     Log.e("RESPONSE", "Catch Exception", e.fillInStackTrace());

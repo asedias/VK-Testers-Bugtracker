@@ -38,12 +38,10 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
     private final static int TYPE_DETAIL_PHOTO = 7;
     private final static int TYPE_SHOW_MORE = 8;
     private final static int TYPE_COMMENT = 9;
-    private int attach = 0;
     private int rid = 0;
 
     public void setData(Report data) {
         this.data = data;
-        this.attach = 0;
         notifyDataSetChanged();
     }
 
@@ -103,7 +101,7 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
                 holder.bind(data.photos); break;
             }
             case TYPE_ATTACHMENT: {
-                holder.bind(data.attachments.get(attach++));
+                holder.bind(data.attachments.get(position - 4));
                 if(getItemViewType(position+1) == TYPE_FOOTER) {
                     ((RecyclerView.LayoutParams)holder.itemView.getLayoutParams()).bottomMargin = BugTrackerApp.dp(8);
                 }
