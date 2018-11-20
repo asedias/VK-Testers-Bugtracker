@@ -55,18 +55,6 @@ public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
         if(this.getArguments() != null) {
             this.all = getArguments().getBoolean("all", false);
         }
-        return new GetProducts(this.all, new Callback<ProductList>() {
-            @Override
-            public void onResponse(Call<ProductList> call, Response<ProductList> response) {
-                ProductList data = response.body();
-                getAdapter().setData(data);
-                showContent();
-            }
-
-            @Override
-            public void onFailure(Call<ProductList> call, Throwable t) {
-                showError(t.getLocalizedMessage());
-            }
-        });
+        return new GetProducts(this, this.all, data -> data);
     }
 }

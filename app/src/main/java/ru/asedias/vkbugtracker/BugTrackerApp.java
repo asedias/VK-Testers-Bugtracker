@@ -37,7 +37,7 @@ public class BugTrackerApp extends Application {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         new UserData(); new Fonts(); new API();
         //new ThemeManager();
-        //Thread.setDefaultUncaughtExceptionHandler(new RestartExceptionHandler(BugTrackerApp.context));
+        Thread.setDefaultUncaughtExceptionHandler(new RestartExceptionHandler(BugTrackerApp.context));
     }
 
     @Override

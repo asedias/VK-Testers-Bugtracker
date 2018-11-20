@@ -9,15 +9,25 @@ import pl.droidsonroids.jspoon.annotation.Selector;
  * Created by rorom on 21.10.2018.
  */
 
-public class ProductList {
+public class ProductList implements ListModel<ProductList.Product> {
 
     @Selector(".bt_product_row") public List<Product> products = new ArrayList<>();
 
+    @Override
+    public int getSize() {
+        return products.size();
+    }
+
+    @Override
+    public Product get(int position) {
+        return products.get(position);
+    }
+
     public static class Product {
-        @Selector(".bt_product_row_title") public String title;
-        @Selector(".bt_product_row_subtitle") public List<String> subtitles;
-        @Selector(value = ".bt_prod_one_photo__img", attr = "src") public String photo;
-        @Selector(value = ".bt_prod_link", attr = "href", regex = "\\/bugtracker\\?act=product&id=([0-9]*)") public int id;
+        @Selector(value = ".bt_product_row_title", defValue = "") public String title;
+        @Selector(value = ".bt_product_row_subtitle", defValue = "") public List<String> subtitles;
+        @Selector(value = "img", attr = "src", defValue = "https://vkontakte.ru/images/question_a.gif") public String photo;
+        @Selector(value = ".bt_prod_link", attr = "href", regex = "\\/bugtracker\\?act=product&id=([0-9]*)", defValue = "0") public int id;
 
     }
 }

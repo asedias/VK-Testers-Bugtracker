@@ -14,6 +14,7 @@ import android.widget.TextView;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
+import ru.asedias.vkbugtracker.BuildConfig;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.UserData;
 import ru.asedias.vkbugtracker.api.WebRequest;
@@ -32,6 +33,8 @@ public class LoaderFragment extends UICFragment {
     protected View mErrorView;
     protected boolean mRequestRunning;
     protected boolean isRefreshing = false;
+    protected boolean canLoadMore = false;
+    public boolean isLoadingMore = false;
 
     @Nullable
     @Override
@@ -81,13 +84,14 @@ public class LoaderFragment extends UICFragment {
         return null;
     }
 
-    protected void showContent() {
+    public void showContent() {
         this.mErrorView.setVisibility(View.GONE);
         this.mLoading.setVisibility(View.GONE);
         this.mContent.setVisibility(View.VISIBLE);
         this.mRequestDone = true;
         this.mRequestRunning = false;
         this.isRefreshing = false;
+        this.isLoadingMore = false;
     }
 
     protected void showProgress() {
@@ -97,6 +101,7 @@ public class LoaderFragment extends UICFragment {
         this.mRequestDone = false;
         this.mRequestRunning = true;
         this.isRefreshing = false;
+        this.isLoadingMore = false;
     }
 
     public WebRequest getRequest() {
@@ -119,6 +124,10 @@ public class LoaderFragment extends UICFragment {
 
     public boolean isRequestRunning() { return mRequestRunning; }
 
+    public boolean isRefreshing() { return isRefreshing; }
+
+    public boolean canLoadMode() { return canLoadMore; }
+
     public void processUrl(Call call, Response response) {
         if(!response.raw().request().url().toString().equals(call.request().url().toString())) {
             showError("REDIRECT: " + response.raw().request().url().toString());
@@ -126,8 +135,28 @@ public class LoaderFragment extends UICFragment {
         }
     }
 
+    public void showError(Throwable t) {
+        showError(t.getLocalizedMessage());
+        if(BuildConfig.DEBUG) t.printStackTrace();
+    }
+
+    public void showEmptyText() {
+        this.mErrorView.setVisibility(View.VISIBLE);
+        this.mErrorView.findViewById(R.id.error_image).setVisibility(View.GONE);
+        this.mErrorView.findViewById(R.id.error_retry).setVisibility(View.GONE);
+        this.mLoading.setVisibility(View.GONE);
+        this.mContent.setVisibility(View.GONE);
+        ((TextView)this.mErrorView.findViewById(R.id.error_text)).setText(R.string.empty);
+        this.mRequestDone = true;
+        this.mRequestRunning = false;
+        this.isRefreshing = false;
+        this.isLoadingMore = false;
+    }
+
     public void showError(String text) {
         this.mErrorView.setVisibility(View.VISIBLE);
+        this.mErrorView.findViewById(R.id.error_image).setVisibility(View.VISIBLE);
+        this.mErrorView.findViewById(R.id.error_retry).setVisibility(View.VISIBLE);
         this.mLoading.setVisibility(View.GONE);
         this.mContent.setVisibility(View.GONE);
         ((TextView)this.mErrorView.findViewById(R.id.error_text)).setText(text);
@@ -137,14 +166,20 @@ public class LoaderFragment extends UICFragment {
         this.mRequestDone = false;
         this.mRequestRunning = false;
         this.isRefreshing = false;
+        this.isLoadingMore = false;
+    }
+
+    public void loadMore(boolean isLoadingMore) {
+        this.isLoadingMore = isLoadingMore;
+        this.request = getRequest();
+        this.request.execute();
+        this.mRequestRunning = true;
     }
 
     public void reExecuteRequest() {
         showProgress();
         this.request.cancel();
-        this.request = getRequest();
-        this.request.execute();
-        this.mRequestRunning = true;
+        this.loadMore(false);
     }
 
     public void executeRequestIfNeeded() {

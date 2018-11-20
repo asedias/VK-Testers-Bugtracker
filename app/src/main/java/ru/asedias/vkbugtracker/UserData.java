@@ -49,4 +49,11 @@ public class UserData {
         return photo;
     }
 
+    public static void setName(String name) {
+        UserData.name = name;
+    }
+
+    public static void setPhoto(String photo) {
+        UserData.photo = photo;
+    }
 }

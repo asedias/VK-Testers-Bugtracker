@@ -22,18 +22,18 @@ import ru.asedias.vkbugtracker.ui.adapters.UpdatesAdapter;
  * Created by rorom on 18.11.2018.
  */
 
-public class UpdateListFragment extends RecyclerFragment<UpdatesAdapter> {
+public class UpdatesListFragment extends RecyclerFragment<UpdatesAdapter> {
 
     private boolean liked;
 
-    public UpdateListFragment() {
+    public UpdatesListFragment() {
         this.mAdapter = new UpdatesAdapter();
         this.title = BugTrackerApp.String(R.string.prefs_updates);
         this.setTitleNeeded = true;
     }
 
-    public static UpdateListFragment newInstance(boolean liked) {
-        UpdateListFragment fragment = new UpdateListFragment();
+    public static UpdatesListFragment newInstance(boolean liked) {
+        UpdatesListFragment fragment = new UpdatesListFragment();
         Bundle args = new Bundle();
         args.putBoolean("liked", liked);
         fragment.setArguments(args);
@@ -54,19 +54,7 @@ public class UpdateListFragment extends RecyclerFragment<UpdatesAdapter> {
         if(this.getArguments() != null) {
             this.liked = getArguments().getBoolean("all", false);
         }
-        return new GetUpdates(this.liked, new Callback<UpdateList>() {
-            @Override
-            public void onResponse(Call<UpdateList> call, Response<UpdateList> response) {
-                UpdateList data = response.body();
-                getAdapter().setData(data);
-                showContent();
-            }
-
-            @Override
-            public void onFailure(Call<UpdateList> call, Throwable t) {
-                showError(t.getLocalizedMessage());
-            }
-        });
+        return new GetUpdates(this, this.liked, data -> data);
     }
 
 }

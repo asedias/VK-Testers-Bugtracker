@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import ru.asedias.vkbugtracker.BugTrackerApp;
@@ -19,19 +20,13 @@ import ru.asedias.vkbugtracker.ui.holders.CommentHolder;
  * Created by rorom on 18.11.2018.
  */
 
-public class UpdatesAdapter extends RecyclerView.Adapter<CommentHolder> {
-
-    private UpdateList data = new UpdateList();
-
-    public void setData(UpdateList data) {
-        this.data = data;
-        notifyDataSetChanged();
-    }
+public class UpdatesAdapter extends DataAdapter<CommentHolder, UpdateList> {
 
     @NonNull
     @Override
     public CommentHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new CommentHolder(((Activity) parent.getContext()).getLayoutInflater());
+        super.onCreateViewHolder(parent, viewType);
+        return new CommentHolder(inflater);
     }
 
     @Override
@@ -50,11 +45,5 @@ public class UpdatesAdapter extends RecyclerView.Adapter<CommentHolder> {
                 holder.date.append(sb);
             }
         }
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return data.updates.size();
     }
 }

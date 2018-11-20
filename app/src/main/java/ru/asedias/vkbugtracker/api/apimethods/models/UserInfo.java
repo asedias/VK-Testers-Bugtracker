@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserInfo extends VKAPIResponse<UserInfo.User> {
 
-    public class User {
+    public static class User {
         @SerializedName("id")
         @Expose
         private Integer id;

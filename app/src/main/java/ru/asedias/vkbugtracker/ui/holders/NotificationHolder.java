@@ -24,7 +24,7 @@ import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
  * Created by rorom on 12.11.2018.
  */
 
-public class CommentHolder extends BindableHolder<Report.Comment> {
+public class NotificationHolder extends BindableHolder<NotificationList.Notification> {
 
     private ImageView photo;
     private TextView name;
@@ -33,7 +33,7 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
     private LinearLayout attachments;
     public TextView date;
 
-    public CommentHolder(LayoutInflater inflater) {
+    public NotificationHolder(LayoutInflater inflater) {
         super(inflater.inflate(R.layout.report_comment, null, false));
         this.photo = itemView.findViewById(R.id.photo);
         this.name = itemView.findViewById(R.id.title);
@@ -44,7 +44,7 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
     }
 
     @Override
-    public void bind(Report.Comment data) {
+    public void bind(NotificationList.Notification data) {
         super.bind(data);
         Picasso.with(BugTrackerApp.context)
                 .load(data.author_photo.contains("http") ? data.author_photo : "https://vk.com"+data.author_photo)
@@ -58,24 +58,7 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
             this.comment.setVisibility(View.GONE);
         }
         this.date.setText(data.date);
-        if(data.meta_content != null) {
-            this.meta.setVisibility(View.VISIBLE);
-            this.meta.setText("");
-            for(int i = 0; i < data.meta_content.size(); i++) {
-                SpannableStringBuilder sb = new SpannableStringBuilder();
-                if(i != 0 && i+1==data.meta_content.size()) sb.append("\n");
-                String[] metas = data.meta_content.get(i).split("–");
-                sb.append(metas[0]);
-                sb.append("-");
-                sb.append(metas[1]);
-                sb.setSpan(new TextAppearanceSpan(BugTrackerApp.context, R.style.TextAppearance_AppCompat_Body2), metas[0].length() + 1, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                sb.setSpan(new ForegroundColorSpan(BugTrackerApp.Color(R.color.colorAccent)), metas[0].length() + 1, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                this.meta.append(sb);
-                this.meta.setTextColor(BugTrackerApp.Color(R.color.colorAccent));
-            }
-        } else {
-            this.meta.setVisibility(View.GONE);
-        }
+        this.meta.setVisibility(View.GONE);
         this.attachments.setVisibility(View.GONE);
     }
 }

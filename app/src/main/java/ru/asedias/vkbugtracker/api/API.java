@@ -22,7 +22,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BuildConfig;
 import ru.asedias.vkbugtracker.ErrorController;
+import ru.asedias.vkbugtracker.api.webmethods.models.NotificationList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
@@ -92,6 +94,9 @@ public class API {
 
         @POST("bugtracker")
         Call<UpdateList> GetUpdates(@QueryMap Map<String, String> options);
+
+        @POST("feed")
+        Call<NotificationList> GetNotification(@QueryMap Map<String, String> options);
     }
 
     public class CookieInterceptor implements Interceptor {
@@ -102,7 +107,7 @@ public class API {
                     .header("Cookie", Cookie)
                     .build();
             Response response = chain.proceed(request);
-            if(Integer.parseInt(uid) == 86185582) {
+            if(BuildConfig.DEBUG) {
                 Log.e("Request", response.request().url().toString());
             }
             if(response.request().url().toString().contains("login")) {

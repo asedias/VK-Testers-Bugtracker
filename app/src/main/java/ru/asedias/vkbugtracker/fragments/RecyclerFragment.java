@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import ru.asedias.vkbugtracker.R;
+import ru.asedias.vkbugtracker.ui.adapters.DataAdapter;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -42,11 +43,11 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
         return tempContent;
     }
 
-    protected I getAdapter() {
+    public I getAdapter() {
         return mAdapter;
     }
 
-    private RecyclerView.LayoutManager getLayoutManager() {
+    protected RecyclerView.LayoutManager getLayoutManager() {
         if(this.mLayoutManager == null) this.mLayoutManager = new LinearLayoutManager(getActivity());
         return mLayoutManager;
     }
@@ -65,18 +66,26 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
     }
 
     @Override
-    protected void showContent() {
+    public void showContent() {
         isRefreshing = false;
         this.mSwipeRefresh.setRefreshing(isRefreshing);
+        if(getAdapter() instanceof DataAdapter) {
+            if(((DataAdapter)getAdapter()).data.getSize() == 0) {
+                showEmptyText();
+                return;
+            }
+        }
         super.showContent();
     }
 
     @Override
     public void onRefresh() {
         this.isRefreshing = true;
-        this.request = getRequest();
-        if(request != null) {
-            request.execute();
+        if(!isRequestRunning()) {
+            this.request = getRequest();
+            if (request != null) {
+                request.execute();
+            }
         }
     }
 }

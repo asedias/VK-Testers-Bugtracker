@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 if (url.contains("blank.html")) {
-                    SharedPreferences.Editor editor = getSharedPreferences("user", 0).edit();
+                    SharedPreferences.Editor editor = BugTrackerApp.context.getSharedPreferences("user", 0).edit();
                     editor.putString("url", url);
                     editor.putLong("time", (System.currentTimeMillis() / 1000));
                     url = url.substring("https://oauth.vk.com/blank.html#".length());
@@ -55,30 +55,36 @@ public class LoginActivity extends AppCompatActivity {
                     String cookies = CookieManager.getInstance().getCookie("https://vk.com");
                     editor.putString("cookies", cookies);
                     editor.apply();
-                    getInfoAndStart();
+                    Prefs();
+                    new UserData();
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                    //getInfoAndStart(UserData.getUID());
                 }
             }
 
         });
-
-        //webView.loadDataWithBaseURL(getLoginURL(false), null, "text/html", "UTF-8", null);
         webView.loadUrl(getLoginURL());
     }
 
-    private void getInfoAndStart() {
+    private void getInfoAndStart(String uid) {
         final ProgressDialog dialog = ProgressDialog.show(this, BugTrackerApp.String(R.string.title_activity_login), BugTrackerApp.String(R.string.loading));
-        new GetUserInfo(Integer.parseInt(UserData.getUID()), new Callback<UserInfo>() {
+        new GetUserInfo(uid, new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 UserInfo data = response.body();
                 try {
                     UserInfo.User user = data.getResponse().get(0);
+                    Prefs();
                     UserData.updateUserData(user);
-                } catch (NullPointerException e) {}
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                Prefs();
                 dialog.cancel();
                 finish();
             }

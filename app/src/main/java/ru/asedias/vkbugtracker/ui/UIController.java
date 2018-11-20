@@ -7,12 +7,10 @@ import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -23,19 +21,18 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Stack;
-import java.util.function.BiConsumer;
 
 import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.UserData;
+import ru.asedias.vkbugtracker.fragments.NotificationsFragment;
 import ru.asedias.vkbugtracker.fragments.ProductListFragment;
 import ru.asedias.vkbugtracker.fragments.RecyclerFragment;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
 import ru.asedias.vkbugtracker.fragments.TestFragment;
-import ru.asedias.vkbugtracker.fragments.UpdateListFragment;
+import ru.asedias.vkbugtracker.fragments.UpdatesListFragment;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -88,7 +85,6 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
         this.bottomNavView.setTextTypeface(Fonts.Medium);
         this.bottomNavView.setOnNavigationItemSelectedListener(this);
         this.toolbar.setNavigationOnClickListener(navClick);
-        LoadUserPhoto();
         this.mStacks.put(R.id.navigation_reports, new Stack<Fragment>());
         this.mStacks.put(R.id.navigation_products, new Stack<Fragment>());
         this.mStacks.put(R.id.navigation_members, new Stack<Fragment>());
@@ -227,11 +223,11 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
                 return true;
             }
             case R.id.navigation_members: {
-                ReplaceFragment(new TestFragment(), item.getItemId());
+                ReplaceFragment(new NotificationsFragment(), item.getItemId());
                 return true;
             }
             case R.id.navigation_updates: {
-                ReplaceFragment(UpdateListFragment.newInstance(false), item.getItemId());
+                ReplaceFragment(UpdatesListFragment.newInstance(false), item.getItemId());
                 return true;
             }
         }
