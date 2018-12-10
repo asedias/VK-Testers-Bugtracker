@@ -1,17 +1,22 @@
 package ru.asedias.vkbugtracker.ui;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import  ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BuildConfig;
+import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +29,9 @@ public class ImageGridParser {
     private List<Report.Photo> photos;
     private ViewGroup root;
     private FlowLayout layout;
-    private Activity activity;
     private int rootLayoutWidth = 0;
 
     public ImageGridParser(Activity activity, List<Report.Photo> photos, ViewGroup root) {
-        this.activity = activity;
         this.photos = photos;
         this.root = root;
         this.layout = new FlowLayout(BugTrackerApp.context);
@@ -38,12 +41,14 @@ public class ImageGridParser {
         parse();
     }
 
-    public ImageGridParser(Activity activity, List<Report.Photo> photos, ViewGroup root, int rootLayoutWidth) {
-        this.activity = activity;
+    public ImageGridParser(List<Report.Photo> photos, ViewGroup root, int rootLayoutWidth) {
         this.photos = photos;
         this.root = root;
         this.layout = new FlowLayout(BugTrackerApp.context);
         this.rootLayoutWidth = rootLayoutWidth;
+        if(BuildConfig.DEBUG) {
+            Log.i("ImageGrid", "Custom width: " + rootLayoutWidth);
+        }
         parse();
     }
 
@@ -115,11 +120,12 @@ public class ImageGridParser {
             if(size.breakAfter) {
                 lp.vertical_spacing = (int) BugTrackerApp.dp(4);
             }
+            Picasso pic = Picasso.with(BugTrackerApp.context);
+            RequestCreator req = pic.load(photo.url_x);
             if (!TextUtils.isEmpty(photo.url_y)) {
-                Picasso.with(activity).load(photo.url_y).into(image);
-            } else if (!TextUtils.isEmpty(photo.url_x)) {
-                Picasso.with(activity).load(photo.url_x).into(image);
+                req = pic.load(photo.url_y);
             }
+            req.placeholder(new ColorDrawable(BugTrackerApp.Color(R.color.thumb))).into(image);
             layout.addView(image, lp);
         }
         this.root.addView(layout, new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));

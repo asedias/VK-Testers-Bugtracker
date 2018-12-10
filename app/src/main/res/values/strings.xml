@@ -8,7 +8,7 @@
     <string name="network_error_description">Check your internet connection and try again.</string>
     <string name="try_again">Try again</string>
     <string name="all_reports">All Reports</string>
-    <string name="report_information">Details</string>
+    <string name="report_information">Report details</string>
     <string name="general_info">General info</string>
     <string name="addr_product">Product</string>
     <string name="addr_product_version">Product version</string>
@@ -70,4 +70,7 @@
     <string name="updating_cookies">Updating authorization data</string>
     <string name="updating_user_info">Updating account info</string>
     <string name="reproduced">Reproduced</string>
+    <string name="all_products">All products</string>
+    <string name="my_products">My products</string>
+    <string name="yes">Yes</string>
 </resources>

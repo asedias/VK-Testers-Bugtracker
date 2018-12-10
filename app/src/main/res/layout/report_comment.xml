@@ -68,9 +68,9 @@
         android:layout_alignLeft="@+id/comment"
         android:layout_below="@+id/comment"
         android:layout_marginBottom="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="4dp"
         android:orientation="vertical"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <ru.asedias.vkbugtracker.ui.text.RegularTextView
         android:id="@+id/subtitle"

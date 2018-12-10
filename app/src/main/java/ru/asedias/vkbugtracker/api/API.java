@@ -1,6 +1,7 @@
 package ru.asedias.vkbugtracker.api;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -21,6 +22,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
+import ru.asedias.vkbugtracker.Actions;
 import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.BuildConfig;
 import ru.asedias.vkbugtracker.ErrorController;
@@ -67,6 +69,7 @@ public class API {
         Cookie = prefs.getString("cookies", "");
         access_token = prefs.getString("access_token", "");
         uid = prefs.getString("user_id", "0");
+        BugTrackerApp.context.sendBroadcast(new Intent(Actions.ACTION_COOKIE_UPDATED));
     }
     public interface VKApi {
         @GET("{method}")

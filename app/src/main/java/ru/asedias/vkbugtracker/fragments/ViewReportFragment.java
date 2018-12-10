@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -62,38 +63,45 @@ public class ViewReportFragment extends RecyclerFragment<ViewReportAdapter> {
         }
         this.getAdapter().setRid(this.rid);
         return new GetReportInfo(this, this.rid, report -> {
-            for (int i = 0; i < report.photos.size(); i++) {
-                Report.Photo photo = report.photos.get(i);
-                try {
-                    JSONObject obj = new JSONObject(photo.json).getJSONObject("temp");
-                    String base = obj.getString("base");
-                    if(obj.has("x_")) {
-                        JSONArray x = obj.getJSONArray("x_");
-                        photo.url_x = base + x.getString(0) + ".jpg";
-                        photo.width = x.getInt(1);
-                        photo.height = x.getInt(2);
-                        Log.e("bugtracker", "width " + photo.width + "\n" + "height " + photo.height);
-                    }
-                    if(obj.has("y_")) {
-                        JSONArray y = obj.getJSONArray("y_");
-                        photo.url_y = base + y.getString(0) + ".jpg";
-                        photo.width = y.getInt(1);
-                        photo.height = y.getInt(2);
-                    }
-                    if(obj.has("z_")) {
-                        JSONArray z = obj.getJSONArray("z_");
-                        photo.url_z = base + z.getString(0) + ".jpg";
-                    }
-                    if(obj.has("w_")) {
-                        JSONArray w = obj.getJSONArray("w_");
-                        photo.url_w = base + w.getString(0) + ".jpg";
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            report.photos = processPhotos(report.photos);
+            for(int i = 0; i < report.comments.size(); i++) {
+                report.comments.get(i).photos = processPhotos(report.comments.get(i).photos);
             }
             getAdapter().setData(report);
             return report;
         });
+    }
+
+    private List<Report.Photo> processPhotos(List<Report.Photo> photos) {
+        for (int i = 0; i < photos.size(); i++) {
+            Report.Photo photo = photos.get(i);
+            try {
+                JSONObject obj = new JSONObject(photo.json).getJSONObject("temp");
+                String base = obj.getString("base");
+                if(obj.has("x_")) {
+                    JSONArray x = obj.getJSONArray("x_");
+                    photo.url_x = (x.getString(0).contains("http") ? "" : base) + x.getString(0) + ".jpg";
+                    photo.width = x.getInt(1);
+                    photo.height = x.getInt(2);
+                }
+                if(obj.has("y_")) {
+                    JSONArray y = obj.getJSONArray("y_");
+                    photo.url_y = (y.getString(0).contains("http") ? "" : base) + y.getString(0) + ".jpg";
+                    photo.width = y.getInt(1);
+                    photo.height = y.getInt(2);
+                }
+                if(obj.has("z_")) {
+                    JSONArray z = obj.getJSONArray("z_");
+                    photo.url_z = (z.getString(0).contains("http") ? "" : base) + z.getString(0) + ".jpg";
+                }
+                if(obj.has("w_")) {
+                    JSONArray w = obj.getJSONArray("w_");
+                    photo.url_w = (w.getString(0).contains("http") ? "" : base) + w.getString(0) + ".jpg";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return photos;
     }
 }

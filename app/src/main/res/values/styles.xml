@@ -9,6 +9,7 @@
         <item name="buttonBackground">@drawable/btn_blue_light_rounded</item>
         <item name="android:actionBarSize">48dp</item>
         <item name="android:windowBackground">@android:color/white</item>
+        <item name="contentBackground">@android:color/white</item>
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="navBackground">@drawable/bg_bottom_nav_light</item>
     </style>
@@ -28,6 +29,7 @@
         <item name="android:actionBarSize">48dp</item>
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="navBackground">@drawable/bg_bottom_nav_dark</item>
+        <item name="contentBackground">@color/colorDarkBackground</item>
     </style>
 
     <style name="MaterialListButtonBlue">
@@ -43,6 +45,13 @@
 
     <style name="Splash" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@drawable/bg_dialog</item>
     </style>
 
     <style name="AppTheme.Transparent" parent="AppTheme">

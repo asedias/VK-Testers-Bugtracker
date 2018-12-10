@@ -46,13 +46,23 @@ public class WebRequest<I> {
                         }
                     }
                 } catch (Exception e) {
-                    fragment.showError(e.fillInStackTrace());
+                    e.printStackTrace();
+                    if(fragment instanceof RecyclerFragment) {
+                        ((RecyclerFragment)fragment).showError(e.fillInStackTrace());
+                    } else {
+                        fragment.showError(e.fillInStackTrace());
+                    }
                     return;
                 }
                 fragment.showContent();
             }
             @Override public void onFailure(Call<I> call, Throwable t) {
-                fragment.showError(t);
+                t.printStackTrace();
+                if(fragment instanceof RecyclerFragment) {
+                    ((RecyclerFragment)fragment).showError(t);
+                } else {
+                    fragment.showError(t);
+                }
             }
         }, isAPI);
     }

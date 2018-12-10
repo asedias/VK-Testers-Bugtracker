@@ -19,6 +19,7 @@ import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.NotificationList;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
+import ru.asedias.vkbugtracker.ui.ImageGridParser;
 
 /**
  * Created by rorom on 12.11.2018.
@@ -32,9 +33,11 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
     private TextView comment;
     private LinearLayout attachments;
     public TextView date;
+    private LayoutInflater inflater;
 
     public CommentHolder(LayoutInflater inflater) {
         super(inflater.inflate(R.layout.report_comment, null, false));
+        this.inflater = inflater;
         this.photo = itemView.findViewById(R.id.photo);
         this.name = itemView.findViewById(R.id.title);
         this.meta = itemView.findViewById(R.id.meta);
@@ -76,6 +79,17 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
         } else {
             this.meta.setVisibility(View.GONE);
         }
-        this.attachments.setVisibility(View.GONE);
+        this.attachments.removeAllViews();
+        if(data.photos.size() > 0 || data.attachments.size() > 0) {
+            this.attachments.setVisibility(View.VISIBLE);
+            new ImageGridParser(data.photos, this.attachments, BugTrackerApp.mMetrics.widthPixels - BugTrackerApp.dp(96));
+            for(int i = 0; i < data.attachments.size(); i++) {
+                AttachmentHolder holder = new AttachmentHolder(inflater);
+                holder.bind(data.attachments.get(i));
+                this.attachments.addView(holder.itemView);
+            }
+        } else {
+            this.attachments.setVisibility(View.GONE);
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="primaryTextColor" format="color" />
+    <attr name="contentBackground" format="color" />
     <attr name="buttonBackground" format="reference" />
     <attr name="navBackground" format="reference" />
     <attr name="heightRatio" format="float" />

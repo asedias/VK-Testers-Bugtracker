@@ -16,6 +16,7 @@ import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.webmethods.GetProducts;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
+import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
 import ru.asedias.vkbugtracker.ui.adapters.ProductsAdapter;
 
@@ -26,17 +27,20 @@ import ru.asedias.vkbugtracker.ui.adapters.ProductsAdapter;
 public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
 
     private boolean all;
+    private boolean needUpdate;
 
     public ProductListFragment() {
         this.mAdapter = new ProductsAdapter();
         this.title = BugTrackerApp.String(R.string.prefs_products);
         this.setTitleNeeded = false;
+        this.needUpdate = ProductsData.getCacheData().getSize() == 0;
     }
 
     public static ProductListFragment newInstance(boolean all) {
         ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
         args.putBoolean("all", all);
+        args.putBoolean("root", false);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,6 +59,20 @@ public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
         if(this.getArguments() != null) {
             this.all = getArguments().getBoolean("all", false);
         }
-        return new GetProducts(this, this.all, data -> data);
+        if(this.all && !needUpdate) {
+            this.getAdapter().setData(ProductsData.getCacheData());
+            this.showContent();
+            return null;
+        }
+        return new GetProducts(this, this.all, data -> {
+            ProductsData.insertData(data.products);
+            return data;
+        });
+    }
+
+    @Override
+    public void onRefresh() {
+        this.needUpdate = true;
+        super.onRefresh();
     }
 }

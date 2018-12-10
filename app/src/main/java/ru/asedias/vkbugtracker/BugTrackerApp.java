@@ -15,10 +15,8 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
-import pl.droidsonroids.retrofit2.JspoonConverterFactory;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import ru.asedias.vkbugtracker.api.API;
+import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.ui.Fonts;
 
 /**
@@ -35,8 +33,7 @@ public class BugTrackerApp extends Application {
         super.onCreate();
         context = getApplicationContext();
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        new UserData(); new Fonts(); new API();
-        //new ThemeManager();
+        new UserData(); new Fonts(); new API(); new ThemeManager();
         Thread.setDefaultUncaughtExceptionHandler(new RestartExceptionHandler(BugTrackerApp.context));
     }
 

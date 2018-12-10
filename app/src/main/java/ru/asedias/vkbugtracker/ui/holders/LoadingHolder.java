@@ -14,7 +14,7 @@ import ru.asedias.vkbugtracker.fragments.RecyclerFragment;
  * Created by rorom on 20.11.2018.
  */
 
-public class LoadingHolder extends BindableHolder {
+public class LoadingHolder extends BindableHolder<Throwable> {
 
     public ProgressBar progress;
     public View error;
@@ -29,16 +29,16 @@ public class LoadingHolder extends BindableHolder {
         this.retry = itemView.findViewById(R.id.error_retry);
     }
 
-    public void showError(Throwable t) {
-        progress.setVisibility(View.INVISIBLE);
-        error.setVisibility(View.VISIBLE);
-        text.setText(t.getLocalizedMessage());
-    }
-
     @Override
-    public void bind(Object data) {
-        progress.setVisibility(View.VISIBLE);
-        error.setVisibility(View.INVISIBLE);
+    public void bind(Throwable t) {
+        if(t != null) {
+            progress.setVisibility(View.INVISIBLE);
+            error.setVisibility(View.VISIBLE);
+            text.setText(t.getLocalizedMessage());
+        } else {
+            progress.setVisibility(View.VISIBLE);
+            error.setVisibility(View.INVISIBLE);
+        }
         retry.setOnClickListener(v -> {
             RecyclerFragment recyclerFragment = (RecyclerFragment) ((MainActivity)itemView.getContext()).getFragmentManager().findFragmentById(R.id.appkit_content);
             recyclerFragment.loadMore(true);

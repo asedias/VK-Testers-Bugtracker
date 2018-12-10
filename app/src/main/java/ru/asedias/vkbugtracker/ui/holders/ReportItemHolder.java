@@ -12,7 +12,9 @@ import com.squareup.picasso.Picasso;
 import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.R;
+import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
+import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.fragments.TestFragment;
 import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
@@ -59,8 +61,9 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
                 .placeholder(BugTrackerApp.Drawable(R.drawable.placeholder_user))
                 .transform(new CropCircleTransformation())
                 .into(this.mAuthor);
+        ProductList.Product product = ProductsData.getProduct(report.product_id);
         Picasso.with(BugTrackerApp.context)
-                .load(report.product.photo)
+                .load(product.photo)
                 .placeholder(BugTrackerApp.Drawable(R.drawable.ic_doc_text))
                 .transform(new CropCircleTransformation())
                 .into(this.mProduct);

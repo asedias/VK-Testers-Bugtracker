@@ -1,8 +1,13 @@
 package ru.asedias.vkbugtracker;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import java.util.HashMap;
 
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
+import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -15,13 +20,16 @@ public class UserData {
     private static String accessToken;
     private static String name;
     private static String photo;
-    private static SharedPreferences preferences = BugTrackerApp.context.getSharedPreferences("user", 0);
+    public static boolean debugEnabled = false;
+    private static SharedPreferences user_prefs = BugTrackerApp.context.getSharedPreferences("user", 0);
+    private static SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BugTrackerApp.context);
 
     public UserData() {
-        accessToken = preferences.getString("access_token", "");
-        uid = Integer.parseInt(preferences.getString("user_id", "0"));
-        name = preferences.getString("user_name", "");
-        photo = preferences.getString("user_photo", "https://vk.com/images/camera_200.png");
+        accessToken = user_prefs.getString("access_token", "");
+        uid = Integer.parseInt(user_prefs.getString("user_id", "0"));
+        name = user_prefs.getString("user_name", "");
+        photo = user_prefs.getString("user_photo", "https://vk.com/images/camera_200.png");
+        debugEnabled = preferences.getBoolean("debug", false);
     }
 
     public static void updateUserData(UserInfo.User user) {
@@ -31,6 +39,7 @@ public class UserData {
         editor.putString("user_photo", user.getPhoto200());
         editor.putString("user_name", name);
         editor.apply();
+        BugTrackerApp.context.sendBroadcast(new Intent(Actions.ACTION_USER_UPDATED));
     }
 
     public static String getAccessToken() {

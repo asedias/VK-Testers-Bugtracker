@@ -66,7 +66,9 @@ public class LoaderFragment extends UICFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        this.request.cancel();
+        if(this.request != null) {
+            this.request.cancel();
+        }
     }
 
     @Override
@@ -87,7 +89,8 @@ public class LoaderFragment extends UICFragment {
     public void showContent() {
         this.mErrorView.setVisibility(View.GONE);
         this.mLoading.setVisibility(View.GONE);
-        this.mContent.setVisibility(View.VISIBLE);
+        this.mContent.setAlpha(1.0F);
+        //this.mContent.setVisibility(View.VISIBLE);
         this.mRequestDone = true;
         this.mRequestRunning = false;
         this.isRefreshing = false;
@@ -97,7 +100,8 @@ public class LoaderFragment extends UICFragment {
     protected void showProgress() {
         this.mErrorView.setVisibility(View.GONE);
         this.mLoading.setVisibility(View.VISIBLE);
-        this.mContent.setVisibility(View.GONE);
+        this.mContent.setAlpha(0.3F);
+        //this.mContent.setVisibility(View.GONE);
         this.mRequestDone = false;
         this.mRequestRunning = true;
         this.isRefreshing = false;
@@ -145,7 +149,8 @@ public class LoaderFragment extends UICFragment {
         this.mErrorView.findViewById(R.id.error_image).setVisibility(View.GONE);
         this.mErrorView.findViewById(R.id.error_retry).setVisibility(View.GONE);
         this.mLoading.setVisibility(View.GONE);
-        this.mContent.setVisibility(View.GONE);
+        this.mContent.setAlpha(0.3F);
+        //this.mContent.setVisibility(View.GONE);
         ((TextView)this.mErrorView.findViewById(R.id.error_text)).setText(R.string.empty);
         this.mRequestDone = true;
         this.mRequestRunning = false;
@@ -158,7 +163,8 @@ public class LoaderFragment extends UICFragment {
         this.mErrorView.findViewById(R.id.error_image).setVisibility(View.VISIBLE);
         this.mErrorView.findViewById(R.id.error_retry).setVisibility(View.VISIBLE);
         this.mLoading.setVisibility(View.GONE);
-        this.mContent.setVisibility(View.GONE);
+        this.mContent.setAlpha(0.3F);
+        //this.mContent.setVisibility(View.GONE);
         ((TextView)this.mErrorView.findViewById(R.id.error_text)).setText(text);
         this.mErrorView.findViewById(R.id.error_retry).setOnClickListener(v -> {
             reExecuteRequest();

@@ -40,7 +40,8 @@ public class ProductHolder extends BindableHolder<ProductList.Product> {
                 .placeholder(BugTrackerApp.Drawable(R.drawable.ic_detail))
                 .into(this.photo);
         setText(this.title, data.title);
-        setText(this.subtitle, data.subtitles.get(0));
+		if(data.subtitles.size() > 0) setText(this.subtitle, data.subtitles.get(0));
+		else this.subtitle.setVisibility(View.GONE);
         if(data.subtitles.size() > 1) setText(this.version, data.subtitles.get(1));
         else this.version.setVisibility(View.GONE);
     }

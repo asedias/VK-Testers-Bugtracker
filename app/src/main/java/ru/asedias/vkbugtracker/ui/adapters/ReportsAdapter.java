@@ -2,6 +2,7 @@ package ru.asedias.vkbugtracker.ui.adapters;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
+import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolderInterface;
 import ru.asedias.vkbugtracker.ui.holders.HeaderHolder;
@@ -20,18 +22,19 @@ import ru.asedias.vkbugtracker.ui.holders.ReportItemHolder;
  * Created by rorom on 20.10.2018.
  */
 
-public class ReportsAdapter extends DataAdapter<BindableHolder, ReportList> {
+public class ReportsAdapter extends DataAdapter<BindableHolder, ReportList> implements DividerItemDecoration.Provider {
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_REPORT = 1;
-    private static final int TYPE_LOADING = 2;
 
     public ReportsAdapter() {
+        super(true);
         this.data = new ReportList();
     }
 
     @Override
     public void addData(ReportList data) {
+        setError(null);
         data.reports.remove(0);
         this.data.reports.addAll(data.reports);
         notifyDataSetChanged();
@@ -43,12 +46,12 @@ public class ReportsAdapter extends DataAdapter<BindableHolder, ReportList> {
         super.onCreateViewHolder(parent, viewType);
         if(viewType == TYPE_HEADER) return new HeaderHolder(inflater);
         if(viewType == TYPE_REPORT) return new ReportItemHolder(inflater.inflate(R.layout.report_item, null, false), inflater);
-        return new LoadingHolder(inflater);
+        return super.onCreateViewHolder(parent, viewType);
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? TYPE_HEADER : position != getItemCount() - 1 ? TYPE_REPORT : TYPE_LOADING;
+        return position == 0 ? TYPE_HEADER : position != getItemCount() - 1 ? TYPE_REPORT : super.getItemViewType(position);
     }
 
     @Override
@@ -62,12 +65,23 @@ public class ReportsAdapter extends DataAdapter<BindableHolder, ReportList> {
                 holder.bind(data.reports.get(position-1));
                 break;
             default:
-                holder.bind(null);
+                super.onBindViewHolder(holder, position);
         }
     }
 
     @Override
     public int getItemCount() {
         return data.reports.size() > 0 ? data.reports.size() + 2 : 0;
+    }
+
+    @Override
+    public boolean needDrawDividerAfter(int var1) {
+        return getItemViewType(var1) == TYPE_REPORT;
+    }
+
+    @Nullable
+    @Override
+    public boolean needMarginBottom(int var1) {
+        return false;
     }
 }

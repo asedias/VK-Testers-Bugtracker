@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -26,13 +28,17 @@ import java.util.Stack;
 import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.R;
+import ru.asedias.vkbugtracker.SettingsActivity;
+import ru.asedias.vkbugtracker.ThemeManager;
 import ru.asedias.vkbugtracker.UserData;
 import ru.asedias.vkbugtracker.fragments.NotificationsFragment;
 import ru.asedias.vkbugtracker.fragments.ProductListFragment;
+import ru.asedias.vkbugtracker.fragments.ProductsFragment;
 import ru.asedias.vkbugtracker.fragments.RecyclerFragment;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
-import ru.asedias.vkbugtracker.fragments.TestFragment;
 import ru.asedias.vkbugtracker.fragments.UpdatesListFragment;
+
+import static ru.asedias.vkbugtracker.ThemeManager.currentTheme;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -47,9 +53,9 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
     private BottomNavigationViewEx bottomNavView;
     private AppBarLayout appbar;
     private FrameLayout searchView;
-    private HashMap<Integer, Stack<Fragment>> mStacks = new HashMap<>();
-    private List<String> queue = new ArrayList<>();
-    private int currentID = R.id.navigation_reports;
+    private static HashMap<Integer, Stack<Fragment>> mStacks;
+    private static List<String> queue;
+    private static int currentID;
     private int navIconRes = R.drawable.ic_logo;
     private View.OnClickListener navClick = v -> {
         if(navIconRes == R.drawable.ic_ab_back_arrow_dark) main.onBackPressed();
@@ -61,7 +67,9 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
         if (Build.VERSION.SDK_INT >= 21) {
             int visibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN + View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             if(Build.VERSION.SDK_INT >= 26) {
-                //visibility += View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                if(currentTheme == R.style.AppTheme) {
+                    visibility += View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+                }
                 Main.getWindow().setNavigationBarColor(BugTrackerApp.AttrColor(R.attr.colorPrimary));
             }
             Main.getWindow().getDecorView().setSystemUiVisibility(visibility);
@@ -85,10 +93,19 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
         this.bottomNavView.setTextTypeface(Fonts.Medium);
         this.bottomNavView.setOnNavigationItemSelectedListener(this);
         this.toolbar.setNavigationOnClickListener(navClick);
-        this.mStacks.put(R.id.navigation_reports, new Stack<Fragment>());
-        this.mStacks.put(R.id.navigation_products, new Stack<Fragment>());
-        this.mStacks.put(R.id.navigation_members, new Stack<Fragment>());
-        this.mStacks.put(R.id.navigation_updates, new Stack<Fragment>());
+        this.toolbar.getMenu().getItem(0).getActionView().setOnClickListener(v -> {
+            Main.startActivity(new Intent(Main, SettingsActivity.class));
+            //ThemeManager.changeTheme(Main);
+        });
+        if(mStacks == null) {
+            mStacks = new HashMap<>();
+            queue = new ArrayList<>();
+            currentID = R.id.navigation_reports;
+            mStacks.put(R.id.navigation_reports, new Stack<Fragment>());
+            mStacks.put(R.id.navigation_products, new Stack<Fragment>());
+            mStacks.put(R.id.navigation_members, new Stack<Fragment>());
+            mStacks.put(R.id.navigation_updates, new Stack<Fragment>());
+        }
         return this;
     }
 
@@ -101,15 +118,22 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
                 .into((ImageView) toolbar.getMenu().getItem(0).getActionView());
     }
 
+    public int getFragmentSize(int navID) {
+        if(mStacks.get(navID) != null) {
+            return mStacks.get(navID).size();
+        }
+        return 0;
+    }
+
     public boolean onBackPressed() {
         mStacks.get(currentID).pop();
-        if(mStacks.get(currentID).size() == 0) {
+        if(mStacks.get(currentID).empty()) {
             queue.remove(String.valueOf(currentID));
             if(queue.size() == 0) return false;
             currentID = Integer.valueOf(queue.get(queue.size()-1));
         }
         ShowFragment(mStacks.get(currentID).lastElement());
-        getBottomNavView().setSelectedItemId(currentID);
+        if(getBottomNavView().getSelectedItemId() != currentID) getBottomNavView().setSelectedItemId(currentID);
         return true;
     }
 
@@ -133,6 +157,11 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
     public void ShowNavLogo() {
         navIconRes = R.drawable.ic_logo;
         getToolbar().setNavigationIcon(navIconRes);
+    }
+
+
+    public void ShowTabBar() {
+        tabLayout.setVisibility(View.VISIBLE);
     }
 
     public void ShowTabBar(String... resids) {
@@ -219,7 +248,7 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
                 return true;
             }
             case R.id.navigation_products: {
-                ReplaceFragment(ProductListFragment.newInstance(true), item.getItemId());
+                ReplaceFragment(ProductsFragment.newInstance(), item.getItemId());
                 return true;
             }
             case R.id.navigation_members: {

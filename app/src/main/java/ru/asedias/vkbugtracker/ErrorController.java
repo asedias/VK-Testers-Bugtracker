@@ -1,9 +1,11 @@
 package ru.asedias.vkbugtracker;
 
-import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.support.v7.app.AlertDialog;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
@@ -18,6 +20,8 @@ import ru.asedias.vkbugtracker.api.API;
 import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 import ru.asedias.vkbugtracker.fragments.LoaderFragment;
+import ru.asedias.vkbugtracker.fragments.TabbedFragment;
+import ru.asedias.vkbugtracker.ui.MaterialDialogBuilder;
 
 import static ru.asedias.vkbugtracker.LoginActivity.getLoginURL;
 import static ru.asedias.vkbugtracker.api.API.Prefs;
@@ -33,14 +37,14 @@ public class ErrorController {
     private static WebView webView;
     private static TextView title;
     private static TextView description;
-
+    public static boolean running = false;
 
     public static void Setup(MainActivity main) {
         ErrorController.main = main;
     }
 
     public static void updateCookie() {
-        showDialog();
+        if(!running) showDialog();
     }
 
     private static View initializeDialogView() {
@@ -73,7 +77,16 @@ public class ErrorController {
                                 Prefs();
                                 UserData.updateUserData(user);
                                 if (dialog != null) dialog.cancel();
-                                ((LoaderFragment) main.getFragmentManager().findFragmentById(R.id.appkit_content)).reExecuteRequest();
+                                running = false;
+                                Fragment fragment = main.getFragmentManager().findFragmentById(R.id.appkit_content);
+                                if(fragment != null) {
+                                    if(fragment instanceof TabbedFragment) {
+                                        fragment = ((TabbedFragment)fragment).getCurrentFragment();
+                                    }
+                                    if(fragment instanceof LoaderFragment) {
+                                        ((LoaderFragment)fragment).reExecuteRequest();
+                                    }
+                                }
                             } catch (NullPointerException e) {
                             }
                         }
@@ -89,8 +102,9 @@ public class ErrorController {
     }
 
     private static void showDialog() {
+        running = true;
         main.runOnUiThread(() -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(main);
+            MaterialDialogBuilder builder = new MaterialDialogBuilder(main);
             builder.setCancelable(false);
             builder.setView(initializeDialogView());
             dialog = builder.show();

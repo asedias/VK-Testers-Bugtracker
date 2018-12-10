@@ -367,10 +367,10 @@ public class BottomNavigationViewEx extends BottomNavigationView {
                 // let the mLargeLabel font size equal to mSmallLabel
                 mLargeLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, mSmallLabelSize);
 
-                // debug start
+                // debugEnabled start
 //                mLargeLabelSize = mLargeLabel.getTextSize();
 //                System.out.println("mLargeLabel:" + mLargeLabelSize);
-                // debug end
+                // debugEnabled end
 
             } else {
                 // haven't change the value. It means it was the first call this method. So nothing need to do.

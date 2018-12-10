@@ -3,6 +3,7 @@ package ru.asedias.vkbugtracker.fragments;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.ui.adapters.DataAdapter;
+import ru.asedias.vkbugtracker.ui.holders.LoadingHolder;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -38,8 +40,28 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
         this.mSwipeRefresh = tempContent.findViewById(R.id.refresh_layout);
         this.mSwipeRefresh.setOnRefreshListener(this);
         this.mSwipeRefresh.setRefreshing(isRefreshing);
+        this.mSwipeRefresh.setEnabled(false);
         this.mList.setLayoutManager(getLayoutManager());
         this.mList.setAdapter(getAdapter());
+        if(canLoadMode()) {
+            mList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    int totalItemCount = mList.getLayoutManager().getItemCount();
+                    int lastVisibleItem = ((LinearLayoutManager)mList.getLayoutManager()).findLastVisibleItemPosition();
+                    int visibleThreshold = 5;
+                    if (!isLoadingMore && totalItemCount <= lastVisibleItem + visibleThreshold) {
+                        loadMore(true);
+                    }
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                }
+            });
+        }
         return tempContent;
     }
 
@@ -66,9 +88,33 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
     }
 
     @Override
+    public void showError(Throwable t) {
+        if (!canLoadMode()) {
+            super.showError(t);
+        } else {
+            if(getAdapter() instanceof DataAdapter && ((DataAdapter)getAdapter()).data.getSize() > 0
+                    && ((DataAdapter)getAdapter()).isLoadingAdapter) {
+                //int totalItemCount = mList.getLayoutManager().getItemCount();
+                //RecyclerView.ViewHolder holder = mList.findViewHolderForLayoutPosition(totalItemCount - 1);
+                //if(holder instanceof LoadingHolder) {
+                    this.mRequestDone = true;
+                    this.mRequestRunning = false;
+                    this.isRefreshing = false;
+                    this.isLoadingMore = false;
+                    //(LoadingHolder) holder).showError(t);
+                    ((DataAdapter)getAdapter()).setError(t);
+                    getAdapter().notifyDataSetChanged();
+                //} else {
+                    //super.showError(t);
+                //}
+            } else {
+                super.showError(t);
+            }
+        }
+    }
+
+    @Override
     public void showContent() {
-        isRefreshing = false;
-        this.mSwipeRefresh.setRefreshing(isRefreshing);
         if(getAdapter() instanceof DataAdapter) {
             if(((DataAdapter)getAdapter()).data.getSize() == 0) {
                 showEmptyText();
@@ -76,6 +122,15 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
             }
         }
         super.showContent();
+        this.mSwipeRefresh.setRefreshing(isRefreshing);
+        this.mSwipeRefresh.setEnabled(true);
+    }
+
+    @Override
+    public void reExecuteRequest() {
+        if(!canLoadMode()) showProgress();
+        this.request.cancel();
+        this.loadMore(false);
     }
 
     @Override

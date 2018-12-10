@@ -35,7 +35,6 @@ public class ReportList implements ListModel<ReportList.ReportItem> {
         @Selector(".bt_report_info_details") public String details;
         @Selector(value = ".bt_report_info_details > a", attr = "href", regex = "\\/bugtracker\\?act=reporter&id=([0-9]*)") public int uid;
         public UserInfo.User user = new UserInfo.User();
-        public ProductList.Product product = new ProductList.Product();
 
         public static class ReportTag {
             @Selector(".bt_tag_label") public String label;

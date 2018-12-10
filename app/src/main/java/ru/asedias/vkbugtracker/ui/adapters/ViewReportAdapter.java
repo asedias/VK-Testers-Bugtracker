@@ -60,7 +60,7 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
             case TYPE_FOOTER: return new FooterHolder(mInflater, getRid());
             case TYPE_DETAIL_PHOTO: return new DetailItemHolder(mInflater, 0);
             case TYPE_DETAIL_TEXT: return new DetailItemHolder(mInflater, 1);
-            case TYPE_SHOW_MORE: return new DetailItemHolder(mInflater, 2);
+            case TYPE_SHOW_MORE: return new DetailItemHolder(mInflater, data.details);
         }
         return new CommentHolder(mInflater);
     }

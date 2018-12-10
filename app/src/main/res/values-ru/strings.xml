@@ -8,7 +8,7 @@
     <string name="network_error_description">Проверьте подключение к Интернету и попробуйте еще раз.</string>
     <string name="try_again">Повторить попытку</string>
     <string name="all_reports">Все отчёты</string>
-    <string name="report_information">Подробности</string>
+    <string name="report_information">Подробности отчёта</string>
     <string name="addr_product">Продукт</string>
     <string name="addr_product_version">Версия продукта</string>
     <string name="title">Заголовок</string>
@@ -32,7 +32,7 @@
     <string name="prefs_members">Участники</string>
     <string name="prefs_updates">Обновления</string>
     <string name="prefs_about">О приложении</string>
-    <string name="prefs_logout">Выйти</string>
+    <string name="prefs_logout">Выйти из аккаунта</string>
     <string name="loading">Загрузка...</string>
     <string name="logout_description">При выходе с учетной записи из устройства будут удалены все связанные с ней данные. Продолжить?</string>
     <string name="add_report">Добавить отчёт</string>
@@ -66,4 +66,7 @@
     <string name="updating_cookies">Обновление данных авторизации</string>
     <string name="updating_user_info">Обновление информации об аккаунте</string>
     <string name="reproduced">Воспроизвелось</string>
+    <string name="all_products">Все продукты</string>
+    <string name="my_products">Мои продукты</string>
+    <string name="yes">Да</string>
 </resources>

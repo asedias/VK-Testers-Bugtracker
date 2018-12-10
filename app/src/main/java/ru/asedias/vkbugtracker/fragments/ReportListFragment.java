@@ -1,12 +1,12 @@
 package ru.asedias.vkbugtracker.fragments;
 
-import android.os.Build;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.asedias.vkbugtracker.Actions;
+import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
@@ -23,8 +25,9 @@ import ru.asedias.vkbugtracker.api.webmethods.GetProducts;
 import ru.asedias.vkbugtracker.api.webmethods.GetReportList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
+import ru.asedias.vkbugtracker.data.ProductsData;
+import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
 import ru.asedias.vkbugtracker.ui.adapters.ReportsAdapter;
-import ru.asedias.vkbugtracker.ui.holders.LoadingHolder;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -33,10 +36,31 @@ import ru.asedias.vkbugtracker.ui.holders.LoadingHolder;
 public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
 
     private int btUDate = 0;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(Actions.ACTION_PDB_UPDATED)) {
+                if(getAdapter() != null) {
+                    getAdapter().notifyDataSetChanged();
+                }
+            }
+        }
+    };
 
     public ReportListFragment() {
         this.mAdapter = new ReportsAdapter();
         this.setTitleNeeded = false;
+        this.canLoadMore = true;
+    }
+
+    @Override
+    protected View OnCreateContentView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View root = super.OnCreateContentView(inflater, container, savedInstanceState);
+        DividerItemDecoration decoration = new DividerItemDecoration(new ColorDrawable(637534208));
+        decoration.setProvider(getAdapter());
+        decoration.setPaddingLeft(BugTrackerApp.dp(64));
+        this.mList.addItemDecoration(decoration);
+        return root;
     }
 
     @Override
@@ -68,7 +92,7 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
                         }
                     }
                 }
-                getProducts();
+                getAdapter().notifyDataSetChanged();
             }
             @Override public void onFailure(Call<UserInfo> call, Throwable t) {
                 showError(t.getLocalizedMessage());
@@ -77,81 +101,24 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
         request.execute();
     }
 
-    private void getProducts() {
-        this.request = new GetProducts(true, new Callback<ProductList>() {
-            @Override
-            public void onResponse(Call<ProductList> call, Response<ProductList> response) {
-                ProductList data = response.body();
-                for(int i = 0; i < getAdapter().data.reports.size(); i++) {
-                    for (int i2 = 0; i2 < data.products.size(); i2++) {
-                        ReportList.ReportItem item = getAdapter().data.reports.get(i);
-                        ProductList.Product product = data.products.get(i2);
-                        if(item.product_id == product.id) {
-                            item.product = product;
-                            break;
-                        }
-                    }
-                }
-                getAdapter().notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<ProductList> call, Throwable t) {
-                showError(t.getLocalizedMessage());
-            }
-        });
-        this.request.execute();
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Actions.ACTION_PDB_UPDATED);
+        getActivity().registerReceiver(this.receiver, filter);
     }
 
     @Override
-    public boolean canLoadMode() { return true; }
+    public void onDetach() {
+        super.onDetach();
+        getActivity().unregisterReceiver(this.receiver);
+    }
 
     @Override
     public void onRefresh() {
         this.btUDate = 0;
         getAdapter().data = new ReportList();
         super.onRefresh();
-    }
-
-    @Override
-    protected View OnCreateContentView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View root = super.OnCreateContentView(inflater, container, savedInstanceState);
-        mList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                int totalItemCount = mList.getLayoutManager().getItemCount();
-                int lastVisibleItem = ((LinearLayoutManager)mList.getLayoutManager()).findLastVisibleItemPosition();
-                int visibleThreshold = 5;
-                if (!isLoadingMore && totalItemCount <= lastVisibleItem + visibleThreshold) {
-                    loadMore(true);
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-        return root;
-    }
-
-    @Override
-    public void showError(Throwable t) {
-        if (!canLoadMode()) {
-            super.showError(t);
-        } else {
-            if(getAdapter().data.reports.size() > 0) {
-                int totalItemCount = mList.getLayoutManager().getItemCount();
-                RecyclerView.ViewHolder holder = mList.findViewHolderForLayoutPosition(totalItemCount - 1);
-                if(holder instanceof LoadingHolder) {
-                    ((LoadingHolder) holder).showError(t);
-                } else {
-                    super.showError(t);
-                }
-                return;
-            }
-        }
-        super.showError(t);
     }
 }

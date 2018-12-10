@@ -65,7 +65,7 @@ public class Report {
         @Selector(".bt_report_cmt_author") public String author_name;
         @Selector(".bt_report_cmt_meta_row") public List<String> meta_content;
         @Selector(".bt_report_cmt_text") public String text;
-        @Selector(".page_doc_row") List<Attachment> attachments;
+        @Selector(".page_doc_row") public List<Attachment> attachments = new ArrayList<>();
         @Selector(".page_post_sized_thumbs > .page_post_thumb_wrap") public List<Photo> photos = new ArrayList<>();
         @Selector(".bt_report_cmt_date") public String date;
     }

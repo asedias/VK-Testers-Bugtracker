@@ -6,7 +6,7 @@
     <color name="blue_gray">#ff61768f</color>
     <color name="cool_blue">#4680c2</color>
     <color name="lighter_gray">#ddd</color>
-    <color name="darker_gray">#aaa</color>
+    <color name="darker_gray">#aaaaaa</color>
     <color name="light_blue">#e9eef3</color>
     <color name="dark_blue">#363738</color>
     <color name="light_gray">#aaaeb3</color>
@@ -14,7 +14,9 @@
     <color name="colorNavIconsLight">#95999b</color>
     <color name="colorIconsLight">#ff6c737a</color>
     <color name="colorPrimaryDark">#303030</color>
+    <color name="colorDarkBackground">#262626</color>
     <color name="bottom_divider">#a8acae</color>
     <color name="tag">#AAAAAA</color>
 	<color name="search">#1e000000</color>
+    <color name="thumb">#22000000</color>
 </resources>

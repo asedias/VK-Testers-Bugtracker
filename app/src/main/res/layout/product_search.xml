@@ -16,7 +16,7 @@
         app:srcCompat="@drawable/ic_search"
         app:tint="@color/colorIconsLight" />
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="37dp"
