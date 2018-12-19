@@ -9,6 +9,7 @@
     <color name="darker_gray">#aaaaaa</color>
     <color name="light_blue">#e9eef3</color>
     <color name="dark_blue">#363738</color>
+    <color name="detail_text">#ff6a6f75</color>
     <color name="light_gray">#aaaeb3</color>
     <color name="colorPrimaryLight">#ffffff</color>
     <color name="colorNavIconsLight">#95999b</color>

@@ -33,7 +33,7 @@
         android:layout_alignBottom="@+id/reproduce"
         android:layout_alignTop="@+id/reproduce"
         android:layout_toLeftOf="@+id/share"
-        android:background="?selectableItemBackground"
+        android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
         android:padding="15dp"
         app:srcCompat="@drawable/ic_like_outline_24dp" />
@@ -46,7 +46,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/reproduce"
         android:layout_marginLeft="4dp"
-        android:background="?selectableItemBackground"
+        android:background="?selectableItemBackgroundBorderless"
         android:clickable="true"
         android:padding="15dp"
         app:srcCompat="@drawable/ic_share_outline_24dp" />

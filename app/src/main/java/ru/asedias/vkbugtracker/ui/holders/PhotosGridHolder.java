@@ -11,6 +11,7 @@ import java.util.List;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.FlowLayout;
 import ru.asedias.vkbugtracker.ui.ImageGridParser;
+import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
 /**
  * Created by rorom on 11.11.2018.

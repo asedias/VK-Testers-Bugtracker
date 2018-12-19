@@ -26,6 +26,9 @@
     @retrofit2.http.* <methods>;
 }
 
+-keep public class pl.droidsonroids.jspoon.ElementConverter { *; }
+-keep public class ru.asedias.vkbugtracker.api.DescriptionConverter { *; }
+-keep public class ru.asedias.vkbugtracker.api.TextConverter { *; }
 -keep public class android.support.design.widget.BottomNavigationView { *; }
 -keep public class android.support.design.internal.BottomNavigationMenuView { *; }
 -keep public class android.support.design.internal.BottomNavigationPresenter { *; }

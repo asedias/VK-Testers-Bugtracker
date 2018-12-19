@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -26,16 +27,22 @@ public class ReportsAdapter extends DataAdapter<BindableHolder, ReportList> impl
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_REPORT = 1;
+    private boolean showProduct = true;
 
     public ReportsAdapter() {
         super(true);
         this.data = new ReportList();
     }
 
+    public void setShowProduct(boolean showProduct) {
+        this.showProduct = showProduct;
+    }
+
     @Override
     public void addData(ReportList data) {
         setError(null);
         data.reports.remove(0);
+        if(data.reports.size() == 0) isLoadingAdapter = false;
         this.data.reports.addAll(data.reports);
         notifyDataSetChanged();
     }
@@ -51,7 +58,19 @@ public class ReportsAdapter extends DataAdapter<BindableHolder, ReportList> impl
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? TYPE_HEADER : position != getItemCount() - 1 ? TYPE_REPORT : super.getItemViewType(position);
+        if(position == 0) {
+            return TYPE_HEADER;
+        } else {
+            if(isLoadingAdapter) {
+                if(position != getItemCount() - 1) {
+                    return TYPE_REPORT;
+                }
+            } else {
+                return TYPE_REPORT;
+            }
+        }
+        return super.getItemViewType(position);
+        //return position == 0 ? TYPE_HEADER : position != getItemCount() - 1 ? TYPE_REPORT : super.getItemViewType(position);
     }
 
     @Override
@@ -63,6 +82,7 @@ public class ReportsAdapter extends DataAdapter<BindableHolder, ReportList> impl
                 break;
             case TYPE_REPORT:
                 holder.bind(data.reports.get(position-1));
+                ((ReportItemHolder)holder).showProduct(this.showProduct);
                 break;
             default:
                 super.onBindViewHolder(holder, position);
@@ -71,7 +91,7 @@ public class ReportsAdapter extends DataAdapter<BindableHolder, ReportList> impl
 
     @Override
     public int getItemCount() {
-        return data.reports.size() > 0 ? data.reports.size() + 2 : 0;
+        return data.getSize() > 0 ? 1 + super.getItemCount() : 0;
     }
 
     @Override

@@ -1,20 +1,16 @@
 package ru.asedias.vkbugtracker.ui.adapters;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.R;
-import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 import ru.asedias.vkbugtracker.api.webmethods.models.UpdateList;
-import ru.asedias.vkbugtracker.ui.holders.CommentHolder;
+import ru.asedias.vkbugtracker.ui.holders.reportview.CommentHolder;
 
 /**
  * Created by rorom on 18.11.2018.
@@ -32,6 +28,8 @@ public class UpdatesAdapter extends DataAdapter<CommentHolder, UpdateList> {
     @Override
     public void onBindViewHolder(@NonNull CommentHolder holder, int position) {
         UpdateList.Update update = data.updates.get(position);
+        update.photos.clear();
+        update.attachments.clear();
         holder.bind(update);
         holder.date.setText("");
         for(int i = 0; i < update.info.size(); i++) {

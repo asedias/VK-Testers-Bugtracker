@@ -9,7 +9,7 @@ import android.view.View;
 
 public class BindableHolder<I> extends RecyclerView.ViewHolder implements BindableHolderInterface<I>, View.OnClickListener {
 
-    I data;
+    protected I data;
 
     public BindableHolder(View itemView) {
         super(itemView);
@@ -22,12 +22,5 @@ public class BindableHolder<I> extends RecyclerView.ViewHolder implements Bindab
     }
 
     @Override
-    public void click(View v) {
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        click(v);
-    }
+    public void onClick(View v) { }
 }

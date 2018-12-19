@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="24dp"
     android:layout_height="24dp"
-    android:background="@drawable/btn_blue_rounded"
+    android:background="@drawable/bg_reproduced"
     android:gravity="center"
     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
     android:textColor="@android:color/white"

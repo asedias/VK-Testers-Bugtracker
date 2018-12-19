@@ -47,6 +47,7 @@
     <string name="request_sent">Заявка отправлена</string>
     <string name="report">Отчёт</string>
     <string name="change_theme">Сменить тему</string>
+    <string name="dark_theme">Тёмная тема</string>
     <string name="show_more_info">Показать полностью</string>
     <string name="hide">Скрыть</string>
     <string name="action_settings">Настройки</string>
@@ -69,4 +70,11 @@
     <string name="all_products">Все продукты</string>
     <string name="my_products">Мои продукты</string>
     <string name="yes">Да</string>
+    <string name="crash">Информация о вылете</string>
+    <string name="general_settings">Основные</string>
+    <string name="account_settings">Аккаунт</string>
+    <string name="debug_switch">Включить debug</string>
+    <string name="restart_settings">Перезапустите приложение для применения изменений.</string>
+    <string name="versions">Версии</string>
+    <string name="branches">Ветки</string>
 </resources>

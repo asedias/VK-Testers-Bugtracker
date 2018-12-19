@@ -38,7 +38,7 @@ public class ImageGridParser {
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         rootLayoutWidth = metrics.widthPixels;
-        parse();
+        if(this.photos != null && this.photos.size() > 0) parse();
     }
 
     public ImageGridParser(List<Report.Photo> photos, ViewGroup root, int rootLayoutWidth) {
@@ -46,10 +46,7 @@ public class ImageGridParser {
         this.root = root;
         this.layout = new FlowLayout(BugTrackerApp.context);
         this.rootLayoutWidth = rootLayoutWidth;
-        if(BuildConfig.DEBUG) {
-            Log.i("ImageGrid", "Custom width: " + rootLayoutWidth);
-        }
-        parse();
+        if(this.photos != null && this.photos.size() > 0) parse();
     }
 
     private void parse() {

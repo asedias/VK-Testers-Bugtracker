@@ -11,12 +11,12 @@ import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
-import ru.asedias.vkbugtracker.ui.holders.AttachmentHolder;
-import ru.asedias.vkbugtracker.ui.holders.AuthorHolder;
+import ru.asedias.vkbugtracker.ui.holders.reportview.AttachmentHolder;
+import ru.asedias.vkbugtracker.ui.holders.reportview.AuthorHolder;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
-import ru.asedias.vkbugtracker.ui.holders.CommentHolder;
-import ru.asedias.vkbugtracker.ui.holders.DetailItemHolder;
-import ru.asedias.vkbugtracker.ui.holders.FooterHolder;
+import ru.asedias.vkbugtracker.ui.holders.reportview.CommentHolder;
+import ru.asedias.vkbugtracker.ui.holders.reportview.DetailItemHolder;
+import ru.asedias.vkbugtracker.ui.holders.reportview.FooterHolder;
 import ru.asedias.vkbugtracker.ui.holders.HeaderHolder;
 import ru.asedias.vkbugtracker.ui.holders.PhotosGridHolder;
 

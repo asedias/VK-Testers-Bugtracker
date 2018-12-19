@@ -1,47 +1,29 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="debug"
-        android:title="Enable debug" />
+    <PreferenceCategory
+        android:key="general_settings"
+        android:title="@string/general_info">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="debug"
+            android:title="@string/debug_switch" />
+    </PreferenceCategory>
 
-    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it. -->
-    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
-
-    <Preference
-        android:key="logout"
-        android:title="@string/prefs_logout" />
     <PreferenceCategory
         android:key="debug_settings"
-        android:title="Debug">
+        android:title="@string/debug_settings">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="dark_theme"
+            android:title="@string/dark_theme" />
+    </PreferenceCategory>
 
-        <EditTextPreference
-            android:inputType="number"
-            android:key="debug_report_id"
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="Report ID" />
-        <EditTextPreference
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:capitalize="words"
-            android:inputType="number"
-            android:key="debug_product_id"
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="Product ID" />
-        <EditTextPreference
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:key="debug_profile_id"
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="Profile ID" />
+    <PreferenceCategory
+        android:key="account_settings"
+        android:title="@string/account_settings">
+        <Preference
+            android:key="logout"
+            android:title="@string/prefs_logout" />
     </PreferenceCategory>
 
 </PreferenceScreen>

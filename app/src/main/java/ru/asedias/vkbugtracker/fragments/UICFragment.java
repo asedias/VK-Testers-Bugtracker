@@ -2,8 +2,10 @@ package ru.asedias.vkbugtracker.fragments;
 
 import android.app.Fragment;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.R;
@@ -19,7 +21,9 @@ public class UICFragment extends Fragment {
 
     protected UIController UIC;
     protected String title;
+    protected Drawable logo;
     protected boolean setTitleNeeded = true;
+    protected String subtitle;
     protected boolean top = false;
     protected boolean root = true;
     protected int catID = 0;
@@ -45,8 +49,10 @@ public class UICFragment extends Fragment {
 
     public void updateUIState() {
         UIC = ((MainActivity)getActivity()).getController();
+        UIC.getToolbar().setLogo(logo);
         if(catID != 0 && UIC.getBottomNavView().getSelectedItemId() != catID) UIC.getBottomNavView().setSelectedItemId(catID);
         UIC.getAppbar().setExpanded(true, true);
+        UIC.getToolbar().setSubtitle(subtitle);
         if(setTitleNeeded || !top) {
             UIC.HideSearch();
             UIC.getToolbar().setTitle(title);
@@ -60,12 +66,6 @@ public class UICFragment extends Fragment {
             UIC.ShowNavLogo();
         }
         getView().setBackgroundColor(currentBackground);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(root) updateUIState();
     }
 
     @Override

@@ -59,13 +59,12 @@ public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
         if(this.getArguments() != null) {
             this.all = getArguments().getBoolean("all", false);
         }
-        if(this.all && !needUpdate) {
-            this.getAdapter().setData(ProductsData.getCacheData());
+        if(!needUpdate) {
+            this.getAdapter().setData(ProductsData.getProducts(!all));
             this.showContent();
             return null;
         }
         return new GetProducts(this, this.all, data -> {
-            ProductsData.insertData(data.products);
             return data;
         });
     }

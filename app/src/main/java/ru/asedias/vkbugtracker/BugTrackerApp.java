@@ -16,7 +16,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import ru.asedias.vkbugtracker.api.API;
-import ru.asedias.vkbugtracker.data.ProductsData;
+import ru.asedias.vkbugtracker.data.UserData;
 import ru.asedias.vkbugtracker.ui.Fonts;
 
 /**

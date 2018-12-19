@@ -67,8 +67,7 @@ public class ThemeManager {
                             view.getId() == R.id.title_holder ||
                             view.getId() == R.id.profile_subtitle ||
                             view.getId() == R.id.tag ||
-                            view.getId() == R.id.time ||
-                            view.getId() == R.id.state;
+                            view.getId() == R.id.time;
             boolean change = view instanceof TextView && ((TextView)view).getCurrentTextColor() == currentTextColor;
             if(view instanceof TextView && change) {
                 ObjectAnimator anim = ObjectAnimator.ofInt((TextView)view, "textColor", currentTextColor, newTextColor);

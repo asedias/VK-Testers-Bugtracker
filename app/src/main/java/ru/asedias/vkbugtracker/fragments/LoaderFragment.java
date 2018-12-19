@@ -1,22 +1,17 @@
 package ru.asedias.vkbugtracker.fragments;
 
-import android.app.Fragment;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
 import ru.asedias.vkbugtracker.BuildConfig;
 import ru.asedias.vkbugtracker.R;
-import ru.asedias.vkbugtracker.UserData;
 import ru.asedias.vkbugtracker.api.WebRequest;
 
 /**
@@ -90,7 +85,6 @@ public class LoaderFragment extends UICFragment {
         this.mErrorView.setVisibility(View.GONE);
         this.mLoading.setVisibility(View.GONE);
         this.mContent.setAlpha(1.0F);
-        //this.mContent.setVisibility(View.VISIBLE);
         this.mRequestDone = true;
         this.mRequestRunning = false;
         this.isRefreshing = false;
@@ -176,16 +170,18 @@ public class LoaderFragment extends UICFragment {
     }
 
     public void loadMore(boolean isLoadingMore) {
-        this.isLoadingMore = isLoadingMore;
-        this.request = getRequest();
-        this.request.execute();
-        this.mRequestRunning = true;
+        if(!isRequestRunning()) {
+            this.isLoadingMore = isLoadingMore;
+            this.request = getRequest();
+            this.request.execute();
+            this.mRequestRunning = true;
+        }
     }
 
     public void reExecuteRequest() {
-        showProgress();
         this.request.cancel();
         this.loadMore(false);
+        showProgress();
     }
 
     public void executeRequestIfNeeded() {

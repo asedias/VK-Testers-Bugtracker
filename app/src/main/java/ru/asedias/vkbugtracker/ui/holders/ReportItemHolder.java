@@ -16,6 +16,7 @@ import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
 import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.fragments.TestFragment;
+import ru.asedias.vkbugtracker.fragments.ViewProductFragment;
 import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.FlowLayout;
@@ -30,7 +31,6 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
 
     public TextView mTitle;
     public TextView mTime;
-    public TextView mState;
     public ImageView mAuthor;
     public ImageView mProduct;
     public FlowLayout mTagsLayout;
@@ -42,7 +42,6 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
         this.mInflater = inflater;
         this.mTitle = itemView.findViewById(R.id.title);
         this.mTime = itemView.findViewById(R.id.time);
-        this.mState = itemView.findViewById(R.id.state);
         this.mTagsLayout = itemView.findViewById(R.id.tags_layout);
         this.mAuthor = itemView.findViewById(R.id.author);
         this.mProduct = itemView.findViewById(R.id.product);
@@ -55,18 +54,12 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
         super.bind(report);
         this.mTitle.setText(report.title);
         this.mTime.setText(report.details);
-        this.mState.setText(report.status);
         Picasso.with(BugTrackerApp.context)
                 .load(report.user.getPhoto200())
                 .placeholder(BugTrackerApp.Drawable(R.drawable.placeholder_user))
                 .transform(new CropCircleTransformation())
                 .into(this.mAuthor);
-        ProductList.Product product = ProductsData.getProduct(report.product_id);
-        Picasso.with(BugTrackerApp.context)
-                .load(product.photo)
-                .placeholder(BugTrackerApp.Drawable(R.drawable.ic_doc_text))
-                .transform(new CropCircleTransformation())
-                .into(this.mProduct);
+        this.mProduct.setOnClickListener(this);
         this.mTagsLayout.removeAllViews();
         float textPadding = BugTrackerApp.dp(24);
         float fullwidth = 0;
@@ -81,8 +74,27 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
         }
     }
 
+    public void showProduct(boolean show) {
+        if(show) {
+            this.mProduct.setVisibility(View.VISIBLE);
+            ProductList.Product product = ProductsData.getProduct(data.product_id);
+            Picasso.with(BugTrackerApp.context)
+                    .load(product.photo)
+                    .placeholder(BugTrackerApp.Drawable(R.drawable.ic_doc_text))
+                    .transform(new CropCircleTransformation())
+                    .into(this.mProduct);
+        } else {
+            this.mProduct.setVisibility(View.GONE);
+        }
+    }
+
     @Override
-    public void click(View v) {
+    public void onClick(View v) {
+        if(v.getId() == R.id.product) {
+            UIController uic = ((MainActivity)v.getContext()).getController();
+            uic.ReplaceFragment(ViewProductFragment.newInstance(data.product_id), 0);
+            return;
+        }
         UIController uic = ((MainActivity)v.getContext()).getController();
         uic.ReplaceFragment(ViewReportFragment.newInstance(data.id), 0);
     }

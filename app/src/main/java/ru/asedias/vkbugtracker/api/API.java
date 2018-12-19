@@ -28,6 +28,7 @@ import ru.asedias.vkbugtracker.BuildConfig;
 import ru.asedias.vkbugtracker.ErrorController;
 import ru.asedias.vkbugtracker.api.webmethods.models.NotificationList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
+import ru.asedias.vkbugtracker.api.webmethods.models.ProductInfo;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
 import ru.asedias.vkbugtracker.api.webmethods.models.TrackerMember;
@@ -100,6 +101,9 @@ public class API {
 
         @POST("feed")
         Call<NotificationList> GetNotification(@QueryMap Map<String, String> options);
+
+        @POST("bugtracker")
+        Call<ProductInfo> GetProductInfo(@QueryMap Map<String, String> options);
     }
 
     public class CookieInterceptor implements Interceptor {

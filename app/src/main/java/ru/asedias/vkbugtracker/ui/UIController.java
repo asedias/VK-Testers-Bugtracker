@@ -12,7 +12,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -29,10 +28,8 @@ import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.SettingsActivity;
-import ru.asedias.vkbugtracker.ThemeManager;
-import ru.asedias.vkbugtracker.UserData;
+import ru.asedias.vkbugtracker.data.UserData;
 import ru.asedias.vkbugtracker.fragments.NotificationsFragment;
-import ru.asedias.vkbugtracker.fragments.ProductListFragment;
 import ru.asedias.vkbugtracker.fragments.ProductsFragment;
 import ru.asedias.vkbugtracker.fragments.RecyclerFragment;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
@@ -133,7 +130,7 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
             currentID = Integer.valueOf(queue.get(queue.size()-1));
         }
         ShowFragment(mStacks.get(currentID).lastElement());
-        if(getBottomNavView().getSelectedItemId() != currentID) getBottomNavView().setSelectedItemId(currentID);
+        getBottomNavView().getMenu().findItem(currentID).setChecked(true);
         return true;
     }
 
@@ -244,7 +241,7 @@ public class UIController implements BottomNavigationView.OnNavigationItemSelect
         }
         switch (item.getItemId()) {
             case R.id.navigation_reports: {
-                ReplaceFragment(new ReportListFragment(), item.getItemId());
+                ReplaceFragment(ReportListFragment.newInstance(), item.getItemId());
                 return true;
             }
             case R.id.navigation_products: {

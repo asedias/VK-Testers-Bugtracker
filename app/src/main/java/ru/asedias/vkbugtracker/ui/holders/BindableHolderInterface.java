@@ -9,5 +9,5 @@ import android.view.View;
 
 public interface BindableHolderInterface<I> {
     void bind(I data);
-    void click(View v);
+    void onClick(View v);
 }

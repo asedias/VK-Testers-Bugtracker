@@ -4,17 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,8 +16,10 @@ import retrofit2.Response;
 import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 import ru.asedias.vkbugtracker.data.ProductsData;
+import ru.asedias.vkbugtracker.data.UserData;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
 import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
+import ru.asedias.vkbugtracker.ui.MaterialDialogBuilder;
 import ru.asedias.vkbugtracker.ui.UIController;
 
 import static ru.asedias.vkbugtracker.ThemeManager.currentTheme;
@@ -31,14 +27,15 @@ import static ru.asedias.vkbugtracker.api.API.Prefs;
 
 public class MainActivity extends AppCompatActivity {
 
-    UIController controller;private BroadcastReceiver receiver = new BroadcastReceiver() {
+    UIController controller;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(Actions.ACTION_USER_UPDATED)) {
                 controller.LoadUserPhoto();
             }
             if(intent.getAction().equals(Actions.ACTION_COOKIE_UPDATED)) {
-                ProductsData.updateProducts();
+                ProductsData.updateProducts(false);
             }
         }
     };
@@ -53,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
-        ProductsData.updateProducts();
         ErrorController.Setup(this);
         setContentView(R.layout.activity_main);
         this.controller = new UIController().Setup(this);
@@ -76,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean handleIntent(Intent intent) {
         String appLinkAction = intent.getAction();
         Uri appLinkData = intent.getData();
-        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null){
+        if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
             String url = appLinkData.toString();
             if(url.contains("act=show&id=")) {
                 String id = url.replaceAll("https:\\/\\/vk\\.com\\/bugtracker\\?act=show&id=([0-9]*)", "$1");
@@ -125,13 +121,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showCrashLog() {
-        AlertDialog.Builder var1 = new AlertDialog.Builder(this);
-        var1.setTitle("Crash Log");
+        MaterialDialogBuilder var1 = new MaterialDialogBuilder(this);
+        var1.setTitle(R.string.crash);
         var1.setMessage(this.getIntent().getStringExtra("crash_info"));
-        var1.setPositiveButton("COPY", (var11, var2) -> {
+        var1.setPositiveButton(android.R.string.copy, (var11, var2) -> {
             ((ClipboardManager)getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("crash", getIntent().getStringExtra("crash_info")));
             var11.dismiss();
         });
+        var1.setPositiveWarning(false);
         var1.setOnDismissListener(dialog -> controller.ReplaceFragment(new ReportListFragment(), R.id.navigation_reports));
         var1.show();
     }

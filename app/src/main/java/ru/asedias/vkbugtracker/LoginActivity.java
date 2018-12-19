@@ -19,6 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
+import ru.asedias.vkbugtracker.data.UserData;
 
 import static ru.asedias.vkbugtracker.api.API.Prefs;
 

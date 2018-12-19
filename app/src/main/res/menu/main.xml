@@ -5,5 +5,5 @@
         android:id="@+id/user"
         android:title="@string/title_home"
         app:showAsAction="always"
-        app:actionLayout="@layout/icon_toolbar"/>
+        app:actionLayout="@layout/appkit_toolbar_icon"/>
 </menu>

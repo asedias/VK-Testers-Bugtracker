@@ -1,4 +1,4 @@
-package ru.asedias.vkbugtracker.ui.holders;
+package ru.asedias.vkbugtracker.ui.holders.reportview;
 
 import android.content.res.ColorStateList;
 import android.support.v4.widget.ImageViewCompat;
@@ -20,9 +20,11 @@ import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.fragments.ReportDetailsFragment;
+import ru.asedias.vkbugtracker.fragments.ViewProductFragment;
 import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.UIController;
+import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
 /**
  * Created by rorom on 11.11.2018.
@@ -35,7 +37,7 @@ public class DetailItemHolder extends BindableHolder<Report.Detail> {
     private TextView description;
     private ImageView photo;
     private int type;
-    private List<Report.Detail> data;
+    private List<Report.Detail> detail;
 
     public DetailItemHolder(LayoutInflater inflater, int type) {
         super(inflater.inflate(R.layout.report_detail_item, null, false));
@@ -46,10 +48,10 @@ public class DetailItemHolder extends BindableHolder<Report.Detail> {
         this.description = itemView.findViewById(R.id.description);
     }
 
-    public DetailItemHolder(LayoutInflater inflater, List<Report.Detail> data) {
+    public DetailItemHolder(LayoutInflater inflater, List<Report.Detail>detail) {
         super(inflater.inflate(R.layout.report_detail_item, null, false));
-        this.data = data;
-        this.type = 2;
+        this.detail = detail;
+        this.type = Integer.MAX_VALUE;
         this.icon = itemView.findViewById(R.id.icon);
         this.photo = itemView.findViewById(R.id.photo);
         this.title = itemView.findViewById(R.id.text);
@@ -93,10 +95,14 @@ public class DetailItemHolder extends BindableHolder<Report.Detail> {
     }
 
     @Override
-    public void click(View v) {
-        if(type == 2) {
+    public void onClick(View v) {
+        if(type == 0) {
             UIController uic = ((MainActivity)v.getContext()).getController();
-            uic.ReplaceFragment(new ReportDetailsFragment().setDetails(data), 0);
+            uic.ReplaceFragment(ViewProductFragment.newInstance(ProductsData.getProductByName(data.description).id), 0);
+        }
+        if(type == Integer.MAX_VALUE) {
+            UIController uic = ((MainActivity)v.getContext()).getController();
+            uic.ReplaceFragment(new ReportDetailsFragment().setDetails(detail), 0);
         }
     }
 }

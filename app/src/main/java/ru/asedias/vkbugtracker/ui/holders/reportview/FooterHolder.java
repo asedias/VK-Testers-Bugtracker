@@ -1,4 +1,4 @@
-package ru.asedias.vkbugtracker.ui.holders;
+package ru.asedias.vkbugtracker.ui.holders.reportview;
 
 import android.content.Intent;
 import android.util.Log;
@@ -16,6 +16,7 @@ import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.OverlayCircleTranformation;
+import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
 /**
  * Created by rorom on 11.11.2018.

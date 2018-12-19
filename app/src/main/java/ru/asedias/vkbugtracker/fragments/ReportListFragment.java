@@ -1,15 +1,22 @@
 package ru.asedias.vkbugtracker.fragments;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -18,16 +25,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.asedias.vkbugtracker.Actions;
 import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 import ru.asedias.vkbugtracker.api.webmethods.GetProducts;
 import ru.asedias.vkbugtracker.api.webmethods.GetReportList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
+import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
 import ru.asedias.vkbugtracker.data.ProductsData;
+import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
 import ru.asedias.vkbugtracker.ui.adapters.ReportsAdapter;
+import ru.asedias.vkbugtracker.ui.holders.reportview.AttachmentHolder;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -36,6 +47,10 @@ import ru.asedias.vkbugtracker.ui.adapters.ReportsAdapter;
 public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
 
     private int btUDate = 0;
+    private int pid = 0;
+    private int uid = 0;
+    private String status = "100";
+    private int version = 0;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -46,11 +61,52 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
             }
         }
     };
+    private AttachmentHolder toolbarViewHolder;
+
+    public static ReportListFragment newInstance() {
+        ReportListFragment fr = new ReportListFragment();
+        Bundle args = new Bundle();
+        fr.setArguments(args);
+        return fr;
+    }
+
+    public static ReportListFragment newInstance(int uid, int pid, String status, int version) {
+        ReportListFragment fr = new ReportListFragment();
+        Bundle args = new Bundle();
+        args.putInt("mid", uid);
+        args.putInt("pid", pid);
+        args.putString("status", status);
+        args.putInt("version", version);
+        fr.setArguments(args);
+        return fr;
+    }
 
     public ReportListFragment() {
         this.mAdapter = new ReportsAdapter();
-        this.setTitleNeeded = false;
         this.canLoadMore = true;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.setTitleNeeded = !this.top;
+        this.uid = getArguments().getInt("mid");
+        this.pid = getArguments().getInt("pid");
+        this.status = getArguments().getString("status", "100");
+        this.version = getArguments().getInt("version");
+        if(pid > 0) {
+            getAdapter().setShowProduct(false);
+            ProductList.Product product = ProductsData.getProduct(pid);
+            toolbarViewHolder = new AttachmentHolder(R.layout.appkit_toolbar_view, getActivity().getLayoutInflater());
+            toolbarViewHolder.title.setText(product.title);
+            toolbarViewHolder.subtitle.setText(R.string.title_dashboard);
+            UIC.getToolbar().addView(toolbarViewHolder.itemView);
+            Picasso.with(getActivity())
+                    .load(product.photo)
+                    .placeholder(BugTrackerApp.Drawable(R.drawable.placeholder_users))
+                    .transform(new CropCircleTransformation())
+                    .into(toolbarViewHolder.icon);
+        }
     }
 
     @Override
@@ -65,21 +121,25 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
 
     @Override
     public WebRequest getRequest() {
-        return new GetReportList(this, 0, btUDate, false, body -> {
+        return new GetReportList(this, btUDate, false, body -> {
+            if(this.btUDate == 0) getAdapter().setData(new ReportList());
             this.btUDate = Integer.parseInt(body.btUDate.get(body.btUDate.size() - 1));
+            if(this.pid > 0) for(ReportList.ReportItem report : body.reports) report.product_id = this.pid;
             if(body.reports.size() > 0) {
                 getUsers(body);
+            } else if(body.reports.size() == 1) {
+                this.canLoadMore = false;
             }
             return body;
-        });
+        }).setUid(this.uid).setStatus(this.status).setProduct(this.pid).setVersion(this.version);
     }
 
     private void getUsers(ReportList data) {
-        String ids = "";
+        StringBuilder ids = new StringBuilder();
         for(int i = 0; i < data.reports.size(); i++) {
-            ids+=data.reports.get(i).uid + ", ";
+            ids.append(data.reports.get(i).uid).append(", ");
         }
-        request = new GetUserInfo(ids, new Callback<UserInfo>() {
+        new GetUserInfo(ids.toString(), new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 List<UserInfo.User> users = response.body().getResponse();
@@ -97,8 +157,7 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
             @Override public void onFailure(Call<UserInfo> call, Throwable t) {
                 showError(t.getLocalizedMessage());
             }
-        });
-        request.execute();
+        }).execute();
     }
 
     @Override
@@ -113,12 +172,14 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
     public void onDetach() {
         super.onDetach();
         getActivity().unregisterReceiver(this.receiver);
+        if(toolbarViewHolder != null) UIC.getToolbar().removeView(toolbarViewHolder.itemView);
     }
 
     @Override
     public void onRefresh() {
         this.btUDate = 0;
-        getAdapter().data = new ReportList();
+        this.canLoadMore = true;
+        this.mAdapter.isLoadingAdapter = true;
         super.onRefresh();
     }
 }

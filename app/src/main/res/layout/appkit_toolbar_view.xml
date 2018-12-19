@@ -9,25 +9,21 @@
 
     <ImageView
         android:id="@+id/photo"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:minHeight="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
         app:srcCompat="@drawable/ic_doc" />
 
     <ru.asedias.vkbugtracker.ui.text.MediumTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/photo"
         android:layout_toRightOf="@+id/photo"
         android:singleLine="true"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/colorPrimary"
+        android:textColor="?attr/primaryTextColor"
         android:textSize="16sp"
         tools:text="archive.zip" />
 
@@ -36,12 +32,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
-        android:layout_marginBottom="8dp"
         android:layout_toRightOf="@+id/photo"
         android:singleLine="true"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/darker_gray"
         android:textSize="14sp"
         tools:text="6 KB" />
 

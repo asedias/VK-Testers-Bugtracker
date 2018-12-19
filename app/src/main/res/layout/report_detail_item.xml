@@ -36,7 +36,7 @@
         android:paddingRight="16.0dip"
         android:paddingTop="8.0dip"
         android:text="9000 friends"
-        android:textColor="#ff6a6f75"
+        android:textColor="@color/detail_text"
         android:textSize="14.0dip" />
 
     <TextView
@@ -54,7 +54,7 @@
         android:paddingBottom="8.0dip"
         android:paddingTop="8.0dip"
         android:text="5.6 2032"
-        android:textColor="#ff6a6f75"
+        android:textColor="@color/detail_text"
         android:textSize="14.0dip" />
 
     <ImageView

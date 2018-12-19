@@ -115,22 +115,23 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
 
     @Override
     public void showContent() {
+        this.isRefreshing = false;
+        this.mSwipeRefresh.setRefreshing(isRefreshing);
         if(getAdapter() instanceof DataAdapter) {
             if(((DataAdapter)getAdapter()).data.getSize() == 0) {
                 showEmptyText();
                 return;
             }
         }
-        super.showContent();
-        this.mSwipeRefresh.setRefreshing(isRefreshing);
         this.mSwipeRefresh.setEnabled(true);
+        super.showContent();
     }
 
     @Override
     public void reExecuteRequest() {
-        if(!canLoadMode()) showProgress();
         this.request.cancel();
         this.loadMore(false);
+        if(!canLoadMode()) showProgress();
     }
 
     @Override
@@ -139,6 +140,7 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
         if(!isRequestRunning()) {
             this.request = getRequest();
             if (request != null) {
+                mRequestRunning = true;
                 request.execute();
             }
         }

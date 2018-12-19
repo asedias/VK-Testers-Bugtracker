@@ -48,6 +48,7 @@
     <string name="request_sent">Request sent</string>
     <string name="report">Report</string>
     <string name="change_theme">Change theme</string>
+    <string name="dark_theme">Dark theme</string>
     <string name="show_more_info">Show more info</string>
     <string name="hide">Hide</string>
     <string name="add_comment_hint">Your comment</string>
@@ -73,4 +74,12 @@
     <string name="all_products">All products</string>
     <string name="my_products">My products</string>
     <string name="yes">Yes</string>
+    <string name="crash">Crash info</string>
+    <string name="general_settings">General</string>
+    <string name="account_settings">Account</string>
+    <string name="debug_settings" translatable="false">Debug</string>
+    <string name="debug_switch">Enable debug</string>
+    <string name="restart_settings">You need to restart the application to apply changes.</string>
+    <string name="versions">Versions</string>
+    <string name="branches">Branches</string>
 </resources>

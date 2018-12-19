@@ -1,7 +1,9 @@
-package ru.asedias.vkbugtracker.ui.holders;
+package ru.asedias.vkbugtracker.ui.holders.reportview;
 
+import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
@@ -12,14 +14,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.R;
-import ru.asedias.vkbugtracker.api.webmethods.models.NotificationList;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.ImageGridParser;
+import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
 /**
  * Created by rorom on 12.11.2018.
@@ -54,8 +54,9 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
                 .transform(new CropCircleTransformation())
                 .into(this.photo);
         this.name.setText(data.author_name);
+        this.comment.setMovementMethod(LinkMovementMethod.getInstance());
         if(data.text.length() > 0) {
-            this.comment.setText(data.text);
+            this.comment.setText(Html.fromHtml(data.text));
             this.comment.setVisibility(View.VISIBLE);
         } else {
             this.comment.setVisibility(View.GONE);

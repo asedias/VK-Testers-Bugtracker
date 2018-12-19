@@ -1,13 +1,12 @@
-package ru.asedias.vkbugtracker;
+package ru.asedias.vkbugtracker.data;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import java.util.HashMap;
-
+import ru.asedias.vkbugtracker.Actions;
+import ru.asedias.vkbugtracker.BugTrackerApp;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
-import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 
 /**
  * Created by rorom on 20.10.2018.

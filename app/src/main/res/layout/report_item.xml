@@ -15,14 +15,29 @@
         android:layout_marginLeft="16dp"
         app:srcCompat="@drawable/placeholder_user" />
 
-    <ImageView
-        android:id="@+id/product"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/title"
-        android:layout_alignTop="@+id/tags_layout"
-        android:layout_marginRight="8dp"
-        app:srcCompat="@drawable/ic_doc_text" />
+        android:layout_below="@+id/time"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/product"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginRight="8dp"
+            app:srcCompat="@drawable/ic_doc_text" />
+
+        <ru.asedias.vkbugtracker.ui.FlowLayout
+            android:id="@+id/tags_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="28dp"/>
+    </LinearLayout>
 
     <ru.asedias.vkbugtracker.ui.text.MediumTextView
         android:id="@+id/title"
@@ -48,31 +63,5 @@
         android:textColor="@color/darker_gray"
         android:textSize="12sp"
         tools:text="today at 12:09 am" />
-
-    <ru.asedias.vkbugtracker.ui.FlowLayout
-        android:id="@+id/tags_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/time"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_toRightOf="@+id/product"
-        android:minHeight="30dp"
-        android:orientation="horizontal">
-
-    </ru.asedias.vkbugtracker.ui.FlowLayout>
-
-    <ru.asedias.vkbugtracker.ui.text.RegularTextView
-        android:id="@+id/state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/tags_layout"
-        android:layout_marginRight="@dimen/text_margin"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        android:textColor="@color/darker_gray"
-        android:textSize="12sp"
-        android:visibility="gone"
-        tools:text="open" />
 
 </RelativeLayout>

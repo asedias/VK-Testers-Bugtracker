@@ -1,27 +1,22 @@
 package ru.asedias.vkbugtracker;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextThemeWrapper;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import ru.asedias.vkbugtracker.data.ProductsData;
+import ru.asedias.vkbugtracker.data.UserData;
 import ru.asedias.vkbugtracker.ui.BottomNavigationViewEx;
 import ru.asedias.vkbugtracker.ui.MaterialDialogBuilder;
 
@@ -68,9 +63,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         setContentView(root);
         addPreferencesFromResource(R.xml.pref_general);
 
-        Preference debug = getPreferenceScreen().findPreference("debug_settings");
-        if(!UserData.debugEnabled) getPreferenceScreen().removePreference(debug);
+        getPreferenceScreen().findPreference("dark_theme").setOnPreferenceChangeListener((preference, newValue) -> {
+            int newTheme = (Boolean)newValue ? R.style.AppTheme_Dark : R.style.AppTheme;
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("currentTheme", newTheme).apply();
+            Toast.makeText(this, R.string.restart_settings, Toast.LENGTH_SHORT).show();
+            return true;
+        });
 
+        Preference debug = getPreferenceScreen().findPreference("debug_settings");
         getPreferenceScreen().findPreference("debug").setOnPreferenceChangeListener((preference, newValue) -> {
             UserData.debugEnabled = (Boolean)newValue;
             if(!UserData.debugEnabled) {
@@ -81,6 +81,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             ((BaseAdapter)getPreferenceScreen().getRootAdapter()).notifyDataSetChanged();
             return true;
         });
+
+        if(!UserData.debugEnabled) getPreferenceScreen().removePreference(debug);
+
         getPreferenceScreen().findPreference("logout").setOnPreferenceClickListener(preference -> {
             MaterialDialogBuilder builder = new MaterialDialogBuilder(this);
             builder.setTitle(R.string.prefs_logout);

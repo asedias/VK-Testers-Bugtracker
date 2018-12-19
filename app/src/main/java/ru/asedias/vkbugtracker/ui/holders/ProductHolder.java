@@ -8,9 +8,12 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
+import ru.asedias.vkbugtracker.fragments.ViewProductFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
+import ru.asedias.vkbugtracker.ui.UIController;
 
 /**
  * Created by rorom on 17.11.2018.
@@ -53,5 +56,11 @@ public class ProductHolder extends BindableHolder<ProductList.Product> {
         } else {
             textView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        UIController uic = ((MainActivity)v.getContext()).getController();
+        uic.ReplaceFragment(ViewProductFragment.newInstance(data.id), 0);
     }
 }

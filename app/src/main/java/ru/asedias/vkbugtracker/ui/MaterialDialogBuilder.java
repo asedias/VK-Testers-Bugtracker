@@ -19,8 +19,19 @@ import ru.asedias.vkbugtracker.R;
 
 public class MaterialDialogBuilder extends AlertDialog.Builder {
 
+    private boolean isPositiveWarning = true;
+    private int lineSpacing = BugTrackerApp.dp(4);
+
     public MaterialDialogBuilder(@NonNull Context context) {
         super(context, R.style.AppTheme_Dialog);
+    }
+
+    public void setPositiveWarning(boolean warning) {
+        this.isPositiveWarning = warning;
+    }
+
+    public void setMessageLineSpacing(int spacing) {
+        this.lineSpacing = spacing;
     }
 
     @Override
@@ -30,24 +41,19 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = BugTrackerApp.mMetrics.widthPixels - BugTrackerApp.dp(48);
         dialog.getWindow().setAttributes(lp);
-
-        setupButton(dialog.getButton(DialogInterface.BUTTON_POSITIVE), R.drawable.btn_dialog_positive);
+        setupButton(dialog.getButton(DialogInterface.BUTTON_POSITIVE), isPositiveWarning ? R.drawable.btn_dialog_positive : R.drawable.btn_dialog_default);
         setupButton(dialog.getButton(DialogInterface.BUTTON_NEGATIVE), R.drawable.btn_dialog_default);
         setupButton(dialog.getButton(DialogInterface.BUTTON_NEUTRAL), R.drawable.btn_dialog_default);
 
         TextView message = dialog.findViewById(android.R.id.message);
         if(message != null) {
             message.setTextColor(BugTrackerApp.Color(android.R.color.darker_gray));
-            message.setLineSpacing(BugTrackerApp.dp(4), 1.0F);
+            message.setLineSpacing(lineSpacing, 1.0F);
         }
 
         ViewGroup buttonsWrap = ((ViewGroup)dialog.getButton(DialogInterface.BUTTON_NEGATIVE).getParent());
         if(buttonsWrap != null) {
-            ViewGroup.MarginLayoutParams lp2 = (ViewGroup.MarginLayoutParams) buttonsWrap.getLayoutParams();
-            lp2.topMargin = BugTrackerApp.dp(16);
-            lp2.bottomMargin = BugTrackerApp.dp(8);
-            lp2.rightMargin = BugTrackerApp.dp(8);
-            lp2.leftMargin = BugTrackerApp.dp(8);
+            buttonsWrap.setPadding(BugTrackerApp.dp(16), BugTrackerApp.dp(16), BugTrackerApp.dp(16), BugTrackerApp.dp(8));
         }
         return dialog;
     }
@@ -58,6 +64,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
             button.setBackgroundDrawable(BugTrackerApp.Drawable(BGID));
             button.setAllCaps(false);
             button.setTextSize(14);
+            button.setPadding(BugTrackerApp.dp(16), 0, BugTrackerApp.dp(16), 0);
             button.setMinimumWidth(BugTrackerApp.dp(88));
             ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) button.getLayoutParams();
             lp.height = BugTrackerApp.dp(36);

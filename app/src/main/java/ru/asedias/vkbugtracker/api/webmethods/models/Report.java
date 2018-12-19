@@ -1,9 +1,13 @@
 package ru.asedias.vkbugtracker.api.webmethods.models;
 
+import android.text.SpannableStringBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pl.droidsonroids.jspoon.annotation.Selector;
+import ru.asedias.vkbugtracker.api.DescriptionConverter;
+import ru.asedias.vkbugtracker.api.TextConverter;
 
 /**
  * Created by rorom on 08.11.2018.
@@ -12,7 +16,7 @@ import pl.droidsonroids.jspoon.annotation.Selector;
 public class Report {
     @Selector(".bt_report_one_author") public Author author;
     @Selector(".bt_report_one_title") public String title;
-    @Selector(".bt_report_one_descr") public String description;
+    @Selector(value = ".bt_report_one_descr", converter = DescriptionConverter.class) public SpannableStringBuilder description;
     @Selector(".bt_report_footer") public Footer footer;
     @Selector(".bt_report_one_attachs > .wall_module > .media_desc > .page_doc_row") public List<Attachment> attachments = new ArrayList<>();
     @Selector(".bt_report_one_attachs > .wall_module > .page_post_sized_thumbs > .page_post_thumb_wrap") public List<Photo> photos = new ArrayList<>();
@@ -64,7 +68,7 @@ public class Report {
         @Selector(value = ".bt_report_cmt_img", attr="src") public String author_photo;
         @Selector(".bt_report_cmt_author") public String author_name;
         @Selector(".bt_report_cmt_meta_row") public List<String> meta_content;
-        @Selector(".bt_report_cmt_text") public String text;
+        @Selector(value = ".bt_report_cmt_text", converter = TextConverter.class) public String text;
         @Selector(".page_doc_row") public List<Attachment> attachments = new ArrayList<>();
         @Selector(".page_post_sized_thumbs > .page_post_thumb_wrap") public List<Photo> photos = new ArrayList<>();
         @Selector(".bt_report_cmt_date") public String date;
