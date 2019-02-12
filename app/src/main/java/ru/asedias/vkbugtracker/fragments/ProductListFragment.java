@@ -7,15 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.webmethods.GetProducts;
-import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
-import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
 import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
 import ru.asedias.vkbugtracker.ui.adapters.ProductsAdapter;
@@ -31,7 +26,7 @@ public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
 
     public ProductListFragment() {
         this.mAdapter = new ProductsAdapter();
-        this.title = BugTrackerApp.String(R.string.prefs_products);
+        this.title = BTApp.String(R.string.prefs_products);
         this.setTitleNeeded = false;
         this.needUpdate = ProductsData.getCacheData().getSize() == 0;
     }
@@ -49,7 +44,7 @@ public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
     protected View OnCreateContentView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = super.OnCreateContentView(inflater, container, savedInstanceState);
         DividerItemDecoration decoration = new DividerItemDecoration(new ColorDrawable(637534208));
-        decoration.setPaddingLeft(BugTrackerApp.dp(80));
+        decoration.setPaddingLeft(BTApp.dp(80));
         this.mList.addItemDecoration(decoration);
         return root;
     }

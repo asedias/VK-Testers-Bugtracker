@@ -1,14 +1,10 @@
 package ru.asedias.vkbugtracker.fragments;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -24,15 +19,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.asedias.vkbugtracker.Actions;
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
-import ru.asedias.vkbugtracker.api.webmethods.GetProducts;
 import ru.asedias.vkbugtracker.api.webmethods.GetReportList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
-import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
 import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
@@ -100,10 +93,10 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
             toolbarViewHolder = new AttachmentHolder(R.layout.appkit_toolbar_view, getActivity().getLayoutInflater());
             toolbarViewHolder.title.setText(product.title);
             toolbarViewHolder.subtitle.setText(R.string.title_dashboard);
-            UIC.getToolbar().addView(toolbarViewHolder.itemView);
+            parent.getToolbar().addView(toolbarViewHolder.itemView);
             Picasso.with(getActivity())
                     .load(product.photo)
-                    .placeholder(BugTrackerApp.Drawable(R.drawable.placeholder_users))
+                    .placeholder(BTApp.Drawable(R.drawable.placeholder_users))
                     .transform(new CropCircleTransformation())
                     .into(toolbarViewHolder.icon);
         }
@@ -114,7 +107,7 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
         View root = super.OnCreateContentView(inflater, container, savedInstanceState);
         DividerItemDecoration decoration = new DividerItemDecoration(new ColorDrawable(637534208));
         decoration.setProvider(getAdapter());
-        decoration.setPaddingLeft(BugTrackerApp.dp(64));
+        decoration.setPaddingLeft(BTApp.dp(64));
         this.mList.addItemDecoration(decoration);
         return root;
     }
@@ -171,8 +164,12 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
     @Override
     public void onDetach() {
         super.onDetach();
-        getActivity().unregisterReceiver(this.receiver);
-        if(toolbarViewHolder != null) UIC.getToolbar().removeView(toolbarViewHolder.itemView);
+        try {
+            getActivity().unregisterReceiver(this.receiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        if(toolbarViewHolder != null) parent.getToolbar().removeView(toolbarViewHolder.itemView);
     }
 
     @Override

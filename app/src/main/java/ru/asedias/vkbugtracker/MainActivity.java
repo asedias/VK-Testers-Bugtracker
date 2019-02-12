@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,20 +21,18 @@ import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.data.UserData;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
 import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
+import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.MaterialDialogBuilder;
-import ru.asedias.vkbugtracker.ui.UIController;
 
 import static ru.asedias.vkbugtracker.ThemeManager.currentTheme;
 import static ru.asedias.vkbugtracker.api.API.Prefs;
 
-public class MainActivity extends AppCompatActivity {
-
-    UIController controller;
+public class MainActivity extends FragmentStackActivity {
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(Actions.ACTION_USER_UPDATED)) {
-                controller.LoadUserPhoto();
+                loadUserPhoto();
             }
             if(intent.getAction().equals(Actions.ACTION_COOKIE_UPDATED)) {
                 ProductsData.updateProducts(false);
@@ -44,16 +44,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(currentTheme);
         super.onCreate(savedInstanceState);
-        BugTrackerApp.setAppDisplayMetrix(this);
+        BTApp.setAppDisplayMetrix(this);
         if(!LoginActivity.isLoggedOnAndActual()) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
             return;
         }
         ErrorController.Setup(this);
-        setContentView(R.layout.activity_main);
-        this.controller = new UIController().Setup(this);
-
         IntentFilter filter = new IntentFilter();
         filter.addAction(Actions.ACTION_USER_UPDATED);
         filter.addAction(Actions.ACTION_COOKIE_UPDATED);
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 showCrashLog();
             } else {
                 getUserInfo();
-                this.controller.ReplaceFragment(new ReportListFragment(), R.id.navigation_reports);
+                this.replaceFragment(new ReportListFragment(), R.id.navigation_reports);
                 handleIntent(getIntent());
             }
         }
@@ -74,29 +71,38 @@ public class MainActivity extends AppCompatActivity {
         Uri appLinkData = intent.getData();
         if (Intent.ACTION_VIEW.equals(appLinkAction) && appLinkData != null) {
             String url = appLinkData.toString();
-            if(url.contains("act=show&id=")) {
+            if(url.contains("bugtracker?act=show&id=")) {
                 String id = url.replaceAll("https:\\/\\/vk\\.com\\/bugtracker\\?act=show&id=([0-9]*)", "$1");
-                this.controller.ReplaceFragment(ViewReportFragment.newInstance(Integer.parseInt(id)), R.id.navigation_reports);
+                this.replaceFragment(ViewReportFragment.newInstance(Integer.parseInt(id)), R.id.navigation_reports);
             }
+            /*if(url.matches("vk\\.com\\/bug([0-9]*)")) {
+                String id = url.replaceAll("https:\\/\\/vk\\.com\\/bug([0-9]*)", "$1");
+                this.replaceFragment(ViewReportFragment.newInstance(Integer.parseInt(id)), R.id.navigation_reports);
+            }*/
             return true;
         }
         return false;
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         unregisterReceiver(this.receiver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        this.controller.LoadUserPhoto();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Actions.ACTION_USER_UPDATED);
-        filter.addAction(Actions.ACTION_COOKIE_UPDATED);
-        registerReceiver(this.receiver, filter);
+        this.loadUserPhoto();
+    }
+
+    public void loadUserPhoto() {
+        Picasso.with(BTApp.context)
+                .load(UserData.getPhoto())
+                .transform(new CropCircleTransformation())
+                .placeholder(BTApp.Drawable(R.drawable.placeholder_user))
+                .error(BTApp.Drawable(R.drawable.ic_settings))
+                .into((ImageView) getToolbar().getMenu().getItem(0).getActionView());
     }
 
     private void getUserInfo() {
@@ -108,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     UserInfo.User user = data.getResponse().get(0);
                     Prefs();
                     UserData.updateUserData(user);
-                    controller.LoadUserPhoto();
+                    loadUserPhoto();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
@@ -129,16 +135,7 @@ public class MainActivity extends AppCompatActivity {
             var11.dismiss();
         });
         var1.setPositiveWarning(false);
-        var1.setOnDismissListener(dialog -> controller.ReplaceFragment(new ReportListFragment(), R.id.navigation_reports));
+        var1.setOnDismissListener(dialog -> replaceFragment(new ReportListFragment(), R.id.navigation_reports));
         var1.show();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(!controller.onBackPressed()) super.onBackPressed();
-    }
-
-    public UIController getController() {
-        return this.controller;
     }
 }

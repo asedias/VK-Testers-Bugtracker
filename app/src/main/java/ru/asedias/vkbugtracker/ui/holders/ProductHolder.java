@@ -7,13 +7,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
-import ru.asedias.vkbugtracker.MainActivity;
+import ru.asedias.vkbugtracker.BTApp;
+import ru.asedias.vkbugtracker.FragmentStackActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 import ru.asedias.vkbugtracker.fragments.ViewProductFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
-import ru.asedias.vkbugtracker.ui.UIController;
 
 /**
  * Created by rorom on 17.11.2018.
@@ -37,10 +36,10 @@ public class ProductHolder extends BindableHolder<ProductList.Product> {
     @Override
     public void bind(ProductList.Product data) {
         super.bind(data);
-        Picasso.with(BugTrackerApp.context)
+        Picasso.with(BTApp.context)
                 .load(data.photo)
                 .transform(new CropCircleTransformation())
-                .placeholder(BugTrackerApp.Drawable(R.drawable.ic_detail))
+                .placeholder(BTApp.Drawable(R.drawable.ic_detail))
                 .into(this.photo);
         setText(this.title, data.title);
 		if(data.subtitles.size() > 0) setText(this.subtitle, data.subtitles.get(0));
@@ -60,7 +59,6 @@ public class ProductHolder extends BindableHolder<ProductList.Product> {
 
     @Override
     public void onClick(View v) {
-        UIController uic = ((MainActivity)v.getContext()).getController();
-        uic.ReplaceFragment(ViewProductFragment.newInstance(data.id), 0);
+        ((FragmentStackActivity)v.getContext()).replaceFragment(ViewProductFragment.newInstance(data.id), 0);
     }
 }

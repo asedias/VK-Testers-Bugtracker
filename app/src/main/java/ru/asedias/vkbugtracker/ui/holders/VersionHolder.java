@@ -6,10 +6,9 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductInfo;
 
@@ -37,7 +36,7 @@ public class VersionHolder extends BindableHolder<ProductInfo.Version> {
         SpannableStringBuilder ss = new SpannableStringBuilder(data.title);
         ss.append(" ");
         ss.append(data.date);
-        ss.setSpan(new ForegroundColorSpan(BugTrackerApp.Color(R.color.darker_gray)), data.title.length(), ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new ForegroundColorSpan(BTApp.Color(R.color.darker_gray)), data.title.length(), ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         this.title.setText(ss);
     }
 }

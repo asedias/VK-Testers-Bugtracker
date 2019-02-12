@@ -1,7 +1,6 @@
 package ru.asedias.vkbugtracker.ui.holders.reportview;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -11,8 +10,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
+import ru.asedias.vkbugtracker.api.API;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.OverlayCircleTranformation;
@@ -45,8 +45,8 @@ public class FooterHolder extends BindableHolder<Report.Footer> {
     public void bind(Report.Footer data) {
         super.bind(data);
         photos.removeAllViews();
-        int size = BugTrackerApp.dp(24);
-        int margin = BugTrackerApp.dp(3);
+        int size = BTApp.dp(24);
+        int margin = BTApp.dp(3);
         int i = 0;
         if(data.users != null && data.users.size() > 0) {
             for(i = 0; i < data.users.size()-1; i++) {
@@ -54,7 +54,7 @@ public class FooterHolder extends BindableHolder<Report.Footer> {
                 FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(size, size);
                 lp.leftMargin = i*(size - margin);
                 photos.addView(photo, lp);
-                Picasso.with(BugTrackerApp.context)
+                Picasso.with(BTApp.context)
                         .load(data.users.get(i).photo.contains("http") ? data.users.get(i).photo : "https://vk.com" + data.users.get(i).photo)
                         .transform(new CropCircleTransformation())
                         .transform(new OverlayCircleTranformation(0.64F))
@@ -69,7 +69,7 @@ public class FooterHolder extends BindableHolder<Report.Footer> {
         share.setOnClickListener(v -> {
             Intent share = new Intent();
             share.setAction(Intent.ACTION_SEND);
-            String link = String.format(Locale.getDefault(), "%s%d", "https://vk.com/bugtracker?act=show&id=", rid);
+            String link = String.format(Locale.getDefault(), "%s%d", API.URL_BASE + "?act=show&id=", rid);
             share.putExtra(Intent.EXTRA_TEXT, link);
             share.setType("text/plain");
             itemView.getContext().startActivity(Intent.createChooser(share, link));

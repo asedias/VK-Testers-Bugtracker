@@ -77,4 +77,5 @@
     <string name="restart_settings">Перезапустите приложение для применения изменений.</string>
     <string name="versions">Версии</string>
     <string name="branches">Ветки</string>
+    <string name="picker_d_of_d">%1$d из %2$d</string>
 </resources>

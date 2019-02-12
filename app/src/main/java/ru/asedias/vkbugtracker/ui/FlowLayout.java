@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,7 +25,7 @@ public class FlowLayout extends ViewGroup {
     private Vector lineHeights = new Vector();
     private List lparams;
     private int measuredHeight = 0;
-    public int pwidth = (int) BugTrackerApp.dp(5);
+    public int pwidth = (int) BTApp.dp(5);
 
 
     static {
@@ -60,7 +60,7 @@ public class FlowLayout extends ViewGroup {
     }
 
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
-        return new LayoutParams((int)BugTrackerApp.dp(2), (int)BugTrackerApp.dp(2));
+        return new LayoutParams((int) BTApp.dp(2), (int) BTApp.dp(2));
     }
 
     public int getFullHeight() {
@@ -512,7 +512,7 @@ public class FlowLayout extends ViewGroup {
         }
 
         public static LayoutParams CreateLayoutParamsForZhukovsLayout() {
-            return new LayoutParams((int)BugTrackerApp.dp(2), (int)BugTrackerApp.dp(2));
+            return new LayoutParams((int) BTApp.dp(2), (int) BTApp.dp(2));
         }
     }
 }

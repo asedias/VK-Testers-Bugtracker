@@ -44,7 +44,7 @@ public class ProductInfo {
     public static class Product extends ProductList.Product {
         @Selector(value = ".bt_reporter_product_title", defValue = "") public String title;
         @Selector(value = "img", attr = "src", defValue = "https://vkontakte.ru/images/camera_200.png") public String photo;
-        @Selector(value = ".bt_reporter_product_a_img", attr = "href", regex = "\\/bugtracker\\?act=product&id=([0-9]*)", defValue = "0") public int id;
+        @Selector(value = ".bt_reporter_product_a_img", attr = "href", regex = "\\/bugs\\?act=product&id=([0-9]*)", defValue = "0") public int id;
         @Selector(".bt_reporter_product_nreports") public String reports_count;
     }
 

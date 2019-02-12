@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductInfo;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
@@ -49,7 +49,7 @@ public class ProductHeaderHolder extends BindableHolder<ProductInfo> {
         this.version.setText(Html.fromHtml(data.description));
         this.version.setClickable(true);
         this.version.setMovementMethod(LinkMovementMethod.getInstance());
-        Picasso.with(BugTrackerApp.context)
+        Picasso.with(BTApp.context)
                 .load(data.photo)
                 .transform(new CropCircleTransformation())
                 .into(this.photo);

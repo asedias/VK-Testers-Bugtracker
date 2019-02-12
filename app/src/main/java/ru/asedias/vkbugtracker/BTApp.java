@@ -23,7 +23,7 @@ import ru.asedias.vkbugtracker.ui.Fonts;
  * Created by rorom on 11.04.2018.
  */
 
-public class BugTrackerApp extends Application {
+public class BTApp extends Application {
 
     public static Context context;
     public static DisplayMetrics mMetrics = new DisplayMetrics();
@@ -34,7 +34,7 @@ public class BugTrackerApp extends Application {
         context = getApplicationContext();
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         new UserData(); new Fonts(); new API(); new ThemeManager();
-        Thread.setDefaultUncaughtExceptionHandler(new RestartExceptionHandler(BugTrackerApp.context));
+        Thread.setDefaultUncaughtExceptionHandler(new RestartExceptionHandler(BTApp.context));
     }
 
     @Override
@@ -92,13 +92,18 @@ public class BugTrackerApp extends Application {
         return result;
     }
 
+    public static int getSystemBarsHeight() {
+        return BTApp.getStatusBarHeight() + BTApp.getNavigationBarHeight();
+    }
+
     public static int getNavigationBarHeight() {
+        int id = context.getResources().getIdentifier("config_showNavigationBar", "bool", "android");
         int result = 0;
         int resourceId = context.getResources().getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
-        return result;
+        return id > 0 && context.getResources().getBoolean(id) ? result : 0;
     }
 
 }

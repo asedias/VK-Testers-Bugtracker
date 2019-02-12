@@ -7,7 +7,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 import android.view.ViewGroup;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.UpdateList;
 import ru.asedias.vkbugtracker.ui.holders.reportview.CommentHolder;
@@ -38,8 +38,8 @@ public class UpdatesAdapter extends DataAdapter<CommentHolder, UpdateList> {
                 holder.date.append(", ");
             } else {
                 SpannableStringBuilder sb = new SpannableStringBuilder(update.info.get(i));
-                sb.setSpan(new TextAppearanceSpan(BugTrackerApp.context, R.style.TextAppearance_AppCompat_Body2), 0, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                sb.setSpan(new ForegroundColorSpan(BugTrackerApp.Color(R.color.darker_gray)), 0, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sb.setSpan(new TextAppearanceSpan(BTApp.context, R.style.TextAppearance_AppCompat_Body2), 0, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sb.setSpan(new ForegroundColorSpan(BTApp.Color(R.color.darker_gray)), 0, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.date.append(sb);
             }
         }

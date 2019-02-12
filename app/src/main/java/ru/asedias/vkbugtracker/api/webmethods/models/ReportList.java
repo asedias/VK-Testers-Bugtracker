@@ -28,7 +28,7 @@ public class ReportList implements ListModel<ReportList.ReportItem> {
 
     public static class ReportItem {
         @Selector(value = ".bt_report_title_link", defValue = "") public String title;
-        @Selector(value = ".bt_report_title_link", attr = "href", regex = ".+=([0-9]*)", defValue = "0") public int id;
+        @Selector(value = ".bt_report_title_link", attr = "href", regex = ".+bug([0-9]*)", defValue = "0") public int id;
         @Selector(".bt_tag_label") public List<ReportTag> tags;
         @Selector(value = ".bt_tag_label", attr = "onclick", regex = "BugTracker\\.addSearchFilter\\('\\w+', ([0-9]*)", defValue = "0") public int product_id;
         @Selector(".bt_report_info__value") public String status;

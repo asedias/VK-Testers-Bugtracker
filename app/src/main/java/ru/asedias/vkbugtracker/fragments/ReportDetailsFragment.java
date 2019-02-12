@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
@@ -26,7 +26,7 @@ public class ReportDetailsFragment extends RecyclerFragment<DetailsAdapter> {
 
     public ReportDetailsFragment() {
         this.mAdapter = new DetailsAdapter();
-        this.title = BugTrackerApp.String(R.string.report_information);
+        this.title = BTApp.String(R.string.report_information);
         this.setTitleNeeded = true;
     }
 

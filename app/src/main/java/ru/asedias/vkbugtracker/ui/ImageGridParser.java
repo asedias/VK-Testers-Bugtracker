@@ -1,17 +1,18 @@
 package ru.asedias.vkbugtracker.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import  ru.asedias.vkbugtracker.BugTrackerApp;
-import ru.asedias.vkbugtracker.BuildConfig;
+import ru.asedias.vkbugtracker.BTApp;
+import ru.asedias.vkbugtracker.PhotoViewerActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 
@@ -34,7 +35,7 @@ public class ImageGridParser {
     public ImageGridParser(Activity activity, List<Report.Photo> photos, ViewGroup root) {
         this.photos = photos;
         this.root = root;
-        this.layout = new FlowLayout(BugTrackerApp.context);
+        this.layout = new FlowLayout(BTApp.context);
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         rootLayoutWidth = metrics.widthPixels;
@@ -44,7 +45,7 @@ public class ImageGridParser {
     public ImageGridParser(List<Report.Photo> photos, ViewGroup root, int rootLayoutWidth) {
         this.photos = photos;
         this.root = root;
-        this.layout = new FlowLayout(BugTrackerApp.context);
+        this.layout = new FlowLayout(BTApp.context);
         this.rootLayoutWidth = rootLayoutWidth;
         if(this.photos != null && this.photos.size() > 0) parse();
     }
@@ -106,23 +107,30 @@ public class ImageGridParser {
         }
 
         for(int i = 0; i < sizes.size(); i++) {
-            ImageView image = new ImageView(BugTrackerApp.context);
+            ImageView image = new ImageView(BTApp.context);
             PhotoSize size = sizes.get(i);
             Report.Photo photo = photos.get(i);
             FlowLayout.LayoutParams lp = new FlowLayout.LayoutParams();
             lp.height = size.height;
             lp.width = size.width;
-            lp.horizontal_spacing = (int) BugTrackerApp.dp(4);
+            lp.horizontal_spacing = (int) BTApp.dp(4);
             lp.breakAfter = size.breakAfter;
             if(size.breakAfter) {
-                lp.vertical_spacing = (int) BugTrackerApp.dp(4);
+                lp.vertical_spacing = (int) BTApp.dp(4);
             }
-            Picasso pic = Picasso.with(BugTrackerApp.context);
+            Picasso pic = Picasso.with(BTApp.context);
             RequestCreator req = pic.load(photo.url_x);
             if (!TextUtils.isEmpty(photo.url_y)) {
                 req = pic.load(photo.url_y);
             }
-            req.placeholder(new ColorDrawable(BugTrackerApp.Color(R.color.thumb))).into(image);
+            req.placeholder(new ColorDrawable(BTApp.Color(R.color.thumb))).into(image);
+            int finalI = i;
+            image.setOnClickListener(v -> {
+                Intent intent = new Intent(BTApp.context, PhotoViewerActivity.class);
+                intent.putParcelableArrayListExtra("photos", (ArrayList<? extends Parcelable>) photos);
+                intent.putExtra("pos", finalI);
+                BTApp.context.startActivity(intent);
+            });
             layout.addView(image, lp);
         }
         this.root.addView(layout, new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -149,7 +157,7 @@ public class ImageGridParser {
                 sizes.add(new PhotoSize(Math.round(h), rootLayoutWidth));
                 break;
             case 2:
-                rootLayoutWidth = rootLayoutWidth - (int)BugTrackerApp.dp(4);
+                rootLayoutWidth = rootLayoutWidth - (int) BTApp.dp(4);
                 h = (list.get(0).height + list.get(1).height)/2;
                 width0 = (h/list.get(0).height)*list.get(0).width;
                 width1 = (h/list.get(1).height)*list.get(1).width;
@@ -158,7 +166,7 @@ public class ImageGridParser {
                 sizes.add(new PhotoSize(Math.round(h/k), Math.round(width1/k)));
                 break;
             case 3:
-                rootLayoutWidth = rootLayoutWidth - (int)BugTrackerApp.dp(8);
+                rootLayoutWidth = rootLayoutWidth - (int) BTApp.dp(8);
                 h = (list.get(0).height + list.get(1).height + list.get(2).height)/3;
                 width0 = (h/list.get(0).height)*list.get(0).width;
                 width1 = (h/list.get(1).height)*list.get(1).width;
@@ -169,7 +177,7 @@ public class ImageGridParser {
                 sizes.add(new PhotoSize(Math.round(h/k), Math.round(width2/k)));
                 break;
             case 4:
-                rootLayoutWidth = rootLayoutWidth - (int)BugTrackerApp.dp(12);
+                rootLayoutWidth = rootLayoutWidth - (int) BTApp.dp(12);
                 h = (list.get(0).height + list.get(1).height + list.get(2).height + list.get(3).height)/4;
                 width0 = (h/list.get(0).height)*list.get(0).width;
                 width1 = (h/list.get(1).height)*list.get(1).width;
@@ -182,7 +190,7 @@ public class ImageGridParser {
                 sizes.add(new PhotoSize(Math.round(h/k), Math.round(width3/k)));
                 break;
             case 5:
-                rootLayoutWidth = rootLayoutWidth - (int)BugTrackerApp.dp(16);
+                rootLayoutWidth = rootLayoutWidth - (int) BTApp.dp(16);
                 h = (list.get(0).height + list.get(1).height + list.get(2).height + list.get(3).height + list.get(4).height)/5;
                 width0 = (h/list.get(0).height)*list.get(0).width;
                 width1 = (h/list.get(1).height)*list.get(1).width;
@@ -197,7 +205,7 @@ public class ImageGridParser {
                 sizes.add(new PhotoSize(Math.round(h/k), Math.round(width4/k)));
                 break;
             case 6:
-                rootLayoutWidth = rootLayoutWidth - (int)BugTrackerApp.dp(20);
+                rootLayoutWidth = rootLayoutWidth - (int) BTApp.dp(20);
                 h = (list.get(0).height + list.get(1).height + list.get(2).height + list.get(3).height + list.get(4).height + list.get(5).height)/6;
                 width0 = (h/list.get(0).height)*list.get(0).width;
                 width1 = (h/list.get(1).height)*list.get(1).width;
@@ -214,7 +222,7 @@ public class ImageGridParser {
                 sizes.add(new PhotoSize(Math.round(h/k), Math.round(width5/k)));
                 break;
             case 7:
-                rootLayoutWidth = rootLayoutWidth - (int)BugTrackerApp.dp(24);
+                rootLayoutWidth = rootLayoutWidth - (int) BTApp.dp(24);
                 h = (list.get(0).height + list.get(1).height + list.get(2).height + list.get(3).height + list.get(4).height + list.get(5).height + list.get(6).height)/7;
                 width0 = (h/list.get(0).height)*list.get(0).width;
                 width1 = (h/list.get(1).height)*list.get(1).width;
@@ -233,7 +241,7 @@ public class ImageGridParser {
                 sizes.add(new PhotoSize(Math.round(h/k), Math.round(width6/k)));
                 break;
             case 8:
-                rootLayoutWidth = rootLayoutWidth - (int)BugTrackerApp.dp(24);
+                rootLayoutWidth = rootLayoutWidth - (int) BTApp.dp(24);
                 h = (list.get(0).height + list.get(1).height + list.get(2).height + list.get(3).height + list.get(4).height + list.get(5).height + list.get(6).height + list.get(7).height)/8;
                 width0 = (h/list.get(0).height)*list.get(0).width;
                 width1 = (h/list.get(1).height)*list.get(1).width;

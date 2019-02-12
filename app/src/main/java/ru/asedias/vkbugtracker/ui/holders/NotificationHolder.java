@@ -1,9 +1,5 @@
 package ru.asedias.vkbugtracker.ui.holders;
 
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,12 +8,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.NotificationList;
-import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 
 /**
@@ -46,7 +39,7 @@ public class NotificationHolder extends BindableHolder<NotificationList.Notifica
     @Override
     public void bind(NotificationList.Notification data) {
         super.bind(data);
-        Picasso.with(BugTrackerApp.context)
+        Picasso.with(BTApp.context)
                 .load(data.author_photo.contains("http") ? data.author_photo : "https://vk.com"+data.author_photo)
                 .transform(new CropCircleTransformation())
                 .into(this.photo);

@@ -23,7 +23,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import ru.asedias.vkbugtracker.Actions;
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.BuildConfig;
 import ru.asedias.vkbugtracker.ErrorController;
 import ru.asedias.vkbugtracker.api.webmethods.models.NotificationList;
@@ -48,6 +48,7 @@ public class API {
     private static String v = "5.85";
     public static String uid;
     private static OkHttpClient client;
+    public static String URL_BASE = "https://vk.com/bugs";
 
     public API() {
         Prefs();
@@ -66,11 +67,11 @@ public class API {
     }
 
     public static void Prefs() {
-        SharedPreferences prefs = BugTrackerApp.context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences prefs = BTApp.context.getSharedPreferences("user", Context.MODE_PRIVATE);
         Cookie = prefs.getString("cookies", "");
         access_token = prefs.getString("access_token", "");
         uid = prefs.getString("user_id", "0");
-        BugTrackerApp.context.sendBroadcast(new Intent(Actions.ACTION_COOKIE_UPDATED));
+        BTApp.context.sendBroadcast(new Intent(Actions.ACTION_COOKIE_UPDATED));
     }
     public interface VKApi {
         @GET("{method}")
@@ -81,28 +82,28 @@ public class API {
     }
 
     public interface WebApi {
-        @GET("bugtracker")
+        @GET("bugs")
         Call<TrackerMember> WebGetCall(@QueryMap Map<String, String> options);
 
-        @POST("bugtracker")
+        @POST("bugs")
         Call WebPostCall(@QueryMap Map<String, String> options);
 
-        @POST("bugtracker")
+        @POST("bugs")
         Call<ReportList> GetReports(@QueryMap Map<String, String> options);
 
-        @POST("bugtracker")
+        @POST("bugs")
         Call<ProductList> GetProducts(@QueryMap Map<String, String> options);
 
-        @POST("bugtracker")
+        @POST("bugs")
         Call<Report> GetReportInfo(@QueryMap Map<String, String> options);
 
-        @POST("bugtracker")
+        @POST("bugs")
         Call<UpdateList> GetUpdates(@QueryMap Map<String, String> options);
 
         @POST("feed")
         Call<NotificationList> GetNotification(@QueryMap Map<String, String> options);
 
-        @POST("bugtracker")
+        @POST("bugs")
         Call<ProductInfo> GetProductInfo(@QueryMap Map<String, String> options);
     }
 

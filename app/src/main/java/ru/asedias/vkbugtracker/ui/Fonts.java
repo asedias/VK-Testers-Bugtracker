@@ -1,7 +1,7 @@
 package ru.asedias.vkbugtracker.ui;
 
 import android.graphics.Typeface;
-import static ru.asedias.vkbugtracker.BugTrackerApp.context;
+import static ru.asedias.vkbugtracker.BTApp.context;
 
 /**
  * Created by rorom on 13.05.2018.

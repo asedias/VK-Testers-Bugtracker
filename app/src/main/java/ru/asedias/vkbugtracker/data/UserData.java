@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import ru.asedias.vkbugtracker.Actions;
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 
 /**
@@ -20,8 +20,8 @@ public class UserData {
     private static String name;
     private static String photo;
     public static boolean debugEnabled = false;
-    private static SharedPreferences user_prefs = BugTrackerApp.context.getSharedPreferences("user", 0);
-    private static SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BugTrackerApp.context);
+    private static SharedPreferences user_prefs = BTApp.context.getSharedPreferences("user", 0);
+    private static SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BTApp.context);
 
     public UserData() {
         accessToken = user_prefs.getString("access_token", "");
@@ -34,11 +34,11 @@ public class UserData {
     public static void updateUserData(UserInfo.User user) {
         name = String.format("%s %s", user.getFirstName(), user.getLastName());
         photo = user.getPhoto200();
-        SharedPreferences.Editor editor = BugTrackerApp.context.getSharedPreferences("user", 0).edit();
+        SharedPreferences.Editor editor = BTApp.context.getSharedPreferences("user", 0).edit();
         editor.putString("user_photo", user.getPhoto200());
         editor.putString("user_name", name);
         editor.apply();
-        BugTrackerApp.context.sendBroadcast(new Intent(Actions.ACTION_USER_UPDATED));
+        BTApp.context.sendBroadcast(new Intent(Actions.ACTION_USER_UPDATED));
     }
 
     public static String getAccessToken() {

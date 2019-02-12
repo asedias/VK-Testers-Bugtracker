@@ -1,15 +1,13 @@
 package ru.asedias.vkbugtracker.fragments;
 
 import android.app.Fragment;
-import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import ru.asedias.vkbugtracker.MainActivity;
-import ru.asedias.vkbugtracker.R;
-import ru.asedias.vkbugtracker.ui.UIController;
+import java.io.Serializable;
+
+import ru.asedias.vkbugtracker.FragmentStackActivity;
 
 import static ru.asedias.vkbugtracker.ThemeManager.currentBackground;
 
@@ -17,9 +15,9 @@ import static ru.asedias.vkbugtracker.ThemeManager.currentBackground;
  * Created by rorom on 31.10.2018.
  */
 
-public class UICFragment extends Fragment {
+public class BTFragment extends Fragment implements Serializable {
 
-    protected UIController UIC;
+    protected FragmentStackActivity parent;
     protected String title;
     protected Drawable logo;
     protected boolean setTitleNeeded = true;
@@ -28,7 +26,7 @@ public class UICFragment extends Fragment {
     protected boolean root = true;
     protected int catID = 0;
 
-    public UICFragment setCategory(int catID) {
+    public BTFragment setCategory(int catID) {
         this.catID = catID;
         return this;
     }
@@ -36,7 +34,7 @@ public class UICFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UIC = ((MainActivity)getActivity()).getController();
+        parent = (FragmentStackActivity) getActivity();
         top = getArguments().getBoolean("top", false);
         root = getArguments().getBoolean("root", true);
         this.setRetainInstance(true);
@@ -48,22 +46,21 @@ public class UICFragment extends Fragment {
     }
 
     public void updateUIState() {
-        UIC = ((MainActivity)getActivity()).getController();
-        UIC.getToolbar().setLogo(logo);
-        if(catID != 0 && UIC.getBottomNavView().getSelectedItemId() != catID) UIC.getBottomNavView().setSelectedItemId(catID);
-        UIC.getAppbar().setExpanded(true, true);
-        UIC.getToolbar().setSubtitle(subtitle);
+        parent.getToolbar().setLogo(logo);
+        if(catID != 0 && parent.getBottomNavView().getSelectedItemId() != catID) parent.getBottomNavView().setSelectedItemId(catID);
+        parent.getAppbar().setExpanded(true, true);
+        parent.getToolbar().setSubtitle(subtitle);
         if(setTitleNeeded || !top) {
-            UIC.HideSearch();
-            UIC.getToolbar().setTitle(title);
+            parent.hideSearch();
+            parent.getToolbar().setTitle(title);
         } else {
-            UIC.ShowSearch();
-            UIC.getToolbar().setTitle("");
+            parent.showSearch();
+            parent.getToolbar().setTitle("");
         }
         if(!top) {
-            UIC.ShowNavBack();
+            parent.showNavBack();
         } else {
-            UIC.ShowNavLogo();
+            parent.showNavLogo();
         }
         getView().setBackgroundColor(currentBackground);
     }

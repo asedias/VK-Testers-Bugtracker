@@ -3,23 +3,17 @@ package ru.asedias.vkbugtracker.fragments;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.webmethods.GetReportInfo;
@@ -37,7 +31,7 @@ public class ViewReportFragment extends RecyclerFragment<ViewReportAdapter> {
 
     public ViewReportFragment() {
         this.mAdapter = new ViewReportAdapter();
-        this.title = BugTrackerApp.String(R.string.report);
+        this.title = BTApp.String(R.string.report);
     }
 
     public static ViewReportFragment newInstance(int rid) {

@@ -1,5 +1,7 @@
 package ru.asedias.vkbugtracker.api.webmethods.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.SpannableStringBuilder;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class Report {
         @Selector(".page_doc_description_row") public String description;
     }
 
-    public static class Photo { //page_post_thumb_wrap image_cover
+    public static class Photo implements Parcelable { //page_post_thumb_wrap image_cover
         @Selector(value = ".page_post_thumb_wrap", attr="onclick", regex="(\\{\"temp\":\\{.+,queue:[0-9]+\\})") public String json;
         public int height;
         public int width;
@@ -43,6 +45,57 @@ public class Report {
         public String url_y;
         public String url_z;
         public String url_w;
+
+        public Photo() { }
+
+        public String getMax() {
+            if(url_w != null && url_w.length() > 0) {
+                return url_w;
+            } else if(url_z != null && url_z.length() > 0) {
+                return url_z;
+            } else if(url_y != null && url_y.length() > 0) {
+                return url_y;
+            }
+            return url_x;
+        }
+
+        public Photo(Parcel in) {
+            json = in.readString();
+            height = in.readInt();
+            width = in.readInt();
+            url_x = in.readString();
+            url_y = in.readString();
+            url_z = in.readString();
+            url_w = in.readString();
+        }
+
+        public static final Creator<Photo> CREATOR = new Creator<Photo>() {
+            @Override
+            public Photo createFromParcel(Parcel in) {
+                return new Photo(in);
+            }
+
+            @Override
+            public Photo[] newArray(int size) {
+                return new Photo[size];
+            }
+        };
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(json);
+            dest.writeInt(height);
+            dest.writeInt(width);
+            dest.writeString(url_x);
+            dest.writeString(url_y);
+            dest.writeString(url_z);
+            dest.writeString(url_w);
+        }
     }
 
     public static class Detail { //bt_report_one_info_row

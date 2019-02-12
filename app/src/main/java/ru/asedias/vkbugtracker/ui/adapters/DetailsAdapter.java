@@ -5,13 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.data.ProductsData;
@@ -55,11 +53,11 @@ public class DetailsAdapter extends RecyclerView.Adapter<BindableHolder> impleme
         int viewType = getItemViewType(position);
         if(viewType == TYPE_PRODUCT) {
             holder.bind(ProductsData.getProductByName(data.get(0).description));
-            lp.bottomMargin = BugTrackerApp.dp(8);
+            lp.bottomMargin = BTApp.dp(8);
         }
         if(viewType == TYPE_HEADER) {
             int id = position == 0 ? R.string.addr_product : R.string.general_info;
-            holder.bind(BugTrackerApp.String(id));
+            holder.bind(BTApp.String(id));
         }
         if(viewType == TYPE_DETAIL) {
             holder.bind(data.get(position - 2));

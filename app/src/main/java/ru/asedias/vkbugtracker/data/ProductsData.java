@@ -1,27 +1,20 @@
 package ru.asedias.vkbugtracker.data;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.asedias.vkbugtracker.Actions;
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.api.webmethods.GetProducts;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 
@@ -51,7 +44,7 @@ public class ProductsData {
                 if (!all) {
                     updateProducts(true);
                 } else {
-                    BugTrackerApp.context.sendBroadcast(new Intent(Actions.ACTION_PDB_UPDATED));
+                    BTApp.context.sendBroadcast(new Intent(Actions.ACTION_PDB_UPDATED));
                 }
             }
 
@@ -148,7 +141,7 @@ public class ProductsData {
 
     public static class ProductsHelper extends SQLiteOpenHelper {
         public ProductsHelper() {
-            super(BugTrackerApp.context, BD_TABLENAME, null, DB_VERSION);
+            super(BTApp.context, BD_TABLENAME, null, DB_VERSION);
         }
 
         @Override

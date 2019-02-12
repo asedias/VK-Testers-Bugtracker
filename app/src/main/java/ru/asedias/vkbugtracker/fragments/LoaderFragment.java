@@ -18,7 +18,7 @@ import ru.asedias.vkbugtracker.api.WebRequest;
  * Created by rorom on 20.10.2018.
  */
 
-public class LoaderFragment extends UICFragment {
+public class LoaderFragment extends BTFragment {
 
     protected View mContainer;
     protected FrameLayout mContent;

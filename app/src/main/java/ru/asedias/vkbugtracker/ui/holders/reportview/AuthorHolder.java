@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
@@ -32,7 +32,7 @@ public class AuthorHolder extends BindableHolder<Report.Author> {
     @Override
     public void bind(Report.Author data) {
         super.bind(data);
-        Picasso.with(BugTrackerApp.context).load(data.author_photo.contains("http") ? data.author_photo : "https://vk.com"+data.author_photo).transform(new CropCircleTransformation()).into(this.photo);
+        Picasso.with(BTApp.context).load(data.author_photo.contains("http") ? data.author_photo : "https://vk.com"+data.author_photo).transform(new CropCircleTransformation()).into(this.photo);
         this.name.setText(data.author_name);
         this.date.setText(data.date);
     }

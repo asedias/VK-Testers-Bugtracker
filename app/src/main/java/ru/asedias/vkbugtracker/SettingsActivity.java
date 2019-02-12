@@ -41,7 +41,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 if(currentTheme == R.style.AppTheme) {
                     visibility += View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
                 }
-                getWindow().setNavigationBarColor(BugTrackerApp.AttrColor(R.attr.colorPrimary));
+                getWindow().setNavigationBarColor(BTApp.AttrColor(R.attr.colorPrimary));
             }
             getWindow().getDecorView().setSystemUiVisibility(visibility);
         }
@@ -90,7 +90,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             builder.setMessage(R.string.logout_description);
             builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
             builder.setPositiveButton(R.string.yes, (dialog, which) -> {
-                BugTrackerApp.context.getSharedPreferences("user", 0).edit().clear().apply();
+                BTApp.context.getSharedPreferences("user", 0).edit().clear().apply();
                 ProductsData.clearCacheData();
                 Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -8,16 +8,18 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
+import ru.asedias.vkbugtracker.ui.FlowLayout;
 import ru.asedias.vkbugtracker.ui.ImageGridParser;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
@@ -49,7 +51,7 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
     @Override
     public void bind(Report.Comment data) {
         super.bind(data);
-        Picasso.with(BugTrackerApp.context)
+        Picasso.with(BTApp.context)
                 .load(data.author_photo.contains("http") ? data.author_photo : "https://vk.com"+data.author_photo)
                 .transform(new CropCircleTransformation())
                 .into(this.photo);
@@ -72,10 +74,10 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
                 sb.append(metas[0]);
                 sb.append("-");
                 sb.append(metas[1]);
-                sb.setSpan(new TextAppearanceSpan(BugTrackerApp.context, R.style.TextAppearance_AppCompat_Body2), metas[0].length() + 1, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                sb.setSpan(new ForegroundColorSpan(BugTrackerApp.Color(R.color.colorAccent)), metas[0].length() + 1, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sb.setSpan(new TextAppearanceSpan(BTApp.context, R.style.TextAppearance_AppCompat_Body2), metas[0].length() + 1, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                sb.setSpan(new ForegroundColorSpan(BTApp.Color(R.color.colorAccent)), metas[0].length() + 1, sb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 this.meta.append(sb);
-                this.meta.setTextColor(BugTrackerApp.Color(R.color.colorAccent));
+                this.meta.setTextColor(BTApp.Color(R.color.colorAccent));
             }
         } else {
             this.meta.setVisibility(View.GONE);
@@ -83,11 +85,13 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
         this.attachments.removeAllViews();
         if(data.photos.size() > 0 || data.attachments.size() > 0) {
             this.attachments.setVisibility(View.VISIBLE);
-            new ImageGridParser(data.photos, this.attachments, BugTrackerApp.mMetrics.widthPixels - BugTrackerApp.dp(96));
+            new ImageGridParser(data.photos, this.attachments, BTApp.mMetrics.widthPixels - BTApp.dp(96));
             for(int i = 0; i < data.attachments.size(); i++) {
                 AttachmentHolder holder = new AttachmentHolder(inflater);
                 holder.bind(data.attachments.get(i));
-                this.attachments.addView(holder.itemView);
+                ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.leftMargin = BTApp.dp(-16);
+                this.attachments.addView(holder.itemView, lp);
             }
         } else {
             this.attachments.setVisibility(View.GONE);

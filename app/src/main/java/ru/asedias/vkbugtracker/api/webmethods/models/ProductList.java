@@ -27,7 +27,7 @@ public class ProductList implements ListModel<ProductList.Product> {
         @Selector(value = ".bt_product_row_title", defValue = "") public String title;
         @Selector(value = ".bt_product_row_subtitle", defValue = "") public List<String> subtitles;
         @Selector(value = "img", attr = "src", defValue = "https://vkontakte.ru/images/camera_200.png") public String photo;
-        @Selector(value = ".bt_prod_link", attr = "href", regex = "\\/bugtracker\\?act=product&id=([0-9]*)", defValue = "0") public int id;
+        @Selector(value = ".bt_prod_link", attr = "href", regex = "\\/bugs\\?act=product&id=([0-9]*)", defValue = "0") public int id;
         public boolean my;
 
         public String toString() {

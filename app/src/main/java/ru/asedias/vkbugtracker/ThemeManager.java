@@ -1,11 +1,9 @@
 package ru.asedias.vkbugtracker;
 
-import android.animation.Animator;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,7 @@ public class ThemeManager {
     public static int currentPrimary = LightPrimary();
     public static int currentTextColor = Color.BLACK;
     public static int currentBackground = Color.WHITE;
-    private static SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BugTrackerApp.context);
+    private static SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BTApp.context);
     private static String KEY_THEME = "currentTheme";
 
     public ThemeManager() {
@@ -49,14 +47,14 @@ public class ThemeManager {
     }
 
     private static int LightPrimary() {
-        return BugTrackerApp.Color(R.color.colorPrimaryLight);
+        return BTApp.Color(R.color.colorPrimaryLight);
     }
 
     private static int DarkPrimary() {
-        return BugTrackerApp.Color(R.color.colorPrimaryDark);
+        return BTApp.Color(R.color.colorPrimaryDark);
     }
 
-    private static int DarkBackground() { return BugTrackerApp.Color(R.color.colorDarkBackground); }
+    private static int DarkBackground() { return BTApp.Color(R.color.colorDarkBackground); }
 
     private static void getAllViews(ViewGroup viewGroup) {
         int newPrimary = currentTheme == R.style.AppTheme ? DarkPrimary() : LightPrimary();
@@ -98,7 +96,7 @@ public class ThemeManager {
                         if(currentTheme != R.style.AppTheme) {
                             visibility += View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
                         }
-                        Main.getWindow().setNavigationBarColor(BugTrackerApp.AttrColor(R.attr.colorPrimary));
+                        Main.getWindow().setNavigationBarColor(BTApp.AttrColor(R.attr.colorPrimary));
                     }
                     Main.getWindow().getDecorView().setSystemUiVisibility(visibility);
                 }

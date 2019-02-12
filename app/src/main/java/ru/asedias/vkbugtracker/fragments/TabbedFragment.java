@@ -3,7 +3,6 @@ package ru.asedias.vkbugtracker.fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,7 +20,7 @@ import ru.asedias.vkbugtracker.R;
  * Created by rorom on 30.10.2018.
  */
 
-public class TabbedFragment extends UICFragment {
+public class TabbedFragment extends BTFragment {
 
     private ViewPager pager;
     private TabAdapter adapter;
@@ -47,24 +46,24 @@ public class TabbedFragment extends UICFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         if(this.pager == null) {
             this.pager = new ViewPager(getActivity());
-            this.pager.setId(R.id.ALT);
-            this.adapter = new TabAdapter(UIC.getFragmentManager());
+            this.adapter = new TabAdapter(getActivity().getFragmentManager());
             this.pager.setAdapter(adapter);
         }
+        this.pager.setId(R.id.ALT);
         return pager;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        UIC.getTabLayout().setupWithViewPager(this.pager);
-        UIC.ShowTabBar();
+        parent.getTabLayout().setupWithViewPager(this.pager);
+        parent.showTabBar();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        UIC.HideTabBar();
+        parent.hideTabBar();
     }
 
     public class TabAdapter extends FragmentPagerAdapter {

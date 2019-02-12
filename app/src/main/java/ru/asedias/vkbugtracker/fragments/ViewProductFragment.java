@@ -3,19 +3,17 @@ package ru.asedias.vkbugtracker.fragments;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.webmethods.GetProductInfo;
 import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
 import ru.asedias.vkbugtracker.ui.adapters.ViewProductAdapter;
-import ru.asedias.vkbugtracker.ui.adapters.ViewReportAdapter;
 
 /**
  * Created by rorom on 15.12.2018.
@@ -27,7 +25,7 @@ public class ViewProductFragment extends RecyclerFragment<ViewProductAdapter> {
 
     public ViewProductFragment() {
         this.mAdapter = new ViewProductAdapter();
-        this.title = BugTrackerApp.String(R.string.addr_product);
+        this.title = BTApp.String(R.string.addr_product);
     }
 
     public static ViewProductFragment newInstance(int pid) {

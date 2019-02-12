@@ -10,7 +10,7 @@ import com.squareup.picasso.Transformation;
 
 import java.util.Locale;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 
 /**
  * Created by rorom on 14.11.2018.
@@ -28,7 +28,7 @@ public class OverlayCircleTranformation implements Transformation {
         Path overlapShape = new Path();
         overlapShape.setFillType(Path.FillType.EVEN_ODD);
         float t = size/2;
-        float tpad = t + BugTrackerApp.dp(1.5F);
+        float tpad = t + BTApp.dp(1.5F);
         overlapShape.addCircle(t, t, t + 0.5F, Path.Direction.CW);
         overlapShape.addCircle(-tpad + 2.0F * tpad * (1.0F + overlay), t, tpad + 0.5F, Path.Direction.CW);
 

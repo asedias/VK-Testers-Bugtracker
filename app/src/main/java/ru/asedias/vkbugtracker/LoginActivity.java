@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 if (url.contains("blank.html")) {
-                    SharedPreferences.Editor editor = BugTrackerApp.context.getSharedPreferences("user", 0).edit();
+                    SharedPreferences.Editor editor = BTApp.context.getSharedPreferences("user", 0).edit();
                     editor.putString("url", url);
                     editor.putLong("time", (System.currentTimeMillis() / 1000));
                     url = url.substring("https://oauth.vk.com/blank.html#".length());
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getInfoAndStart(String uid) {
-        final ProgressDialog dialog = ProgressDialog.show(this, BugTrackerApp.String(R.string.title_activity_login), BugTrackerApp.String(R.string.loading));
+        final ProgressDialog dialog = ProgressDialog.show(this, BTApp.String(R.string.title_activity_login), BTApp.String(R.string.loading));
         new GetUserInfo(uid, new Callback<UserInfo>() {
             @Override
             public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
@@ -107,13 +107,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public static boolean isLoggedOn() {
-        SharedPreferences pref = BugTrackerApp.context.getSharedPreferences("user", 0);
+        SharedPreferences pref = BTApp.context.getSharedPreferences("user", 0);
         return (pref.contains("access_token"));
     }
 
     public static boolean isLoggedOnAndActual() {
         try {
-            SharedPreferences pref = BugTrackerApp.context.getSharedPreferences("user", 0);
+            SharedPreferences pref = BTApp.context.getSharedPreferences("user", 0);
             long time = pref.getLong("time", 0);
             boolean needLogin = false;
             if (time < UPDATE_TIME) {
@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
         } else
         {
             Log.d("Login", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
-            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(BugTrackerApp.context);
+            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(BTApp.context);
             cookieSyncMngr.startSync();
             CookieManager cookieManager=CookieManager.getInstance();
             cookieManager.removeAllCookie();
@@ -150,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public static void clearPrefs() {
-        BugTrackerApp.context.getSharedPreferences("user", 0).edit().clear().apply();
+        BTApp.context.getSharedPreferences("user", 0).edit().clear().apply();
     }
 
 

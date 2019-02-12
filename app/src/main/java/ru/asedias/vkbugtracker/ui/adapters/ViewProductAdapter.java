@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductInfo;
 import ru.asedias.vkbugtracker.data.ProductsData;
@@ -83,14 +83,14 @@ public class ViewProductAdapter extends RecyclerView.Adapter<BindableHolder> imp
             holder.bind(data.counters);
         } else if(getItemViewType(position) == TYPE_HEADER) {
             if(data.products.size() > 0 && position == 2) {
-                holder.bind(BugTrackerApp.String(R.string.branches));
+                holder.bind(BTApp.String(R.string.branches));
             } else {
-                holder.bind(BugTrackerApp.String(R.string.versions));
+                holder.bind(BTApp.String(R.string.versions));
             }
         } else if(getItemViewType(position) == TYPE_PRODUCT) {
             int pre = 4 + (data.versions.size() > 0 ? data.versions.size() + 1 : 0);
             holder.bind(ProductsData.getProduct(data.products.get(getItemCount() - pre).id));
-            lp.bottomMargin = BugTrackerApp.dp(8);
+            lp.bottomMargin = BTApp.dp(8);
         } else if(getItemViewType(position) == TYPE_VERSION) {
             int pre = 4 + (data.products.size() > 0 ? data.products.size() + 1 : 0);
             holder.bind(data.versions.get(getItemCount() - pre));

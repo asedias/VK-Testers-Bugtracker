@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import ru.asedias.vkbugtracker.BugTrackerApp;
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
@@ -92,7 +92,7 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
                 if(position == 0) {
                     holder.bind(data.title); break;
                 }
-                holder.bind(BugTrackerApp.QuantityString(R.plurals.good_comments, data.comments.size(), data.comments.size()));
+                holder.bind(BTApp.QuantityString(R.plurals.good_comments, data.comments.size(), data.comments.size()));
                 break;
             }
             case TYPE_AUTHOR: holder.bind(data.author); break;
@@ -103,7 +103,7 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
             case TYPE_ATTACHMENT: {
                 holder.bind(data.attachments.get(position - 4));
                 if(getItemViewType(position+1) == TYPE_FOOTER) {
-                    ((RecyclerView.LayoutParams)holder.itemView.getLayoutParams()).bottomMargin = BugTrackerApp.dp(8);
+                    ((RecyclerView.LayoutParams)holder.itemView.getLayoutParams()).bottomMargin = BTApp.dp(8);
                 }
                 break;
             }
