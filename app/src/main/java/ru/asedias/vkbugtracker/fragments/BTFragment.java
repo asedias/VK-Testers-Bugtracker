@@ -2,12 +2,17 @@ package ru.asedias.vkbugtracker.fragments;
 
 import android.app.Fragment;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.view.ViewCompat;
 
 import java.io.Serializable;
 
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.FragmentStackActivity;
+import ru.asedias.vkbugtracker.R;
 
 import static ru.asedias.vkbugtracker.ThemeManager.currentBackground;
 

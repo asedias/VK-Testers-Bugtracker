@@ -4,5 +4,6 @@
     <attr name="contentBackground" format="color" />
     <attr name="buttonBackground" format="reference" />
     <attr name="navBackground" format="reference" />
+    <attr name="drawerStyle" format="reference" />
     <attr name="heightRatio" format="float" />
 </resources>

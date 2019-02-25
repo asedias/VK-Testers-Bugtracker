@@ -1,6 +1,8 @@
 package ru.asedias.vkbugtracker.ui;
 
 import android.graphics.Typeface;
+import android.support.design.widget.AppBarLayout;
+
 import static ru.asedias.vkbugtracker.BTApp.context;
 
 /**

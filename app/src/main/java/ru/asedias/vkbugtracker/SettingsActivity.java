@@ -10,6 +10,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -45,19 +46,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             getWindow().getDecorView().setSystemUiVisibility(visibility);
         }
-        View root = getLayoutInflater().inflate(R.layout.activity_main, null);
+        ViewGroup root = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_main, null);
         this.appbar = root.findViewById(R.id.appBarLayout);
-        this.tabLayout = root.findViewById(R.id.tabs);
         this.toolbar = root.findViewById(R.id.toolbar);
-        this.bottomNavView = root.findViewById(R.id.navigation);
+        ((ViewGroup)root.findViewById(R.id.navigation).getParent()).removeViewAt(1);
+        root.removeView(root.findViewById(R.id.drawer_list));
         this.toolbar.removeAllViews();
         this.toolbar.setNavigationIcon(R.drawable.ic_ab_back_arrow_dark);
         this.toolbar.setNavigationOnClickListener(v -> finish());
         this.toolbar.setTitle(R.string.action_settings);
-        this.bottomNavView.setVisibility(View.GONE);
         this.content = root.findViewById(R.id.appkit_content);
-        ((CoordinatorLayout.LayoutParams)content.getLayoutParams()).bottomMargin = 0;
         this.list = new ListView(this);
+        this.list.setPadding(0, BTApp.dp(56), 0, 0);
         this.list.setId(android.R.id.list);
         this.content.addView(this.list);
         setContentView(root);

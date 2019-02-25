@@ -45,8 +45,8 @@ public class UserData {
         return accessToken;
     }
 
-    public static String getUID() {
-        return String.valueOf(uid);
+    public static int getUID() {
+        return uid;
     }
 
     public static String getName() {

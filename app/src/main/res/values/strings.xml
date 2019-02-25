@@ -28,7 +28,7 @@
     <string name="additional_info">Additional info</string>
     <string name="prefs_reports">My reports</string>
     <string name="prefs_products">Products</string>
-    <string name="prefs_bookmarks">Bookmarks</string>
+    <string name="my_bookmarks">My bookmarks</string>
     <string name="prefs_members">Members</string>
     <string name="prefs_updates">Updates</string>
     <string name="prefs_about">About</string>
@@ -83,4 +83,5 @@
     <string name="versions">Versions</string>
     <string name="branches">Branches</string>
     <string name="picker_d_of_d">%1$d of %2$d</string>
+    <string name="search">Search by title</string>
 </resources>

@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.ui.adapters.DataAdapter;
 import ru.asedias.vkbugtracker.ui.holders.LoadingHolder;
@@ -41,6 +42,8 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
         this.mSwipeRefresh.setOnRefreshListener(this);
         this.mSwipeRefresh.setRefreshing(isRefreshing);
         this.mSwipeRefresh.setEnabled(false);
+        this.mSwipeRefresh.setColorSchemeColors(BTApp.Color(R.color.colorAccent));
+        this.mSwipeRefresh.setProgressViewOffset(true, BTApp.dp(56), BTApp.dp(112));
         this.mList.setLayoutManager(getLayoutManager());
         this.mList.setAdapter(getAdapter());
         if(canLoadMode()) {

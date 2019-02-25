@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:background="?selectableItemBackground"
-    android:clickable="true">
+    android:clickable="true"
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/author"
@@ -36,7 +36,7 @@
             android:id="@+id/tags_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="28dp"/>
+            android:minHeight="28dp" />
     </LinearLayout>
 
     <ru.asedias.vkbugtracker.ui.text.MediumTextView

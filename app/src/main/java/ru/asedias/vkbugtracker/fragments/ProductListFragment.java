@@ -1,5 +1,9 @@
 package ru.asedias.vkbugtracker.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ru.asedias.vkbugtracker.Actions;
 import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.WebRequest;
@@ -23,6 +28,17 @@ public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
 
     private boolean all;
     private boolean needUpdate;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(Actions.ACTION_PDB_UPDATED)) {
+                if(getAdapter() != null) {
+                    getAdapter().setData(ProductsData.getProducts(!all));
+                    showContent();
+                }
+            }
+        }
+    };
 
     public ProductListFragment() {
         this.mAdapter = new ProductsAdapter();
@@ -50,6 +66,24 @@ public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Actions.ACTION_PDB_UPDATED);
+        getActivity().registerReceiver(this.receiver, filter);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        try {
+            getActivity().unregisterReceiver(this.receiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public WebRequest getRequest() {
         if(this.getArguments() != null) {
             this.all = getArguments().getBoolean("all", false);
@@ -59,9 +93,8 @@ public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
             this.showContent();
             return null;
         }
-        return new GetProducts(this, this.all, data -> {
-            return data;
-        });
+        ProductsData.updateProducts(false);
+        return null;
     }
 
     @Override

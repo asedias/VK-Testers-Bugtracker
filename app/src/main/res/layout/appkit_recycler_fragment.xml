@@ -13,7 +13,8 @@
             android:scrollbars="vertical"
             android:clipToPadding="false"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:paddingTop="?actionBarSize"/>
         <include
             android:id="@+id/empty"
             layout="@layout/appkit_empty" />

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/general" android:checkableBehavior="single">
+        <item
+            android:id="@+id/my_card"
+            android:title="@string/title_home"
+            android:icon="@drawable/ic_members"/>
+        <item
+            android:id="@+id/my_reports"
+            android:title="@string/prefs_reports"
+            android:icon="@drawable/ic_reports"/>
+        <item
+            android:id="@+id/my_bookmarks"
+            android:title="@string/my_bookmarks"
+            android:icon="@drawable/ic_updates"/>
+    </group>
+    <item
+        android:id="@+id/product"
+        android:title=""
+        app:actionLayout="@layout/dropdown" />
+    <item
+        android:id="@+id/status"
+        android:title=""
+        app:actionLayout="@layout/dropdown"/>
+    <item
+        android:id="@+id/priority"
+        android:title=""
+        app:actionLayout="@layout/dropdown" />
+</menu>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#5181b8</color>
-    <color name="colorAccent">#ff5181b8</color>
+    <color name="colorAccent">#5181b8</color>
     <color name="colorStatusBar">#33000000</color>
     <color name="blue_gray">#ff61768f</color>
     <color name="cool_blue">#4680c2</color>
@@ -13,7 +13,7 @@
     <color name="light_gray">#aaaeb3</color>
     <color name="colorPrimaryLight">#ffffff</color>
     <color name="colorNavIconsLight">#95999b</color>
-    <color name="colorIconsLight">#ff6c737a</color>
+    <color name="colorIconsLight">#6c737a</color>
     <color name="colorPrimaryDark">#303030</color>
     <color name="colorDarkBackground">#262626</color>
     <color name="bottom_divider">#a8acae</color>

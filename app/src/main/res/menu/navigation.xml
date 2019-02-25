@@ -12,8 +12,7 @@
     <item
         android:id="@+id/navigation_members"
         android:icon="@drawable/ic_members"
-        android:title="@string/prefs_members"
-        android:visible="false"/>
+        android:title="@string/prefs_members"/>
     <item
         android:id="@+id/navigation_updates"
         android:icon="@drawable/ic_updates"

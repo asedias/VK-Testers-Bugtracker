@@ -1,29 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ru.asedias.vkbugtracker.ui.text.RegularTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="28dp"
-    android:layout_margin="8dp"
-    android:background="@drawable/bg_search"
-    android:id="@+id/search_wrap">
-
-    <android.support.v7.widget.AppCompatImageView
-        android:layout_width="21dp"
-        android:layout_height="21dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
-        app:srcCompat="@drawable/ic_search"
-        app:tint="@color/colorIconsLight" />
-
-    <android.support.v7.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="37dp"
-        android:background="@null"
-        android:gravity="center_vertical"
-        android:hint="@android:string/search_go"
-        android:textColor="@color/colorIconsLight"
-        android:textSize="14sp" />
-
-</FrameLayout>
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:gravity="center_vertical"
+    android:paddingTop="3dp"
+    android:text="@string/search"
+    android:textColor="@color/colorIconsLight"
+    android:textSize="16sp" />

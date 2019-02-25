@@ -83,6 +83,14 @@ public class BTApp extends Application {
         return value;
     }
 
+    public static Drawable AttrDrawable(@AttrRes int id) {
+        int[] attr = new int[] {id};
+        TypedArray a = context.getTheme().obtainStyledAttributes(R.style.AppTheme, attr);
+        Drawable drawable = context.getResources().getDrawable(a.getResourceId(0, R.drawable.btn_blue_rounded));
+        a.recycle();
+        return drawable;
+    }
+
     public static int getStatusBarHeight() {
         int result = 0;
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");

@@ -518,6 +518,7 @@ public class BottomNavigationViewEx extends BottomNavigationView {
         // 3. call mOnClickListener.onClick();
         mOnClickListener.onClick(mButtons[item]);
 
+
     }
 
     /**

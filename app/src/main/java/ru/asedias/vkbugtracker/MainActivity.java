@@ -8,9 +8,23 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.internal.NavigationMenuItemView;
+import android.support.design.internal.NavigationMenuView;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.view.menu.MenuItemImpl;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,6 +37,7 @@ import ru.asedias.vkbugtracker.fragments.ReportListFragment;
 import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.MaterialDialogBuilder;
+import ru.asedias.vkbugtracker.ui.drawer.DrawerAdapter;
 
 import static ru.asedias.vkbugtracker.ThemeManager.currentTheme;
 import static ru.asedias.vkbugtracker.api.API.Prefs;
@@ -44,6 +59,7 @@ public class MainActivity extends FragmentStackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(currentTheme);
         super.onCreate(savedInstanceState);
+        getToolbar().inflateMenu(R.menu.menu);
         BTApp.setAppDisplayMetrix(this);
         if(!LoginActivity.isLoggedOnAndActual()) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -51,10 +67,6 @@ public class MainActivity extends FragmentStackActivity {
             return;
         }
         ErrorController.Setup(this);
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Actions.ACTION_USER_UPDATED);
-        filter.addAction(Actions.ACTION_COOKIE_UPDATED);
-        registerReceiver(this.receiver, filter);
         if(savedInstanceState == null) {
             if(this.getIntent().getBooleanExtra("crash", false)) {
                 showCrashLog();
@@ -64,6 +76,10 @@ public class MainActivity extends FragmentStackActivity {
                 handleIntent(getIntent());
             }
         }
+        getToolbar().getMenu().getItem(0).getActionView().setOnClickListener(v -> {
+            this.startActivity(new Intent(this, SettingsActivity.class));
+        });
+        DrawerAdapter adapter = new DrawerAdapter(this.findViewById(R.id.drawer_layout), this.findViewById(R.id.drawer_list), getLayoutInflater());
     }
 
     private boolean handleIntent(Intent intent) {
@@ -75,13 +91,23 @@ public class MainActivity extends FragmentStackActivity {
                 String id = url.replaceAll("https:\\/\\/vk\\.com\\/bugtracker\\?act=show&id=([0-9]*)", "$1");
                 this.replaceFragment(ViewReportFragment.newInstance(Integer.parseInt(id)), R.id.navigation_reports);
             }
-            /*if(url.matches("vk\\.com\\/bug([0-9]*)")) {
+            if(url.matches("vk\\.com\\/bug([0-9]*)")) {
                 String id = url.replaceAll("https:\\/\\/vk\\.com\\/bug([0-9]*)", "$1");
                 this.replaceFragment(ViewReportFragment.newInstance(Integer.parseInt(id)), R.id.navigation_reports);
-            }*/
+            }
             return true;
         }
         return false;
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Actions.ACTION_USER_UPDATED);
+        filter.addAction(Actions.ACTION_COOKIE_UPDATED);
+        registerReceiver(this.receiver, filter);
     }
 
     @Override
@@ -135,7 +161,10 @@ public class MainActivity extends FragmentStackActivity {
             var11.dismiss();
         });
         var1.setPositiveWarning(false);
-        var1.setOnDismissListener(dialog -> replaceFragment(new ReportListFragment(), R.id.navigation_reports));
+        var1.setOnDismissListener(dialog -> {
+            replaceFragment(new ReportListFragment(), R.id.navigation_reports);
+            ProductsData.updateProducts(false);
+        });
         var1.show();
     }
 }

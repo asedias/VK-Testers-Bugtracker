@@ -29,32 +29,38 @@ public class ProductsData {
     private static final String BD_TABLENAME = "products";
     private static final String LOG_TAG = "ProductsDB";
     private static ProductList data = new ProductList();
+    private static boolean updating = false;
 
     public static void updateProducts(boolean all) {
-        new GetProducts(all, new Callback<ProductList>() {
-            @Override
-            public void onResponse(Call<ProductList> call, Response<ProductList> response) {
-            if(!all) clearCacheData();
-            ProductList list = response.body();
-            for(ProductList.Product product : list.products) {
-                product.my = !all;
-            }
-            data.products.addAll(list.products);
-            insertData(data.products, !all);
-                if (!all) {
-                    updateProducts(true);
-                } else {
-                    BTApp.context.sendBroadcast(new Intent(Actions.ACTION_PDB_UPDATED));
+        if(!updating || all) {
+            updating = true;
+            new GetProducts(all, new Callback<ProductList>() {
+                @Override
+                public void onResponse(Call<ProductList> call, Response<ProductList> response) {
+                    if (!all) clearCacheData();
+                    ProductList list = response.body();
+                    for (ProductList.Product product : list.products) {
+                        product.my = !all;
+                    }
+                    data.products.addAll(list.products);
+                    insertData(data.products, !all);
+                    if (!all) {
+                        updateProducts(true);
+                    } else {
+                        updating = false;
+                        BTApp.context.sendBroadcast(new Intent(Actions.ACTION_PDB_UPDATED));
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ProductList> call, Throwable t) {
-                invalidateCache();
-                Log.e(LOG_TAG, "UPDATE FAILED: " + t.getLocalizedMessage());
-                t.printStackTrace();
-            }
-        }).execute();
+                @Override
+                public void onFailure(Call<ProductList> call, Throwable t) {
+                    updating = false;
+                    invalidateCache();
+                    Log.e(LOG_TAG, "UPDATE FAILED: " + t.getLocalizedMessage());
+                    t.printStackTrace();
+                }
+            }).execute();
+        }
     }
 
     public static void clearCacheData() {

@@ -7,11 +7,26 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="primaryTextColor">@android:color/black</item>
         <item name="buttonBackground">@drawable/btn_blue_light_rounded</item>
-        <item name="android:actionBarSize">48dp</item>
+        <item name="android:actionBarSize">56dp</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="contentBackground">@android:color/white</item>
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="navBackground">@drawable/bg_bottom_nav_light</item>
+        <item name="drawerStyle">@style/AppTheme.Drawer</item>
+    </style>
+
+    <style name="AppTheme.Drawer" parent="AppTheme">
+        <item name="android:listPreferredItemPaddingLeft">0dp</item>
+        <item name="listPreferredItemPaddingLeft">0dp</item>
+        <item name="android:listPreferredItemPaddingRight">0dp</item>
+        <item name="listPreferredItemPaddingRight">0dp</item>
+    </style>
+
+    <style name="AppTheme.Dark.Drawer" parent="AppTheme.Dark">
+        <item name="android:listPreferredItemPaddingLeft">0dp</item>
+        <item name="listPreferredItemPaddingLeft">0dp</item>
+        <item name="android:listPreferredItemPaddingRight">0dp</item>
+        <item name="listPreferredItemPaddingRight">0dp</item>
     </style>
 
     <style name="AppTheme.Tab" parent="TextAppearance.Design.Tab">
@@ -26,10 +41,11 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="primaryTextColor">@android:color/white</item>
         <item name="buttonBackground">@drawable/btn_blue_dark_rounded</item>
-        <item name="android:actionBarSize">48dp</item>
+        <item name="android:actionBarSize">56dp</item>
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="navBackground">@drawable/bg_bottom_nav_dark</item>
         <item name="contentBackground">@color/colorDarkBackground</item>
+        <item name="drawerStyle">@style/AppTheme.Dark.Drawer</item>
     </style>
 
     <style name="MaterialListButtonBlue">

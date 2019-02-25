@@ -10,7 +10,7 @@
             android:pathData="M0 0l160 0 0 160 -160 0z" />
         <path
             android:pathData="M160 80A80 80 0 0 1 80 160 80 80 0 0 1 0 80 80 80 0 0 1 80 0 80 80 0 0 1 160 80Z"
-            android:fillColor="#e3eaf3" />
+            android:fillColor="#0f697D98" />
         <group
             android:translateX="68"
             android:translateY="52">
