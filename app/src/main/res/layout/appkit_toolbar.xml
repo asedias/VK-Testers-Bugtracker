@@ -2,5 +2,5 @@
 <android.support.v7.widget.Toolbar android:background="@android:color/transparent" android:id="@+id/toolbar" android:layout_width="fill_parent" android:layout_height="?actionBarSize" app:popupTheme="?actionBarPopupTheme" app:layout_scrollFlags="enterAlways|scroll" app:theme="?actionBarTheme" style="?attr/actionBarTheme"
   xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
-    <include layout="@layout/product_search" />
+    <include android:id="@+id/search_text" layout="@layout/product_search" />
 </android.support.v7.widget.Toolbar>

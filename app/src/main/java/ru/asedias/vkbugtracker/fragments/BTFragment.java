@@ -2,17 +2,12 @@ package ru.asedias.vkbugtracker.fragments;
 
 import android.app.Fragment;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.view.ViewCompat;
 
 import java.io.Serializable;
 
-import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.FragmentStackActivity;
-import ru.asedias.vkbugtracker.R;
 
 import static ru.asedias.vkbugtracker.ThemeManager.currentBackground;
 
@@ -30,6 +25,7 @@ public class BTFragment extends Fragment implements Serializable {
     protected boolean top = false;
     protected boolean root = true;
     protected int catID = 0;
+    protected int cardOffset = 0;
 
     public BTFragment setCategory(int catID) {
         this.catID = catID;
@@ -39,9 +35,9 @@ public class BTFragment extends Fragment implements Serializable {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parent = (FragmentStackActivity) getActivity();
-        top = getArguments().getBoolean("top", false);
-        root = getArguments().getBoolean("root", true);
+        this.parent = (FragmentStackActivity) getActivity();
+        this.top = getArguments().getBoolean("top", false);
+        this.root = getArguments().getBoolean("root", true);
         this.setRetainInstance(true);
     }
 
@@ -51,21 +47,21 @@ public class BTFragment extends Fragment implements Serializable {
     }
 
     public void updateUIState() {
-        parent.getToolbar().setLogo(logo);
-        if(catID != 0 && parent.getBottomNavView().getSelectedItemId() != catID) parent.getBottomNavView().setSelectedItemId(catID);
-        parent.getAppbar().setExpanded(true, true);
-        parent.getToolbar().setSubtitle(subtitle);
+        this.parent.getToolbar().setLogo(logo);
+        if(catID != 0 && this.parent.getBottomNavView().getSelectedItemId() != catID) this.parent.getBottomNavView().setSelectedItemId(catID);
+        this.parent.getAppbar().setExpanded(true, true);
+        this.parent.getToolbar().setSubtitle(subtitle);
         if(setTitleNeeded || !top) {
-            parent.hideSearch();
-            parent.getToolbar().setTitle(title);
+            this.parent.toolbarToFullWidth(cardOffset);
+            this.parent.getToolbar().setTitle(title);
         } else {
-            parent.showSearch();
-            parent.getToolbar().setTitle("");
+            this.parent.toolbarToCard(cardOffset);
+            this.parent.getToolbar().setTitle("");
         }
         if(!top) {
-            parent.showNavBack();
+            this.parent.showNavBack();
         } else {
-            parent.showNavLogo();
+            this.parent.showNavLogo(true);
         }
         getView().setBackgroundColor(currentBackground);
     }

@@ -46,6 +46,7 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
         this.mSwipeRefresh.setProgressViewOffset(true, BTApp.dp(56), BTApp.dp(112));
         this.mList.setLayoutManager(getLayoutManager());
         this.mList.setAdapter(getAdapter());
+        this.mList.setPadding(0, BTApp.dp(56 + cardOffset), 0, 0);
         if(canLoadMode()) {
             mList.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

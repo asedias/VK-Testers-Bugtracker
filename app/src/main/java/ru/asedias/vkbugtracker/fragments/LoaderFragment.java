@@ -126,13 +126,6 @@ public class LoaderFragment extends BTFragment {
 
     public boolean canLoadMode() { return canLoadMore; }
 
-    public void processUrl(Call call, Response response) {
-        if(!response.raw().request().url().toString().equals(call.request().url().toString())) {
-            showError("REDIRECT: " + response.raw().request().url().toString());
-            //Log.e("Request", "REDIRECT: " + response.raw().request().url().toString());
-        }
-    }
-
     public void showError(Throwable t) {
         showError(t.getLocalizedMessage());
         if(BuildConfig.DEBUG) t.printStackTrace();

@@ -43,6 +43,7 @@ import static ru.asedias.vkbugtracker.ThemeManager.currentTheme;
 import static ru.asedias.vkbugtracker.api.API.Prefs;
 
 public class MainActivity extends FragmentStackActivity {
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -59,7 +60,6 @@ public class MainActivity extends FragmentStackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(currentTheme);
         super.onCreate(savedInstanceState);
-        getToolbar().inflateMenu(R.menu.menu);
         BTApp.setAppDisplayMetrix(this);
         if(!LoginActivity.isLoggedOnAndActual()) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));

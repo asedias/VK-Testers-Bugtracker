@@ -15,18 +15,23 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import q.rorbin.badgeview.Badge;
+import q.rorbin.badgeview.QBadgeView;
 import ru.asedias.vkbugtracker.fragments.NotificationsFragment;
 import ru.asedias.vkbugtracker.fragments.ProductsFragment;
 import ru.asedias.vkbugtracker.fragments.RecyclerFragment;
@@ -49,12 +54,19 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
     private TabLayout tabLayout;
     private BottomNavigationViewEx bottomNavView;
     private AppBarLayout appbar;
+    private DrawerLayout drawerLayout;
+    private View searchText;
     private HashMap<Integer, Stack<Fragment>> mStacks;
     private ArrayList<String> queue;
     private int currentID;
-    private int navIconRes = R.drawable.ic_logo;
-    private View.OnClickListener navClick = v -> {
-        if(navIconRes == R.drawable.ic_ab_back_arrow_dark) onBackPressed();
+    protected int navIconRes = R.drawable.ic_logo;
+    protected View.OnClickListener navClick = v -> {
+        if(navIconRes == R.drawable.ic_ab_back_arrow_dark) {
+            onBackPressed();
+        } else {
+            if(drawerLayout.getDrawerLockMode(Gravity.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            drawerLayout.openDrawer(Gravity.START);
+        }
     };
     private int toolbarState = STATE_FULL_WIDTH;
     private final static int STATE_FULL_WIDTH = 0;
@@ -69,7 +81,6 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
             currentID = R.id.navigation_reports;
             mStacks.put(R.id.navigation_reports, new Stack<Fragment>());
             mStacks.put(R.id.navigation_products, new Stack<Fragment>());
-            mStacks.put(R.id.navigation_members, new Stack<Fragment>());
             mStacks.put(R.id.navigation_updates, new Stack<Fragment>());
         }
         setContentView(R.layout.activity_main);
@@ -98,11 +109,21 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         this.bottomNavView.setTextSize(14);
         this.bottomNavView.setTextTypeface(Fonts.Medium);
         this.bottomNavView.setOnNavigationItemSelectedListener(this);
+        new QBadgeView(this)
+                .setBadgeNumber(11)
+                .setGravityOffset(42, 4, true)
+                .bindTarget(this.bottomNavView.getBottomNavigationItemView(2))
+                .setBadgeTextSize(11, true)
+                .setBadgePadding(4, true)
+                .setShowShadow(false);
         this.toolbar.setNavigationOnClickListener(navClick);
+        this.toolbar.inflateMenu(R.menu.menu);
+        this.drawerLayout = this.findViewById(R.id.drawer_layout);
+        this.searchText = this.findViewById(R.id.search_text);
     }
 
     public void showFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction().replace(R.id.appkit_content, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+        getFragmentManager().beginTransaction().replace(R.id.appkit_content, fragment).commit();
     }
 
 
@@ -147,10 +168,6 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
                 replaceFragment(ProductsFragment.newInstance(), item.getItemId());
                 return true;
             }
-            case R.id.navigation_members: {
-                replaceFragment(new NotificationsFragment(), item.getItemId());
-                return true;
-            }
             case R.id.navigation_updates: {
                 replaceFragment(UpdatesListFragment.newInstance(false), item.getItemId());
                 return true;
@@ -161,17 +178,26 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
 
     @Override
     public void onBackPressed() {
-        mStacks.get(currentID).pop();
-        if(mStacks.get(currentID).empty()) {
-            queue.remove(String.valueOf(currentID));
-            if(queue.size() == 0) {
-                super.onBackPressed();
-                return;
+        if(!drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            mStacks.get(currentID).pop();
+            if(mStacks.get(currentID).empty()) {
+                queue.remove(String.valueOf(currentID));
+                if(queue.size() == 0) {
+                    super.onBackPressed();
+                    return;
+                }
+                currentID = Integer.valueOf(queue.get(queue.size()-1));
             }
-            currentID = Integer.valueOf(queue.get(queue.size()-1));
+            showFragment(mStacks.get(currentID).lastElement());
+            bottomNavView.getMenu().findItem(currentID).setChecked(true);
+        } else {
+            drawerLayout.closeDrawers();
         }
-        showFragment(mStacks.get(currentID).lastElement());
-        bottomNavView.getMenu().findItem(currentID).setChecked(true);
+
+    }
+
+    public void setDrawerEnabled(boolean state) {
+        drawerLayout.setDrawerLockMode(state ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     public int getToolbarState() {
@@ -202,22 +228,29 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         return currentID;
     }
 
-    public void showSearch() {
+    private int cardCurHeight;
+    private AnimatorSet cardCurAnimSet;
+
+    public void toolbarToCard() { this.toolbarToCard(0); }
+
+    public void toolbarToCard(int offsetDP) {
         if(getToolbarState() != STATE_IN_CARD) {
             AnimatorSet animatorSet = new AnimatorSet();
             ObjectAnimator radiusAnim = ObjectAnimator.ofFloat(appbarCard, "radius", BTApp.dp(8));
-            ValueAnimator heightAnim = ValueAnimator.ofInt(BTApp.dp(56), BTApp.dp(50));
+            int newHeight = BTApp.dp(50 + offsetDP);
+            ValueAnimator heightAnim = ValueAnimator.ofInt(cardCurHeight, newHeight);
             heightAnim.addUpdateListener(animation -> {
                 int value = (int) animation.getAnimatedValue();
                 appbarCard.getLayoutParams().height = value;
                 appbarCard.requestLayout();
             });
-
+            cardCurHeight = newHeight;
             ValueAnimator paddingAnim = ValueAnimator.ofInt(0, BTApp.dp(16));
             paddingAnim.addUpdateListener(animation -> {
                 ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) appbarCard.getLayoutParams();
                 mlp.rightMargin = (int) animation.getAnimatedValue();
                 mlp.leftMargin = (int) animation.getAnimatedValue();
+                mlp.topMargin = (int) ((int) animation.getAnimatedValue() / 2.6);
                 toolbar.setPadding((int) animation.getAnimatedValue(), (int) ((int)animation.getAnimatedValue()/5.0F), (int) ((int)animation.getAnimatedValue()*1.4F), 0);
             });
             ValueAnimator shadowAnim = ValueAnimator.ofFloat(BTApp.dp(8), BTApp.dp(4));
@@ -234,25 +267,44 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
                 @Override public void onAnimationCancel(Animator animation) { }
                 @Override public void onAnimationRepeat(Animator animation) { }
             });
-            animatorSet.start();
+            if(cardCurAnimSet != null) cardCurAnimSet.cancel();
+            cardCurAnimSet = animatorSet;
+            cardCurAnimSet.start();
+            searchText.setVisibility(View.VISIBLE);
+        } else {
+            int newHeight = BTApp.dp(50 + offsetDP);
+            ValueAnimator heightAnim = ValueAnimator.ofInt(cardCurHeight, newHeight);
+            heightAnim.addUpdateListener(animation -> {
+                int value = (int) animation.getAnimatedValue();
+                appbarCard.getLayoutParams().height = value;
+                appbarCard.requestLayout();
+            });
+            cardCurHeight = newHeight;
+            heightAnim.setDuration(300);
+            heightAnim.start();
         }
     }
 
-    public void hideSearch() {
+    public void toolbarToFullWidth() { this.toolbarToFullWidth(0); }
+
+    public void toolbarToFullWidth(int offsetDP) {
         if(getToolbarState() != STATE_FULL_WIDTH) {
             AnimatorSet animatorSet = new AnimatorSet();
             ObjectAnimator animator1 = ObjectAnimator.ofFloat(appbarCard, "radius", 0);
-            ValueAnimator animator2 = ValueAnimator.ofInt(BTApp.dp(50), BTApp.dp(56));
+            int newHeight = BTApp.dp(56 + offsetDP);
+            ValueAnimator animator2 = ValueAnimator.ofInt(cardCurHeight, newHeight);
             animator2.addUpdateListener(animation -> {
                 int value = (int) animation.getAnimatedValue();
                 appbarCard.getLayoutParams().height = value;
                 appbarCard.requestLayout();
             });
+            cardCurHeight = newHeight;
             ValueAnimator animator3 = ValueAnimator.ofInt(BTApp.dp(16), 0);
             animator3.addUpdateListener(animation -> {
                 ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) appbarCard.getLayoutParams();
                 mlp.rightMargin = (int) animation.getAnimatedValue();
                 mlp.leftMargin = (int) animation.getAnimatedValue();
+                mlp.topMargin = (int) ((int) animation.getAnimatedValue() / 2.6);
                 toolbar.setPadding((int) animation.getAnimatedValue(), (int) ((int)animation.getAnimatedValue()/5.0F), (int) ((int)animation.getAnimatedValue()*1.4F), 0);
             });
             ValueAnimator animator4 = ValueAnimator.ofFloat(BTApp.dp(4), BTApp.dp(8));
@@ -269,7 +321,21 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
                 @Override public void onAnimationCancel(Animator animation) { }
                 @Override public void onAnimationRepeat(Animator animation) { }
             });
-            animatorSet.start();
+            if(cardCurAnimSet != null) cardCurAnimSet.cancel();
+            cardCurAnimSet = animatorSet;
+            cardCurAnimSet.start();
+            searchText.setVisibility(View.GONE);
+        } else {
+            int newHeight = BTApp.dp(56 + offsetDP);
+            ValueAnimator heightAnim = ValueAnimator.ofInt(cardCurHeight, newHeight);
+            heightAnim.addUpdateListener(animation -> {
+                int value = (int) animation.getAnimatedValue();
+                appbarCard.getLayoutParams().height = value;
+                appbarCard.requestLayout();
+            });
+            cardCurHeight = newHeight;
+            heightAnim.setDuration(300);
+            heightAnim.start();
         }
     }
 
@@ -278,14 +344,31 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         toolbar.setNavigationIcon(navIconRes);
     }
 
-    public void showNavLogo() {
-        navIconRes = R.drawable.ic_logo;
+    public void showNavLogo(boolean menu) {
+        navIconRes = menu ? R.drawable.ic_menu : R.drawable.ic_logo;
         toolbar.setNavigationIcon(navIconRes);
     }
 
 
     public void showTabBar() {
         tabLayout.setVisibility(View.VISIBLE);
+        /*ValueAnimator margin = ValueAnimator.ofInt(BTApp.dp(-48), 0);
+        margin.addUpdateListener(animation -> {
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) tabLayout.getLayoutParams();
+            mlp.topMargin = (int) animation.getAnimatedValue();
+        });
+        ValueAnimator alpha = ValueAnimator.ofFloat(0F, 1F);
+        alpha.addUpdateListener(animation -> tabLayout.setAlpha((Float) animation.getAnimatedValue()));
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(margin, alpha);
+        set.addListener(new Animator.AnimatorListener() {
+            @Override public void onAnimationStart(Animator animation) { }
+            @Override public void onAnimationEnd(Animator animation) { }
+            @Override public void onAnimationCancel(Animator animation) { }
+            @Override public void onAnimationRepeat(Animator animation) { }
+        });
+        set.setDuration(300);
+        set.start();*/
     }
 
     public void showTabBar(String... resids) {
@@ -294,7 +377,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
             tab.setText(resids[i]);
             tabLayout.addTab(tab);
         }
-        tabLayout.setVisibility(View.VISIBLE);
+        showTabBar();
     }
 
     public void showTabBar(int... resids) {
@@ -303,11 +386,33 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
             tab.setText(resids[i]);
             tabLayout.addTab(tab);
         }
-        tabLayout.setVisibility(View.VISIBLE);
+        showTabBar();
     }
 
     public void hideTabBar() {
+        /*ValueAnimator margin = ValueAnimator.ofInt(0, BTApp.dp(-48));
+        margin.addUpdateListener(animation -> {
+            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) tabLayout.getLayoutParams();
+            mlp.topMargin = (int) animation.getAnimatedValue();
+        });
+        ValueAnimator alpha = ValueAnimator.ofFloat(1F, 0F);
+        alpha.addUpdateListener(animation -> tabLayout.setAlpha((Float) animation.getAnimatedValue()));
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(margin, alpha);
+        set.addListener(new Animator.AnimatorListener() {
+            @Override public void onAnimationStart(Animator animation) { }
+            @Override public void onAnimationEnd(Animator animation) {
+                ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) tabLayout.getLayoutParams();
+                mlp.topMargin = 0;
+                tabLayout.setAlpha(1F);
+                tabLayout.setVisibility(View.GONE);
+                tabLayout.removeAllTabs();
+            }
+            @Override public void onAnimationCancel(Animator animation) { }
+            @Override public void onAnimationRepeat(Animator animation) { }
+        });
+        set.setDuration(300);
+        set.start();*/
         tabLayout.setVisibility(View.GONE);
-        tabLayout.removeAllTabs();
     }
 }

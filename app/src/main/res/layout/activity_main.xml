@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity"
-    tools:openDrawer="start">
+    tools:context=".MainActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -25,12 +24,12 @@
                 android:id="@+id/appkit_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior=".ui.ScrollingBehavior" />
+                app:layout_behavior=".ui.ScrollingBehavior"/>
 
             <FrameLayout
                 android:id="@+id/appbarBackground"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="top"
                 app:layout_behavior=".ui.ScrollingBehavior">
 
@@ -38,7 +37,7 @@
                     android:id="@+id/appbarCard"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_gravity="bottom"
+                    android:layout_gravity="top"
                     android:layout_marginBottom="8dp"
                     app:cardBackgroundColor="?colorPrimary"
                     app:cardCornerRadius="0dp"

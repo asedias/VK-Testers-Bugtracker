@@ -10,10 +10,6 @@
         android:icon="@drawable/ic_detail"
         android:title="@string/prefs_products" />
     <item
-        android:id="@+id/navigation_members"
-        android:icon="@drawable/ic_members"
-        android:title="@string/prefs_members"/>
-    <item
         android:id="@+id/navigation_updates"
         android:icon="@drawable/ic_updates"
         android:title="@string/prefs_updates" />

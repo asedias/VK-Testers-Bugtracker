@@ -44,6 +44,7 @@ public class ProductListFragment extends RecyclerFragment<ProductsAdapter> {
         this.mAdapter = new ProductsAdapter();
         this.title = BTApp.String(R.string.prefs_products);
         this.setTitleNeeded = false;
+        this.cardOffset = 48;
         this.needUpdate = ProductsData.getCacheData().getSize() == 0;
     }
 

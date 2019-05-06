@@ -77,6 +77,7 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
     public ReportListFragment() {
         this.mAdapter = new ReportsAdapter();
         this.canLoadMore = true;
+        this.title = BTApp.String(R.string.search);
     }
 
     @Override
