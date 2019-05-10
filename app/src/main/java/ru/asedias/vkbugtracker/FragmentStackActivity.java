@@ -2,11 +2,14 @@ package ru.asedias.vkbugtracker;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,12 +21,15 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -39,8 +45,17 @@ import ru.asedias.vkbugtracker.fragments.ReportListFragment;
 import ru.asedias.vkbugtracker.fragments.UpdatesListFragment;
 import ru.asedias.vkbugtracker.ui.BottomNavigationViewEx;
 import ru.asedias.vkbugtracker.ui.Fonts;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 
-import static ru.asedias.vkbugtracker.ThemeManager.currentTheme;
+import static ru.asedias.vkbugtracker.ui.ThemeController.KEY_BACKGROUND;
+import static ru.asedias.vkbugtracker.ui.ThemeController.KEY_PRIMARY;
+import static ru.asedias.vkbugtracker.ui.ThemeController.KEY_TEXTCOLOR;
+import static ru.asedias.vkbugtracker.ui.ThemeController.KEY_WINDOW_BACKGROUND;
+import static ru.asedias.vkbugtracker.ui.ThemeController.THEME_DARK;
+import static ru.asedias.vkbugtracker.ui.ThemeController.THEME_LIGHT;
+import static ru.asedias.vkbugtracker.ui.ThemeController.currentTheme;
+import static ru.asedias.vkbugtracker.ui.ThemeController.getValue;
+import static ru.asedias.vkbugtracker.ui.ThemeController.isDark;
 
 /**
  * Created by rorom on 11.02.2019.
@@ -55,6 +70,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
     private BottomNavigationViewEx bottomNavView;
     private AppBarLayout appbar;
     private DrawerLayout drawerLayout;
+    private RecyclerView drawerList;
     private View searchText;
     private HashMap<Integer, Stack<Fragment>> mStacks;
     private ArrayList<String> queue;
@@ -75,6 +91,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BTApp.setAppDisplayMetrix(this);
         if(savedInstanceState == null) {
             mStacks = new HashMap<>();
             queue = new ArrayList<>();
@@ -87,11 +104,12 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         if (Build.VERSION.SDK_INT >= 21) {
             int visibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN + View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             if(Build.VERSION.SDK_INT >= 26) {
-                if(currentTheme == R.style.AppTheme) {
+                if(!ThemeController.isDark()) {
                     visibility += View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
                 }
-                this.getWindow().setNavigationBarColor(BTApp.AttrColor(R.attr.colorPrimary));
+                this.getWindow().setNavigationBarColor(ThemeController.getPrimaryColor());
             }
+            this.getWindow().setBackgroundDrawable(new ColorDrawable(ThemeController.getValue(KEY_WINDOW_BACKGROUND)));
             this.getWindow().getDecorView().setSystemUiVisibility(visibility);
         }
         this.appbar = this.findViewById(R.id.appBarLayout);
@@ -99,7 +117,9 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         this.tabLayout = this.findViewById(R.id.tabs);
         this.appbarBgContainer = this.findViewById(R.id.appbarBackground);
         this.appbarCard = this.findViewById(R.id.appbarCard);
+        this.appbarCard.setCardBackgroundColor(ThemeController.getPrimaryColor());
         this.toolbar = this.findViewById(R.id.toolbar);
+        this.toolbar.setTitleTextColor(ThemeController.getTextColor());
         this.bottomNavView = this.findViewById(R.id.navigation);
         this.bottomNavView.enableAnimation(false);
         this.bottomNavView.enableShiftingMode(false);
@@ -109,6 +129,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         this.bottomNavView.setTextSize(14);
         this.bottomNavView.setTextTypeface(Fonts.Medium);
         this.bottomNavView.setOnNavigationItemSelectedListener(this);
+        this.bottomNavView.setBackgroundColor(ThemeController.getPrimaryColor());
         new QBadgeView(this)
                 .setBadgeNumber(11)
                 .setGravityOffset(42, 4, true)
@@ -119,7 +140,14 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         this.toolbar.setNavigationOnClickListener(navClick);
         this.toolbar.inflateMenu(R.menu.menu);
         this.drawerLayout = this.findViewById(R.id.drawer_layout);
+        this.drawerList = this.findViewById(R.id.drawer_list);
         this.searchText = this.findViewById(R.id.search_text);
+        this.searchText.setVisibility(View.GONE);
+    }
+
+    public void onConfigurationChanged(Configuration var1) {
+        super.onConfigurationChanged(var1);
+        BTApp.setAppDisplayMetrix(this);
     }
 
     public void showFragment(Fragment fragment) {
@@ -138,11 +166,21 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         showFragment(fragment);
     }
 
+    public void clearStacks() {
+        spliceStack(R.id.navigation_reports, 0);
+        spliceStack(R.id.navigation_products, 0);
+        spliceStack(R.id.navigation_updates, 0);
+    }
+
+    public void spliceStack(int id, int size) {
+        mStacks.get(id).setSize(size);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if(currentID == item.getItemId()) {
             if(mStacks.get(item.getItemId()).size() > 1) {
-                mStacks.get(item.getItemId()).setSize(1);
+                this.spliceStack(item.getItemId(), 1);
                 showFragment(mStacks.get(item.getItemId()).lastElement());
             } else {
                 Fragment fr = mStacks.get(item.getItemId()).lastElement();
@@ -222,6 +260,18 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
 
     public AppBarLayout getAppbar() {
         return appbar;
+    }
+
+    public CardView getAppbarCard() {
+        return appbarCard;
+    }
+
+    public DrawerLayout getDrawerLayout() {
+        return drawerLayout;
+    }
+
+    public RecyclerView getDrawerList() {
+        return drawerList;
     }
 
     public int getCurrentID() {
@@ -345,8 +395,12 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
     }
 
     public void showNavLogo(boolean menu) {
-        navIconRes = menu ? R.drawable.ic_menu : R.drawable.ic_logo;
-        toolbar.setNavigationIcon(navIconRes);
+        if(drawerLayout.getDrawerLockMode(Gravity.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
+            navIconRes = menu ? R.drawable.ic_menu : R.drawable.ic_logo;
+            toolbar.setNavigationIcon(navIconRes);
+        } else {
+            toolbar.setNavigationIcon(null);
+        }
     }
 
 

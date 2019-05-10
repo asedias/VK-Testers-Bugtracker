@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.droidsonroids.jspoon.annotation.Selector;
+import pl.droidsonroids.jspoon.annotation.SkipOn;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 
 /**
@@ -30,10 +31,11 @@ public class ReportList implements ListModel<ReportList.ReportItem> {
         @Selector(value = ".bt_report_title_link", defValue = "") public String title;
         @Selector(value = ".bt_report_title_link", attr = "href", regex = ".+bug([0-9]*)", defValue = "0") public int id;
         @Selector(".bt_tag_label") public List<ReportTag> tags;
+        @SkipOn(NumberFormatException.class)
         @Selector(value = ".bt_tag_label", attr = "onclick", regex = "BugTracker\\.addSearchFilter\\('\\w+', ([0-9]*)", defValue = "0") public int product_id;
         @Selector(".bt_report_info__value") public String status;
         @Selector(".bt_report_info_details") public String details;
-        @Selector(value = ".bt_report_info_details > a", attr = "href", regex = ".+=([0-9]*)") public int uid;
+        @Selector(value = ".bt_report_info_details > a", attr = "href", regex = ".+=([0-9]*)", defValue = "0") public int uid;
         public UserInfo.User user = new UserInfo.User();
 
         public static class ReportTag {

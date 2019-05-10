@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/text_margin"
+    android:paddingTop="@dimen/text_margin"
+    android:paddingRight="@dimen/text_margin"
+    android:paddingLeft="@dimen/text_margin"
+    android:paddingBottom="8dp"
     android:text="18602 reports found"
     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-    android:textColor="?primaryTextColor"
+    android:textColor="@android:color/black"
     android:textSize="16sp">
 
 </ru.asedias.vkbugtracker.ui.text.RegularTextView>

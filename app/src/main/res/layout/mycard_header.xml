@@ -22,7 +22,7 @@
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@+id/photo"
         android:text="TextView"
-        android:textColor="?primaryTextColor"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         tools:text="Pavel Durov" />
 

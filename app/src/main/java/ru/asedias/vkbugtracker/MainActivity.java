@@ -33,14 +33,14 @@ import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.data.UserData;
+import ru.asedias.vkbugtracker.fragments.LoginFragment;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
+import ru.asedias.vkbugtracker.fragments.SettingsFragment;
 import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.MaterialDialogBuilder;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 import ru.asedias.vkbugtracker.ui.drawer.DrawerAdapter;
-
-import static ru.asedias.vkbugtracker.ThemeManager.currentTheme;
-import static ru.asedias.vkbugtracker.api.API.Prefs;
 
 public class MainActivity extends FragmentStackActivity {
 
@@ -48,9 +48,11 @@ public class MainActivity extends FragmentStackActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(Actions.ACTION_USER_UPDATED)) {
+                new DrawerAdapter(getDrawerLayout(), getDrawerList(), getLayoutInflater());
                 loadUserPhoto();
             }
             if(intent.getAction().equals(Actions.ACTION_COOKIE_UPDATED)) {
+                getUserInfo();
                 ProductsData.updateProducts(false);
             }
         }
@@ -58,12 +60,10 @@ public class MainActivity extends FragmentStackActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(currentTheme);
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        BTApp.setAppDisplayMetrix(this);
-        if(!LoginActivity.isLoggedOnAndActual()) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish();
+        if(!LoginFragment.isLoggedOnAndActual()) {
+            this.replaceFragment(new LoginFragment(), R.id.navigation_reports);
             return;
         }
         ErrorController.Setup(this);
@@ -71,15 +71,15 @@ public class MainActivity extends FragmentStackActivity {
             if(this.getIntent().getBooleanExtra("crash", false)) {
                 showCrashLog();
             } else {
-                getUserInfo();
                 this.replaceFragment(new ReportListFragment(), R.id.navigation_reports);
                 handleIntent(getIntent());
             }
         }
         getToolbar().getMenu().getItem(0).getActionView().setOnClickListener(v -> {
-            this.startActivity(new Intent(this, SettingsActivity.class));
+            this.replaceFragment(new SettingsFragment(), 0);
         });
-        DrawerAdapter adapter = new DrawerAdapter(this.findViewById(R.id.drawer_layout), this.findViewById(R.id.drawer_list), getLayoutInflater());
+        new DrawerAdapter(this.getDrawerLayout(), this.getDrawerList(), getLayoutInflater());
+        this.getDrawerLayout().setStatusBarBackgroundColor(0);
     }
 
     private boolean handleIntent(Intent intent) {
@@ -123,12 +123,17 @@ public class MainActivity extends FragmentStackActivity {
     }
 
     public void loadUserPhoto() {
-        Picasso.with(BTApp.context)
-                .load(UserData.getPhoto())
-                .transform(new CropCircleTransformation())
-                .placeholder(BTApp.Drawable(R.drawable.placeholder_user))
-                .error(BTApp.Drawable(R.drawable.ic_settings))
-                .into((ImageView) getToolbar().getMenu().getItem(0).getActionView());
+        if(getToolbar().getMenu().size() > 0) {
+            View photo = getToolbar().getMenu().getItem(0).getActionView();
+            if(photo != null && photo instanceof ImageView) {
+                Picasso.with(BTApp.context)
+                        .load(UserData.getPhoto())
+                        .transform(new CropCircleTransformation())
+                        .placeholder(BTApp.Drawable(R.drawable.placeholder_user))
+                        .error(BTApp.Drawable(R.drawable.ic_settings))
+                        .into((ImageView) getToolbar().getMenu().getItem(0).getActionView());
+            }
+        }
     }
 
     private void getUserInfo() {
@@ -138,9 +143,7 @@ public class MainActivity extends FragmentStackActivity {
                 UserInfo data = response.body();
                 try {
                     UserInfo.User user = data.getResponse().get(0);
-                    Prefs();
                     UserData.updateUserData(user);
-                    loadUserPhoto();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 }

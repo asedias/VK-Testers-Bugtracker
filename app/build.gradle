@@ -8,6 +8,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
         def versionPropsFile = file('version.properties')
         if (versionPropsFile.canRead()) {
@@ -67,4 +68,5 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'q.rorbin:badgeview:1.1.0'
 
+    compile 'org.jetbrains:annotations:15.0'
 }

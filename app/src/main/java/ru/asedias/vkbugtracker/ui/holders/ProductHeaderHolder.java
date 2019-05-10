@@ -14,6 +14,7 @@ import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductInfo;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 
 /**
  * Created by rorom on 15.12.2018.
@@ -27,6 +28,7 @@ public class ProductHeaderHolder extends BindableHolder<ProductInfo> {
     public Button btn1;
     public Button btn2;
     public Button btn3;
+    public View buttonsWrap;
 
     public ProductHeaderHolder(LayoutInflater inflater) {
         super(inflater.inflate(R.layout.profile_head_group, null, false));
@@ -36,6 +38,7 @@ public class ProductHeaderHolder extends BindableHolder<ProductInfo> {
         this.btn1 = itemView.findViewById(R.id.profile_btn1);
         this.btn2 = itemView.findViewById(R.id.profile_btn2);
         this.btn3 = itemView.findViewById(R.id.profile_btn3);
+        this.buttonsWrap = itemView.findViewById(R.id.profile_buttons_wrap);
     }
 
     @Override
@@ -45,6 +48,7 @@ public class ProductHeaderHolder extends BindableHolder<ProductInfo> {
         this.btn2.setVisibility(View.GONE);
         this.btn3.setVisibility(View.GONE);
         this.name.setText(data.title);
+        this.name.setTextColor(ThemeController.getTextColor());
         this.version.setSingleLine(false);
         this.version.setText(Html.fromHtml(data.description));
         this.version.setClickable(true);
@@ -73,9 +77,20 @@ public class ProductHeaderHolder extends BindableHolder<ProductInfo> {
                 }
             } else {
                 if(i == 0) {
-                    String text = data.actionProds.get(0);
-                    this.btn2.setText(text.substring(0, text.indexOf(",")));
-                    this.btn2.setVisibility(View.VISIBLE);
+                    if(data.actionProds.size() > 0) {
+                        String text = data.actionProds.get(0);
+                        this.btn2.setVisibility(View.VISIBLE);
+                        if(text.equals(",")) {
+                            this.btn2.setText(text.substring(0, text.indexOf(",")));
+                        } else if(text.length() > 0){
+                            this.btn2.setText(text);
+                        } else {
+                            this.btn2.setVisibility(View.GONE);
+                            this.buttonsWrap.setVisibility(View.GONE);
+                        }
+                    } else {
+                        this.buttonsWrap.setVisibility(View.GONE);
+                    }
                 }
             }
         }

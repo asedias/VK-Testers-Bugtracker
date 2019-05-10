@@ -10,6 +10,7 @@ import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
 /**
@@ -34,6 +35,7 @@ public class AuthorHolder extends BindableHolder<Report.Author> {
         super.bind(data);
         Picasso.with(BTApp.context).load(data.author_photo.contains("http") ? data.author_photo : "https://vk.com"+data.author_photo).transform(new CropCircleTransformation()).into(this.photo);
         this.name.setText(data.author_name);
+        this.name.setTextColor(ThemeController.getTextColor());
         this.date.setText(data.date);
     }
 }

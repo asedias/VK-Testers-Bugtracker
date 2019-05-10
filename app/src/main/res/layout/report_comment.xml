@@ -25,7 +25,7 @@
         android:layout_toRightOf="@+id/photo"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="?attr/colorAccent"
+        android:textColor="@color/colorAccent"
         android:textSize="14sp"
         tools:text="Pavel Durov" />
 
@@ -57,7 +57,7 @@
         android:layout_marginTop="2dp"
         android:layout_toRightOf="@+id/photo"
         android:text="TextView"
-        android:textColor="?primaryTextColor"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
         tools:text="Насколько я помню, было, и не только со стикером" />
 

@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -25,6 +26,7 @@ public class DetailHolder extends BindableHolder<Report.Detail> {
     public void bind(Report.Detail data) {
         super.bind(data);
         this.title.setText(data.title);
+        this.subtitle.setTextColor(ThemeController.getTextColor());
         this.subtitle.setText(data.description);
     }
 }

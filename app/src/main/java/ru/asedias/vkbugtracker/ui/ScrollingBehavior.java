@@ -3,6 +3,7 @@ package ru.asedias.vkbugtracker.ui;
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -29,14 +30,13 @@ public class ScrollingBehavior extends CoordinatorLayout.Behavior<View> {
 
     @Override
     public boolean onLayoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+        lp.height = BTApp.mMetrics.heightPixels + BTApp.dp(56) - BTApp.getStatusBarHeight();
         return super.onLayoutChild(parent, child, layoutDirection);
     }
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
-        //Log.d("BEHAVIOR", dependency.getClass().getSimpleName() + ": " + dependency.getTop() + "\n Dependency: " + dependency.getY());
-        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) dependency.getLayoutParams();
-        int fh = dependency.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
         child.setTranslationY(dependency.getY());
         return super.onDependentViewChanged(parent, child, dependency);
     }

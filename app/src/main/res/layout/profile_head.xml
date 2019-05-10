@@ -49,7 +49,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:alpha="0.0"
-            android:background="?colorPrimary" />
+            android:background="@color/colorPrimaryLight" />
 
         <ru.asedias.vkbugtracker.ui.text.RegularTextView
             android:id="@+id/profile_name"

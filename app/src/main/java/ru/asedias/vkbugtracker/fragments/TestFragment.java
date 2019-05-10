@@ -1,7 +1,5 @@
 package ru.asedias.vkbugtracker.fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -9,22 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import junit.framework.Test;
 
 import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.asedias.vkbugtracker.LoginActivity;
-import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.webmethods.GetReportInfo;
-import ru.asedias.vkbugtracker.api.webmethods.GetReportList;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
-import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
 
 /**
  * Created by rorom on 20.10.2018.

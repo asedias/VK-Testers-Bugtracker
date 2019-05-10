@@ -9,12 +9,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.asedias.vkbugtracker.api.webmethods.models.ListModel;
+import ru.asedias.vkbugtracker.data.UserData;
 import ru.asedias.vkbugtracker.fragments.LoaderFragment;
 import ru.asedias.vkbugtracker.fragments.RecyclerFragment;
 import ru.asedias.vkbugtracker.ui.adapters.DataAdapter;
-
-import static ru.asedias.vkbugtracker.api.API.Cookie;
-import static ru.asedias.vkbugtracker.api.API.uid;
 
 /**
  * Created by rorom on 17.10.2018.
@@ -37,10 +35,10 @@ public class WebRequest<I> {
                         if (fragment instanceof RecyclerFragment) {
                             if (((RecyclerFragment) fragment).getAdapter() instanceof DataAdapter) {
                                 DataAdapter adapter = ((DataAdapter) ((RecyclerFragment) fragment).getAdapter());
-                                if(adapter.getItemCount() == 0 || fragment.isRefreshing() || !fragment.canLoadMode()) {
-                                    adapter.setData((ListModel) data);
-                                } else {
+                                if(!fragment.isRefreshing() && adapter.getItemCount() > 0 ) {
                                     adapter.addData((ListModel) data);
+                                } else {
+                                    adapter.setData((ListModel) data);
                                 }
                             }
                         }
@@ -72,11 +70,11 @@ public class WebRequest<I> {
     public WebRequest(Callback<I> callback, boolean isAPI) {
         this.callback = callback;
         if(isAPI) {
-            this.params.put("access_token", API.access_token);
+            this.params.put("access_token", UserData.getAccessToken());
             this.params.put("v", "5.85");
         } else {
             this.params.put("al", "0");
-            this.params.put("al_id", uid);
+            this.params.put("al_id", String.valueOf(UserData.getUID()));
         }
     }
 

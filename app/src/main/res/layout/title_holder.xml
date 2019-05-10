@@ -9,5 +9,5 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-    android:textColor="?primaryTextColor"
+    android:textColor="@android:color/black"
     tools:text="@string/addr_severity" />

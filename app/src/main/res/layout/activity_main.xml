@@ -17,7 +17,6 @@
             android:id="@+id/coordinator"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="?attr/contentBackground"
             android:fitsSystemWindows="true">
 
             <FrameLayout
@@ -39,7 +38,7 @@
                     android:layout_height="56dp"
                     android:layout_gravity="top"
                     android:layout_marginBottom="8dp"
-                    app:cardBackgroundColor="?colorPrimary"
+                    app:cardBackgroundColor="@color/colorPrimaryLight"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="8dp" />
 
@@ -71,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_gravity="bottom"
-            android:background="?navBackground"
+            android:background="@drawable/bg_bottom_nav_light"
             app:itemIconTint="@color/bottom_nav_icon_tint"
             app:itemTextColor="@color/bottom_nav_icon_tint"
             app:menu="@menu/navigation" />
@@ -83,6 +82,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        android:background="?colorPrimary"/>
+        android:background="@color/colorPrimaryLight"/>
 
 </android.support.v4.widget.DrawerLayout>

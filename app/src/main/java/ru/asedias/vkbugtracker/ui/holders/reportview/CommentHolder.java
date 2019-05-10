@@ -21,6 +21,7 @@ import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.FlowLayout;
 import ru.asedias.vkbugtracker.ui.ImageGridParser;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
 /**
@@ -57,6 +58,7 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
                 .into(this.photo);
         this.name.setText(data.author_name);
         this.comment.setMovementMethod(LinkMovementMethod.getInstance());
+        this.comment.setTextColor(ThemeController.getTextColor());
         if(data.text.length() > 0) {
             this.comment.setText(Html.fromHtml(data.text));
             this.comment.setVisibility(View.VISIBLE);

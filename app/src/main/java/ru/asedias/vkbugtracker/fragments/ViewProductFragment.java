@@ -19,7 +19,7 @@ import ru.asedias.vkbugtracker.ui.adapters.ViewProductAdapter;
  * Created by rorom on 15.12.2018.
  */
 
-public class ViewProductFragment extends RecyclerFragment<ViewProductAdapter> {
+public class ViewProductFragment extends CardRecyclerFragment<ViewProductAdapter> {
 
     private int pid = 3;
 
@@ -49,11 +49,12 @@ public class ViewProductFragment extends RecyclerFragment<ViewProductAdapter> {
     public WebRequest getRequest() {
         if(getArguments() != null) {
             this.pid = getArguments().getInt("pid");
+            this.getAdapter().setPid(this.pid);
         }
         return new GetProductInfo(this, this.pid, data -> {
-            data.product = ProductsData.getProduct(this.pid);
+            //data.product = ProductsData.getProduct(this.pid);
+            data.pid = this.pid;
             for(int i = 0; i < data.counters.size(); i++) {
-                data.counters.get(i).product = this.pid;
                 if(data.counters.get(i).link.contains("reporters")) {
                     data.counters.get(i).toReports = false;
                     continue;

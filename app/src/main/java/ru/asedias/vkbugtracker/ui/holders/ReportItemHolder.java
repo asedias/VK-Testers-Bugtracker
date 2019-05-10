@@ -19,6 +19,7 @@ import ru.asedias.vkbugtracker.fragments.ViewReportFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.FlowLayout;
 import ru.asedias.vkbugtracker.ui.Fonts;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 
 /**
  * Created by rorom on 20.10.2018.
@@ -50,6 +51,7 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
     public void bind(ReportList.ReportItem report) {
         super.bind(report);
         this.mTitle.setText(report.title);
+        this.mTitle.setTextColor(ThemeController.getTextColor());
         this.mTime.setText(report.details);
         Picasso.with(BTApp.context)
                 .load(report.user.getPhoto200())
@@ -60,7 +62,7 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
         this.mTagsLayout.removeAllViews();
         float textPadding = BTApp.dp(24);
         float fullwidth = 0;
-        float width = BTApp.mMetrics.widthPixels - BTApp.dp(115);
+        float width = BTApp.mMetrics.widthPixels - BTApp.dp(135);
         for(int i = 1; i < report.tags.size(); i++) {
             final TextView temp = (TextView) mInflater.inflate(R.layout.tag_item, null);
             fullwidth += temp.getPaint().measureText(report.tags.get(i).label) + textPadding;
@@ -73,8 +75,13 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
 
     public void showProduct(boolean show) {
         if(show) {
+            ProductList.Product product;
+            if(data.product_id == 0) {
+                product = ProductsData.getProductByName(data.tags.get(0).label);
+            } else {
+                product = ProductsData.getProduct(data.product_id);
+            }
             this.mProduct.setVisibility(View.VISIBLE);
-            ProductList.Product product = ProductsData.getProduct(data.product_id);
             Picasso.with(BTApp.context)
                     .load(product.photo)
                     .placeholder(BTApp.Drawable(R.drawable.ic_doc_text))

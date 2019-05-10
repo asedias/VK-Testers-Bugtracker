@@ -18,6 +18,7 @@ import java.util.Map;
 
 import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
+import ru.asedias.vkbugtracker.ui.LayoutHelper;
 import ru.asedias.vkbugtracker.ui.adapters.DataAdapter;
 import ru.asedias.vkbugtracker.ui.holders.LoadingHolder;
 
@@ -46,26 +47,26 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
         this.mSwipeRefresh.setProgressViewOffset(true, BTApp.dp(56), BTApp.dp(112));
         this.mList.setLayoutManager(getLayoutManager());
         this.mList.setAdapter(getAdapter());
-        this.mList.setPadding(0, BTApp.dp(56 + cardOffset), 0, 0);
-        if(canLoadMode()) {
-            mList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
+        this.mList.setPadding(0, BTApp.dp(56 + cardOffset), 0, bottomOffset);
+        mList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(canLoadMode()) {
                     int totalItemCount = mList.getLayoutManager().getItemCount();
-                    int lastVisibleItem = ((LinearLayoutManager)mList.getLayoutManager()).findLastVisibleItemPosition();
+                    int lastVisibleItem = ((LinearLayoutManager) mList.getLayoutManager()).findLastVisibleItemPosition();
                     int visibleThreshold = 5;
                     if (!isLoadingMore && totalItemCount <= lastVisibleItem + visibleThreshold) {
                         loadMore(true);
                     }
                 }
+            }
 
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                }
-            });
-        }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         return tempContent;
     }
 
@@ -135,7 +136,7 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
     public void reExecuteRequest() {
         this.request.cancel();
         this.loadMore(false);
-        if(!canLoadMode()) showProgress();
+        if(this.getAdapter().getItemCount() == 0) showProgress();
     }
 
     @Override

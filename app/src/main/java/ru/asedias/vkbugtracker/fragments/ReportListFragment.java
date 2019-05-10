@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
     private int uid = 0;
     private String status = "100";
     private int version = 0;
+    private boolean bookmark = false;
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -63,13 +65,21 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
         return fr;
     }
 
+    public static ReportListFragment newInstance(boolean bookmark) {
+        ReportListFragment fr = new ReportListFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("bookmark", bookmark);
+        fr.setArguments(args);
+        return fr;
+    }
+
     public static ReportListFragment newInstance(int uid, int pid, String status, int version) {
         ReportListFragment fr = new ReportListFragment();
         Bundle args = new Bundle();
         args.putInt("mid", uid);
         args.putInt("pid", pid);
-        args.putString("status", status);
-        args.putInt("version", version);
+        if(status.length() > 0) args.putString("status", status);
+        if(version >= 0) args.putInt("version", version);
         fr.setArguments(args);
         return fr;
     }
@@ -84,11 +94,14 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setTitleNeeded = !this.top;
+        this.title = BTApp.String(R.string.all_reports);
         this.uid = getArguments().getInt("mid");
         this.pid = getArguments().getInt("pid");
         this.status = getArguments().getString("status", "100");
         this.version = getArguments().getInt("version");
+        this.bookmark = getArguments().getBoolean("bookmark", false);
         if(pid > 0) {
+            this.title = "";
             getAdapter().setShowProduct(false);
             ProductList.Product product = ProductsData.getProduct(pid);
             toolbarViewHolder = new AttachmentHolder(R.layout.appkit_toolbar_view, getActivity().getLayoutInflater());
@@ -100,6 +113,10 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
                     .placeholder(BTApp.Drawable(R.drawable.placeholder_users))
                     .transform(new CropCircleTransformation())
                     .into(toolbarViewHolder.icon);
+        } else if(this.uid > 0) {
+            this.title = BTApp.String(R.string.title_dashboard);
+        } else if(this.bookmark) {
+            this.title = BTApp.String(R.string.my_bookmarks);
         }
     }
 
@@ -115,15 +132,17 @@ public class ReportListFragment extends RecyclerFragment<ReportsAdapter> {
 
     @Override
     public WebRequest getRequest() {
-        return new GetReportList(this, btUDate, false, body -> {
+        return new GetReportList(this, btUDate, this.bookmark, body -> {
             if(this.btUDate == 0) getAdapter().setData(new ReportList());
-            this.btUDate = Integer.parseInt(body.btUDate.get(body.btUDate.size() - 1));
             if(this.pid > 0) for(ReportList.ReportItem report : body.reports) report.product_id = this.pid;
-            if(body.reports.size() > 0) {
-                getUsers(body);
-            } else if(body.reports.size() == 1) {
+            if(body.reports.size() == 0) return body;
+            if(body.reports.size() < 49){
                 this.canLoadMore = false;
+                this.mAdapter.isLoadingAdapter = false;
+            } else {
+                this.btUDate = Integer.parseInt(body.btUDate.get(body.btUDate.size() - 1));
             }
+            getUsers(body);
             return body;
         }).setUid(this.uid).setStatus(this.status).setProduct(this.pid).setVersion(this.version);
     }

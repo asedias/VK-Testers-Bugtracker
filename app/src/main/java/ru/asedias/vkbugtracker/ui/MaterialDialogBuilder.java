@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
-import ru.asedias.vkbugtracker.ThemeManager;
 
 /**
  * Created by rorom on 10.12.2018.
@@ -26,7 +25,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
     private int lineSpacing = BTApp.dp(4);
 
     public MaterialDialogBuilder(@NonNull Context context) {
-        super(context, ThemeManager.currentTheme == R.style.AppTheme ? R.style.AppTheme_Dialog : R.style.AppTheme_Dark_Dialog);
+        super(context, ThemeController.isDark() ? R.style.AppTheme_Dark_Dialog : R.style.AppTheme_Dialog);
     }
 
     public void setPositiveWarning(boolean warning) {
@@ -41,7 +40,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
     public AlertDialog show() {
         AlertDialog dialog = super.show();
         Drawable bg = BTApp.Drawable(R.drawable.bg_dialog);
-        bg.setColorFilter(new LightingColorFilter(ThemeManager.currentBackground, 0));
+        bg.setColorFilter(new LightingColorFilter(ThemeController.getBackground(), 0));
         dialog.getWindow().setBackgroundDrawable(bg);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());

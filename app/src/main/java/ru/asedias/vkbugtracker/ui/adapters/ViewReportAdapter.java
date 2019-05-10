@@ -11,6 +11,7 @@ import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
+import ru.asedias.vkbugtracker.ui.LayoutHelper;
 import ru.asedias.vkbugtracker.ui.holders.reportview.AttachmentHolder;
 import ru.asedias.vkbugtracker.ui.holders.reportview.AuthorHolder;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
@@ -86,7 +87,7 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
 
     @Override
     public void onBindViewHolder(@NonNull BindableHolder holder, int position) {
-        holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        holder.itemView.setLayoutParams(LayoutHelper.fullWidthRecycler());
         switch (getItemViewType(position)) {
             case TYPE_HEADER: {
                 if(position == 0) {

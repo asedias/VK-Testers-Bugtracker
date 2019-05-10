@@ -7,7 +7,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:textAppearance="@style/TextAppearance.AppCompat"
-    android:textColor="?primaryTextColor"
+    android:textColor="@android:color/black"
     tools:text="@string/network_error_description">
 
 </ru.asedias.vkbugtracker.ui.text.RegularTextView>

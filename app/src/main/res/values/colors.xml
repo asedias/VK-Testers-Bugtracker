@@ -14,8 +14,8 @@
     <color name="colorPrimaryLight">#ffffff</color>
     <color name="colorNavIconsLight">#95999b</color>
     <color name="colorIconsLight">#6c737a</color>
-    <color name="colorPrimaryDark">#303030</color>
-    <color name="colorDarkBackground">#262626</color>
+    <color name="colorPrimaryDark">#262728</color>
+    <color name="colorDarkBackground">#ff19191a</color>
     <color name="bottom_divider">#a8acae</color>
     <color name="tag">#AAAAAA</color>
 	<color name="search">#1e000000</color>

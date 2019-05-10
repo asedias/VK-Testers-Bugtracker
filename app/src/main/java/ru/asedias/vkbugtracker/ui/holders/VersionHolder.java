@@ -6,11 +6,13 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductInfo;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 
 /**
  * Created by rorom on 19.12.2018.
@@ -30,9 +32,16 @@ public class VersionHolder extends BindableHolder<ProductInfo.Version> {
     @Override
     public void bind(ProductInfo.Version data) {
         super.bind(data);
-        this.changelog.setText(Html.fromHtml(data.release_notes));
-        this.changelog.setClickable(true);
-        this.changelog.setMovementMethod(LinkMovementMethod.getInstance());
+        this.title.setTextColor(ThemeController.getTextColor());
+        this.changelog.setTextColor(ThemeController.getTextColor());
+        if(data.release_notes.length() > 0) {
+            this.changelog.setText(Html.fromHtml(data.release_notes));
+            this.changelog.setClickable(true);
+            this.changelog.setMovementMethod(LinkMovementMethod.getInstance());
+            this.changelog.setVisibility(View.VISIBLE);
+        } else {
+            this.changelog.setVisibility(View.GONE);
+        }
         SpannableStringBuilder ss = new SpannableStringBuilder(data.title);
         ss.append(" ");
         ss.append(data.date);

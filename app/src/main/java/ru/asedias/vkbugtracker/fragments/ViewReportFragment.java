@@ -32,6 +32,7 @@ public class ViewReportFragment extends RecyclerFragment<ViewReportAdapter> {
     public ViewReportFragment() {
         this.mAdapter = new ViewReportAdapter();
         this.title = BTApp.String(R.string.report);
+        this.showBottom = false;
     }
 
     public static ViewReportFragment newInstance(int rid) {

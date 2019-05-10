@@ -172,9 +172,9 @@ public class LoaderFragment extends BTFragment {
     }
 
     public void reExecuteRequest() {
+        showProgress();
         this.request.cancel();
         this.loadMore(false);
-        showProgress();
     }
 
     public void executeRequestIfNeeded() {

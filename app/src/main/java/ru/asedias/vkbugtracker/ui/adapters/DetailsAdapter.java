@@ -14,6 +14,7 @@ import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
+import ru.asedias.vkbugtracker.ui.LayoutHelper;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 import ru.asedias.vkbugtracker.ui.holders.DetailHolder;
 import ru.asedias.vkbugtracker.ui.holders.HeaderHolder;
@@ -49,7 +50,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<BindableHolder> impleme
 
     @Override
     public void onBindViewHolder(@NonNull BindableHolder holder, int position) {
-        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RecyclerView.LayoutParams lp = LayoutHelper.fullWidthRecycler();
         int viewType = getItemViewType(position);
         if(viewType == TYPE_PRODUCT) {
             holder.bind(ProductsData.getProductByName(data.get(0).description));

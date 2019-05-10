@@ -16,6 +16,7 @@ import ru.asedias.vkbugtracker.api.API;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.OverlayCircleTranformation;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
 /**
@@ -61,6 +62,7 @@ public class FooterHolder extends BindableHolder<Report.Footer> {
                         .into(photo);
             }
         }
+        this.reproduce.setTextColor(ThemeController.getTextColor());
         TextView count = (TextView) inflater.inflate(R.layout.footer_text, null);
         count.setText(String.valueOf(data.reproduce_count));
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(size, size);

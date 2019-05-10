@@ -18,6 +18,9 @@ public class UserInfo extends VKAPIResponse<UserInfo.User> {
         @SerializedName("photo_200")
         @Expose
         private String photo200;
+        @SerializedName("tester")
+        @Expose
+        private int tester;
 
         public Integer getId() {
             return id;
@@ -35,6 +38,9 @@ public class UserInfo extends VKAPIResponse<UserInfo.User> {
             return photo200;
         }
 
+        public int getTesterNum() {
+            return tester;
+        }
     }
 
 }

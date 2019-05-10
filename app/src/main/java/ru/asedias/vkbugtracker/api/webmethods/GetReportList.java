@@ -5,9 +5,8 @@ import ru.asedias.vkbugtracker.api.API;
 import ru.asedias.vkbugtracker.api.SimpleCallback;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
+import ru.asedias.vkbugtracker.data.UserData;
 import ru.asedias.vkbugtracker.fragments.LoaderFragment;
-
-import static ru.asedias.vkbugtracker.api.API.uid;
 
 /**
  * Created by rorom on 17.10.2018.
@@ -44,7 +43,7 @@ public class GetReportList extends WebRequest<ReportList> {
         this.params.put("product", String.valueOf(product));
         this.params.put("version", String.valueOf(versions));
         this.params.put("al", "0");
-        this.params.put("al_id", uid);
+        this.params.put("al_id", String.valueOf(UserData.getUID()));
         this.call = API.WebApi.GetReports(params);
     }
 

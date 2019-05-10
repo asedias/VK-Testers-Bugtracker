@@ -16,8 +16,11 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 import ru.asedias.vkbugtracker.api.API;
+import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.data.UserData;
+import ru.asedias.vkbugtracker.fragments.LoginFragment;
 import ru.asedias.vkbugtracker.ui.Fonts;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 
 /**
  * Created by rorom on 11.04.2018.
@@ -33,7 +36,10 @@ public class BTApp extends Application {
         super.onCreate();
         context = getApplicationContext();
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        new UserData(); new Fonts(); new API(); new ThemeManager();
+        new UserData(); new Fonts(); new API(); new ThemeController();
+        if(LoginFragment.isLoggedOnAndActual()) {
+            ProductsData.updateProducts(false);
+        }
         Thread.setDefaultUncaughtExceptionHandler(new RestartExceptionHandler(BTApp.context));
     }
 

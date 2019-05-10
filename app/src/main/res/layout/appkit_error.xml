@@ -17,7 +17,7 @@
         android:layout_marginRight="24dp"
         android:gravity="center"
         android:text="@string/network_error_description"
-        android:textColor="?primaryTextColor"
+        android:textColor="@android:color/black"
         android:textSize="16.0dip" />
 
     <Button

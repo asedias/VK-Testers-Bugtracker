@@ -34,6 +34,7 @@ import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
 import ru.asedias.vkbugtracker.api.webmethods.models.TrackerMember;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 import ru.asedias.vkbugtracker.api.webmethods.models.UpdateList;
+import ru.asedias.vkbugtracker.data.UserData;
 
 /**
  * Created by rorom on 17.10.2018.
@@ -43,15 +44,11 @@ public class API {
 
     public static API.VKApi VKApi;
     public static API.WebApi WebApi;
-    public static String Cookie;
-    public static String access_token;
     private static String v = "5.85";
-    public static String uid;
     private static OkHttpClient client;
     public static String URL_BASE = "https://vk.com/bugs";
 
     public API() {
-        Prefs();
         client = new OkHttpClient.Builder().addInterceptor(new CookieInterceptor()).build();
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.vk.com/method/")
                 .client(client)
@@ -66,18 +63,19 @@ public class API {
         WebApi = webfit.create(API.WebApi.class);
     }
 
-    public static void Prefs() {
+    /*public static void Prefs() {
         SharedPreferences prefs = BTApp.context.getSharedPreferences("user", Context.MODE_PRIVATE);
         Cookie = prefs.getString("cookies", "");
         access_token = prefs.getString("access_token", "");
         uid = prefs.getString("user_id", "0");
         BTApp.context.sendBroadcast(new Intent(Actions.ACTION_COOKIE_UPDATED));
-    }
+    }*/
+
     public interface VKApi {
         @GET("{method}")
         Call<ResponseBody> ApiCall(@Path("method") String method, @QueryMap Map<String, String> options);
 
-        @GET("users.get")
+        @GET("execute.getUsers")
         Call<UserInfo> GetUserInfo(@QueryMap Map<String, String> options);
     }
 
@@ -112,7 +110,7 @@ public class API {
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             request = request.newBuilder()
-                    .header("Cookie", Cookie)
+                    .header("Cookie", UserData.getCookie())
                     .build();
             Response response = chain.proceed(request);
             if(BuildConfig.DEBUG) {

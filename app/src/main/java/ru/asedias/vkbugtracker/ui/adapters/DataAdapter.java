@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import ru.asedias.vkbugtracker.api.webmethods.models.ListModel;
+import ru.asedias.vkbugtracker.ui.LayoutHelper;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 import ru.asedias.vkbugtracker.ui.holders.LoadingHolder;
 
@@ -55,7 +56,7 @@ public class DataAdapter<I extends BindableHolder, V extends ListModel> extends 
 
     @Override
     public void onBindViewHolder(@NonNull I holder, int position) {
-        holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        holder.itemView.setLayoutParams(LayoutHelper.fullWidthRecycler());
         if(position > data.getSize()) {
             holder.bind(error);
         } else {

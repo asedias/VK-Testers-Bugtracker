@@ -48,7 +48,7 @@
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@id/author"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="?primaryTextColor"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
         tools:text="При отписке от сообщества воспроизведение" />
 

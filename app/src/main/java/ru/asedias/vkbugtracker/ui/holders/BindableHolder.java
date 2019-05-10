@@ -23,4 +23,8 @@ public class BindableHolder<I> extends RecyclerView.ViewHolder implements Bindab
 
     @Override
     public void onClick(View v) { }
+
+    public View $(int id) {
+        return itemView.findViewById(id);
+    }
 }

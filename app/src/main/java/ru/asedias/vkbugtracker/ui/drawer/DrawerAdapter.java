@@ -1,10 +1,7 @@
 package ru.asedias.vkbugtracker.ui.drawer;
 
-import android.content.ClipData;
-import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -13,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,13 +19,12 @@ import java.util.List;
 import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.FragmentStackActivity;
 import ru.asedias.vkbugtracker.R;
-import ru.asedias.vkbugtracker.SettingsActivity;
 import ru.asedias.vkbugtracker.data.UserData;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 
-import static android.support.v7.widget.LinearLayoutManager.HORIZONTAL;
 import static android.support.v7.widget.LinearLayoutManager.VERTICAL;
-import android.support.design.widget.NavigationView;
+
 import android.widget.Toast;
 
 /**
@@ -49,17 +44,7 @@ public class DrawerAdapter extends RecyclerView.Adapter {
     private final DrawerLayout drawer;
     private final LayoutInflater inflater;
     private FragmentStackActivity activity = null;
-    private final ItemData[] items = new ItemData[] {
-            new ItemData(BTApp.String(R.string.add_report), BTApp.Drawable(R.drawable.ic_ab_add), () -> {
-                activity.startActivity(new Intent(activity, SettingsActivity.class));
-            }),
-            new ItemData(),
-            new ItemData(BTApp.String(R.string.title_home), BTApp.Drawable(R.drawable.ic_members), null),
-            new ItemData(BTApp.String(R.string.prefs_reports), BTApp.Drawable(R.drawable.ic_reports), () -> {
-                activity.replaceFragment(ReportListFragment.newInstance(UserData.getUID(), 0, "100", 0), R.id.navigation_reports);
-            }),
-            new ItemData(BTApp.String(R.string.my_bookmarks), BTApp.Drawable(R.drawable.ic_updates))
-    };
+    private final ArrayList<ItemData> items = new ArrayList<>();
     private Runnable currentTask = null;
     private final DrawerLayout.DrawerListener listener = new DrawerLayout.SimpleDrawerListener() {
         @Override
@@ -83,14 +68,31 @@ public class DrawerAdapter extends RecyclerView.Adapter {
 
 
     public DrawerAdapter(@NonNull DrawerLayout drawer, @NonNull RecyclerView list, @NonNull LayoutInflater inflater) {
+        this.fillItems();
         this.drawer = drawer;
         this.drawer.addDrawerListener(listener);
         this.activity = (FragmentStackActivity) this.drawer.getContext();
         this.list = list;
+        this.list.setBackgroundColor(ThemeController.getBackground());
         this.list.setLayoutManager(new LinearLayoutManager(inflater.getContext(), VERTICAL, false));
         this.list.setAdapter(this);
         this.inflater = inflater;
+    }
 
+    private void fillItems() {
+        this.items.clear();
+        this.items.add(new ItemData(BTApp.String(R.string.add_report), BTApp.Drawable(R.drawable.ic_ab_add)));
+        this.items.add(new ItemData());
+        this.items.add(new ItemData(BTApp.String(R.string.prefs_members), BTApp.Drawable(R.drawable.ic_members)));
+        if(UserData.isTester()) {
+            this.items.add(new ItemData(BTApp.String(R.string.title_home), BTApp.Drawable(R.drawable.ic_about), null));
+            this.items.add(new ItemData(BTApp.String(R.string.prefs_reports), BTApp.Drawable(R.drawable.ic_reports), () -> {
+                activity.replaceFragment(ReportListFragment.newInstance(UserData.getUID(), 0, "", -1), R.id.navigation_reports);
+            }));
+            this.items.add(new ItemData(BTApp.String(R.string.my_bookmarks), BTApp.Drawable(R.drawable.ic_updates), () -> {
+                activity.replaceFragment(ReportListFragment.newInstance(true), R.id.navigation_reports);
+            }));
+        }
     }
 
     @NonNull
@@ -107,26 +109,37 @@ public class DrawerAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ItemHolder) {
-            ((ItemHolder)holder).bind(items[position-1]);
+            ((ItemHolder)holder).bind(items.get(position-1));
         }
     }
 
     @Override
     public int getItemViewType(int position) {
         if(position <= 2) return position;
-        if(position + dropdownData.size() < getItemCount()) return TYPE_BASIC;
+        if(position + dropdownData.size() < getItemCount()) {
+            if(items.get(position-1).title == null) {
+                return TYPE_SEPARATOR;
+            } else {
+                return TYPE_BASIC;
+            }
+        }
         if(position + dropdownData.size() == getItemCount()) return TYPE_SECTION;
         return TYPE_DROPDOWN;
     }
 
     @Override
     public int getItemCount() {
-        return 6 + (dropdownData.size() > 0 ? dropdownData.size() + 1 : 0);
+        return items.size() + 1 + (dropdownData.size() > 0 ? dropdownData.size() + 1 : 0);
     }
 
     private void closeDrawer(@Nullable Runnable task) {
         currentTask = task;
         drawer.closeDrawer(list);
+    }
+
+    private void update() {
+        fillItems();
+        notifyDataSetChanged();
     }
 
     private class ItemData {
@@ -189,7 +202,8 @@ public class DrawerAdapter extends RecyclerView.Adapter {
 
         public void bind(ItemData data) {
             this.text.setText(data.title);
-            data.icon.setBounds(0, 0, BTApp.dp(24), BTApp.dp(24));
+            this.text.setTextColor(ThemeController.getTextColor());
+            if(data.icon != null) data.icon.setBounds(0, 0, BTApp.dp(24), BTApp.dp(24));
             this.text.setCompoundDrawables(data.icon, null, null, null);
             itemView.setOnClickListener(v -> closeDrawer(data.click));
         }
@@ -203,9 +217,9 @@ public class DrawerAdapter extends RecyclerView.Adapter {
 
         @Override
         public void bind(ItemData data) {
+            super.bind(data);
             this.text.setTextColor(color);
             data.icon.mutate().setColorFilter(new LightingColorFilter(0, color));
-            super.bind(data);
         }
     }
 

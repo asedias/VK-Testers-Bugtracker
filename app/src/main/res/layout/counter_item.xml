@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="?attr/primaryTextColor"
+        android:textColor="@android:color/black"
         tools:text="19206" />
 
     <TextView

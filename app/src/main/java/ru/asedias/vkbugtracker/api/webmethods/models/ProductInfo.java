@@ -22,6 +22,7 @@ public class ProductInfo {
     @Selector(".bt_reporter_product") public List<Product> products = new ArrayList<>();
     @Selector(".page_counter") public List<Counter> counters = new ArrayList<>();
     public ProductList.Product product;
+    public int pid = 0;
 
     public static class Version {
         @Selector(".bt_prod_version_title__version") public String title;
@@ -37,13 +38,12 @@ public class ProductInfo {
         @Selector(".label") public String description;
         @Selector(value = ".page_counter", attr = "href") public String link;
         public boolean toReports = true;
-        public int product = 0;
         public String status = "100";
     }
 
     public static class Product extends ProductList.Product {
         @Selector(value = ".bt_reporter_product_title", defValue = "") public String title;
-        @Selector(value = "img", attr = "src", defValue = "https://vkontakte.ru/images/camera_200.png") public String photo;
+        @Selector(value = ".bt_reporter_product_img", attr = "src", defValue = "https://vkontakte.ru/images/camera_200.png") public String photo;
         @Selector(value = ".bt_reporter_product_a_img", attr = "href", regex = "\\/bugs\\?act=product&id=([0-9]*)", defValue = "0") public int id;
         @Selector(".bt_reporter_product_nreports") public String reports_count;
     }

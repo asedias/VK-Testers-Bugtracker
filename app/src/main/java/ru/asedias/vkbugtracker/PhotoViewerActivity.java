@@ -32,6 +32,7 @@ import com.squareup.picasso.Target;
 import java.util.List;
 
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
+import ru.asedias.vkbugtracker.ui.LayoutHelper;
 import ru.asedias.vkbugtracker.ui.OnScrollPhotoListener;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
@@ -93,7 +94,7 @@ public class PhotoViewerActivity extends AppCompatActivity {
         if(Build.VERSION.SDK_INT >= 19) {
             int status = BTApp.getStatusBarHeight();
             height += status;
-            this.toolbar.setPadding(0, status, 0, 0);
+            LayoutHelper.paddingTop(this.toolbar, status);
         }
 
         this.rootView.addView(this.toolbar, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
