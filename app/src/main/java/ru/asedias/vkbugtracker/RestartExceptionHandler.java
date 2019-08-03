@@ -35,7 +35,6 @@ public class RestartExceptionHandler implements UncaughtExceptionHandler {
 
             var5.putExtra("crash_info", var3.toString());
             this.mContext.startActivity(var5);
-            Log.i("Crash", "Restart App");
             var2.printStackTrace();
         } catch (Exception var4) {
             var4.printStackTrace();

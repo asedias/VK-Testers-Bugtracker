@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ArrayRes;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -72,6 +73,8 @@ public class BTApp extends Application {
     public static ColorStateList ColorStateList(@ColorRes int id) {
         return context.getResources().getColorStateList(id);
     }
+
+    public static String[] StringArray(@ArrayRes int id) { return context.getResources().getStringArray(id); }
 
     public static String String(@StringRes int id) {
         return context.getResources().getString(id);

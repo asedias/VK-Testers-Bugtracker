@@ -18,7 +18,7 @@ public class GetNotifications extends WebRequest<NotificationList> {
     }
 
     @Override
-    protected void generateParams() {
+    public void generateParams() {
         this.params.put("section", "notifications");
         this.call = API.WebApi.GetNotification(this.params);
     }

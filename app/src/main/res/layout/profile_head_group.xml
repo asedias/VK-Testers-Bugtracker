@@ -9,7 +9,7 @@
     <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <LinearLayout android:gravity="bottom" android:layout_gravity="center_vertical" android:orientation="vertical" android:padding="16.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0">
 
-            <TextView
+            <ru.asedias.vkbugtracker.ui.KeyColorTextView
                 android:id="@+id/profile_name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -17,7 +17,9 @@
                 android:maxLines="2"
                 android:textColor="@android:color/black"
                 android:textSize="20.0dip"
-                tools:text="Баг-трекер" />
+                tools:text="Баг-трекер"
+                app:themeKey="textColor"
+                android:fontFamily="@font/googlesans_medium"/>
 
             <TextView
                 android:id="@id/profile_last_seen"
@@ -44,7 +46,6 @@
             android:id="@id/profile_btn1"
             style="@style/Button.Blue"
             android:layout_width="match_parent"
-            android:layout_height="32.0dip"
             android:layout_marginRight="8.0dip"
             android:layout_weight="1.0"
             android:ellipsize="end"
@@ -55,7 +56,6 @@
             android:id="@id/profile_btn2"
             style="@style/Button.Gray"
             android:layout_width="match_parent"
-            android:layout_height="32.0dip"
             android:layout_marginRight="8.0dip"
             android:layout_weight="1.0"
             android:ellipsize="end"
@@ -67,7 +67,6 @@
             android:id="@id/profile_btn3"
             style="@style/Button.Gray"
             android:layout_width="0.0dip"
-            android:layout_height="32.0dip"
             android:layout_marginRight="8.0dip"
             android:layout_weight="1.0"
             android:ellipsize="end"

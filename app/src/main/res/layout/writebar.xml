@@ -10,7 +10,7 @@
     app:elevation="8dp">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -25,10 +25,10 @@
 
     <ImageButton
         android:id="@+id/send"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
         android:background="?selectableItemBackgroundBorderless"
         android:minWidth="48dp"
-        android:scaleType="matrix"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_send" />
 </LinearLayout>

@@ -49,7 +49,10 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
         setupButton(dialog.getButton(DialogInterface.BUTTON_POSITIVE), isPositiveWarning ? R.drawable.btn_dialog_positive : R.drawable.btn_dialog_default);
         setupButton(dialog.getButton(DialogInterface.BUTTON_NEGATIVE), R.drawable.btn_dialog_default);
         setupButton(dialog.getButton(DialogInterface.BUTTON_NEUTRAL), R.drawable.btn_dialog_default);
-
+        TextView title = dialog.findViewById(android.R.id.title);
+        if (title != null) {
+            title.setTypeface(Fonts.Medium);
+        }
         TextView message = dialog.findViewById(android.R.id.message);
         if(message != null) {
             message.setTextColor(BTApp.Color(android.R.color.darker_gray));
@@ -69,6 +72,7 @@ public class MaterialDialogBuilder extends AlertDialog.Builder {
             button.setBackgroundDrawable(BTApp.Drawable(BGID));
             button.setAllCaps(false);
             button.setTextSize(14);
+            button.setTypeface(Fonts.Medium);
             button.setPadding(BTApp.dp(16), 0, BTApp.dp(16), 0);
             button.setMinimumWidth(BTApp.dp(88));
             ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) button.getLayoutParams();

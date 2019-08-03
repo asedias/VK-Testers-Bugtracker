@@ -2,7 +2,7 @@
 <LinearLayout android:orientation="vertical" android:id="@+id/profile_head" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.vkontakte.android.ui.ProportionalFrameLayout
+    <ru.asedias.vkbugtracker.ui.ProportionalFrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -12,6 +12,7 @@
             android:id="@+id/profile_photo"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/placeholder_user" />
 
         <View
@@ -29,7 +30,7 @@
             android:alpha="0.5"
             android:background="@drawable/scrim_bottom" />
 
-        <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        <TextView
             android:id="@+id/profile_last_seen"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -51,7 +52,7 @@
             android:alpha="0.0"
             android:background="@color/colorPrimaryLight" />
 
-        <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        <TextView
             android:id="@+id/profile_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -61,15 +62,15 @@
             android:paddingLeft="16.0dip"
             android:text="User Name"
             android:textColor="#ffffffff"
-            android:textSize="24.0dip" />
-    </com.vkontakte.android.ui.ProportionalFrameLayout>
+            android:textSize="24.0dip"
+            android:fontFamily="@font/googlesans_medium"/>
+    </ru.asedias.vkbugtracker.ui.ProportionalFrameLayout>
     <LinearLayout android:orientation="horizontal" android:id="@+id/profile_buttons_wrap" android:paddingLeft="16.0dip" android:paddingTop="12.0dip" android:paddingRight="8.0dip" android:paddingBottom="12.0dip" android:clipToPadding="false" android:layout_width="fill_parent" android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/profile_btn1"
             style="@style/Button.Blue"
             android:layout_width="match_parent"
-            android:layout_height="32.0dip"
             android:layout_marginRight="8.0dip"
             android:layout_weight="1"
             android:ellipsize="end"
@@ -80,7 +81,6 @@
             android:id="@+id/profile_btn2"
             style="@style/Button.Gray"
             android:layout_width="match_parent"
-            android:layout_height="32.0dip"
             android:layout_marginRight="8.0dip"
             android:layout_weight="1"
             android:ellipsize="end"
@@ -91,7 +91,6 @@
             android:id="@+id/profile_btn3"
             style="@style/Button.Gray"
             android:layout_width="wrap_content"
-            android:layout_height="32.0dip"
             android:layout_marginRight="8.0dip"
             android:ellipsize="end"
             android:singleLine="true"

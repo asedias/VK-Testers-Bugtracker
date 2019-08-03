@@ -13,14 +13,14 @@ public class GetUserInfo extends WebRequest<UserInfo> {
 
     public GetUserInfo(int uid, Callback<UserInfo> callback) {
         super(callback, true);
-        this.params.put("fields", "photo_200");
+        this.params.put("fields", "photo_50,photo_100,photo_200");
         this.params.put("user_ids", String.valueOf(uid));
         this.call = API.VKApi.GetUserInfo(params);
     }
 
     public GetUserInfo(String uids, Callback<UserInfo> callback) {
         super(callback, true);
-        this.params.put("fields", "photo_200");
+        this.params.put("fields", "photo_50,photo_100,photo_200");
         this.params.put("user_ids", uids);
         this.call = API.VKApi.GetUserInfo(params);
     }

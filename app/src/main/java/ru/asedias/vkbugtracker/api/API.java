@@ -1,8 +1,5 @@
 package ru.asedias.vkbugtracker.api;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import java.io.IOException;
@@ -22,18 +19,19 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import ru.asedias.vkbugtracker.Actions;
-import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.BuildConfig;
 import ru.asedias.vkbugtracker.ErrorController;
+import ru.asedias.vkbugtracker.api.apimethods.models.UserProfile;
+import ru.asedias.vkbugtracker.api.webmethods.models.DefaultModel;
 import ru.asedias.vkbugtracker.api.webmethods.models.NotificationList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductList;
 import ru.asedias.vkbugtracker.api.webmethods.models.ProductInfo;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.api.webmethods.models.ReportList;
-import ru.asedias.vkbugtracker.api.webmethods.models.TrackerMember;
+import ru.asedias.vkbugtracker.api.webmethods.models.MembersList;
 import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 import ru.asedias.vkbugtracker.api.webmethods.models.UpdateList;
+import ru.asedias.vkbugtracker.api.webmethods.models.WebCardUser;
 import ru.asedias.vkbugtracker.data.UserData;
 
 /**
@@ -77,11 +75,14 @@ public class API {
 
         @GET("execute.getUsers")
         Call<UserInfo> GetUserInfo(@QueryMap Map<String, String> options);
+
+        @GET("execute.getUserProfile")
+        Call<UserProfile> GetUserProfile(@QueryMap Map<String, String> options);
     }
 
     public interface WebApi {
         @GET("bugs")
-        Call<TrackerMember> WebGetCall(@QueryMap Map<String, String> options);
+        Call<MembersList> WebGetCall(@QueryMap Map<String, String> options);
 
         @POST("bugs")
         Call WebPostCall(@QueryMap Map<String, String> options);
@@ -103,6 +104,15 @@ public class API {
 
         @POST("bugs")
         Call<ProductInfo> GetProductInfo(@QueryMap Map<String, String> options);
+
+        @POST("bugs")
+        Call<MembersList> GetMembers(@QueryMap Map<String, String> options);
+
+        @POST("bugs")
+        Call<WebCardUser> GetUserCard(@QueryMap Map<String, String> options);
+
+        @POST("bugs")
+        Call<DefaultModel> JoinProduct(@QueryMap Map<String, String> options);
     }
 
     public class CookieInterceptor implements Interceptor {

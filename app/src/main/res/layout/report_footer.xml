@@ -24,7 +24,8 @@
         android:layout_toLeftOf="@+id/like"
         android:layout_toRightOf="@+id/photosWrap"
         android:gravity="center_vertical"
-        android:text="@string/reproduced" />
+        android:text="@string/reproduced"
+        android:textColor="@color/colorNavIconsLight"/>
 
     <ImageView
         android:id="@+id/like"

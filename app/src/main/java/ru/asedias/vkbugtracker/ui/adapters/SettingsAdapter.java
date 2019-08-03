@@ -34,6 +34,7 @@ import ru.asedias.vkbugtracker.FragmentStackActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.ui.CardItemDecorator;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
+import ru.asedias.vkbugtracker.ui.Fonts;
 import ru.asedias.vkbugtracker.ui.ThemeController;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
 
@@ -41,7 +42,7 @@ import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
  * Created by Roma on 08.05.2019.
  */
 
-public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.SettingsHolder> implements DividerItemDecoration.Provider, CardItemDecorator.Provider {
+public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.SettingsHolder> implements CardItemDecorator.Provider {
 
 
     private List<SettingsItem> data = new ArrayList<>();
@@ -77,23 +78,17 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
     }
 
     @Override
-    public boolean needDrawDividerAfter(int var1) {
-        return var1 == data.size() - 1 || data.get(var1).type != TYPE_HEADER;
-    }
-
-    @Nullable
-    @Override
-    public boolean needMarginBottom(int var1) {
-        return false; //var1 < data.size() - 1 && data.get(var1 + 1).type == TYPE_HEADER;
+    public int getItemViewType(int position) {
+        return data.get(position).type;
     }
 
     @Override
     public int getBlockType(int var1) {
-        //if(var1 == 0) return CardItemDecorator.FIRST_ROW;
-        //if(var1 == data.size() - 1) return CardItemDecorator.LAST_ROW;
-        if(needDrawDividerAfter(var1)) return CardItemDecorator.BOTTOM;
-        if(getItemViewType(var1) == TYPE_HEADER) return CardItemDecorator.TOP;
-        return CardItemDecorator.MIDDLE;
+        int type = CardItemDecorator.MIDDLE;
+        if(var1 < data.size() - 1 && getItemViewType(var1 + 1) == TYPE_HEADER) type = CardItemDecorator.BOTTOM;
+        if(getItemViewType(var1) == TYPE_HEADER) type =  CardItemDecorator.TOP;
+        Log.i("CARD_TYPE", var1 + "(" + getItemViewType(var1) + "): " + type);
+        return type;
     }
 
     public class SettingsHolder extends BindableHolder<SettingsItem> {
@@ -119,15 +114,18 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
             this.title.setTextColor(ThemeController.getTextColor());
             if(data.type == TYPE_HEADER) {
                 this.title.setVisibility(View.GONE);
+                this.subtitle.setVisibility(View.VISIBLE);
                 this.subtitle.setText(data.subtitle);
                 this.switchCompat.setVisibility(View.GONE);
                 this.icon.setVisibility(View.GONE);
                 this.itemView.setClickable(false);
                 TextViewCompat.setTextAppearance(this.subtitle, android.support.design.R.style.TextAppearance_AppCompat_Body2);
-                this.subtitle.setTextColor(ThemeController.getAccentColor());
+                this.subtitle.setTextColor(ThemeController.getTextColor());
+                this.subtitle.setTypeface(Fonts.Medium);
             } else {
                 TextViewCompat.setTextAppearance(this.subtitle, android.support.design.R.style.TextAppearance_AppCompat_Body1);
                 this.subtitle.setTextColor(ThemeController.getTextSecondaryColor());
+                this.subtitle.setTypeface(this.title.getTypeface());
                 this.itemView.setClickable(true);
                 if(data.icon != null) {
                     this.icon.setImageDrawable(data.icon);
@@ -148,7 +146,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.Settin
                     this.subtitle.setVisibility(View.GONE);
                 }
                 if(data.changeListener != null) {
+                    this.switchCompat.setOnCheckedChangeListener(null);
                     this.switchCompat.setChecked(data.isChecked);
+                    this.switchCompat.setOnClickListener(v -> data.isChecked = this.switchCompat.isChecked());
                     this.switchCompat.setOnCheckedChangeListener(data.changeListener);
                     this.switchCompat.setVisibility(View.VISIBLE);
                 } else {

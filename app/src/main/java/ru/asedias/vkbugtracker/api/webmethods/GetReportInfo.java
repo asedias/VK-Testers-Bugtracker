@@ -26,7 +26,7 @@ public class GetReportInfo extends WebRequest<Report> {
     }
 
     @Override
-    protected void generateParams() {
+    public void generateParams() {
         this.params.put("act", "show");
         this.params.put("id", String.valueOf(id));
         this.call = API.WebApi.GetReportInfo(this.params);

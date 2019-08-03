@@ -13,9 +13,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.fragments.FitSystemWindowsFragment;
 
 public class FitSystemWindowsFragmentWrapperFrameLayout extends FrameLayout {
@@ -58,8 +60,7 @@ public class FitSystemWindowsFragmentWrapperFrameLayout extends FrameLayout {
                 this.mInsetTop = var1.top;
                 this.invalidate();
             }
-
-            Fragment var2 = ((Activity)this.getContext()).getFragmentManager().findFragmentById(this.getId());
+            Fragment var2 = ((Activity)this.getContext()).getFragmentManager().findFragmentById(R.id.appkit_content);
             if(var2 != null && !(var2 instanceof FitSystemWindowsFragment)) {
                 return super.fitSystemWindows(var1);
             } else if(VERSION.SDK_INT < 21) {

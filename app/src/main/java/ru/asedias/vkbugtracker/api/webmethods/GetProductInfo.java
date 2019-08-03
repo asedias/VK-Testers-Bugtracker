@@ -26,7 +26,7 @@ public class GetProductInfo extends WebRequest<ProductInfo> {
     }
 
     @Override
-    protected void generateParams() {
+    public void generateParams() {
         this.params.put("act", "product");
         this.params.put("id", String.valueOf(id));
         this.call = API.WebApi.GetProductInfo(this.params);

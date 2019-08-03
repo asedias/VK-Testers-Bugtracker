@@ -17,7 +17,7 @@ public class ProductInfo {
     @Selector(value = ".bt_prod_one_descr", defValue = "", converter = TextConverter.class) public String description;
     @Selector(".bt_prod_one_actions > .flat_button") public List<ActionButton> actionButtons = new ArrayList<>();
     @Selector(".ui_actions_menu_item") public List<ActionDropDown> actionDropDowns = new ArrayList<>();
-    @Selector(".bt_prod_one_actions") public List<String> actionProds = new ArrayList<>();
+    @Selector(".bt_prod_one_actions") public List<Action> actionProds = new ArrayList<>();
     @Selector(".bt_prod_version") public List<Version> versions = new ArrayList<>();
     @Selector(".bt_reporter_product") public List<Product> products = new ArrayList<>();
     @Selector(".page_counter") public List<Counter> counters = new ArrayList<>();
@@ -51,10 +51,18 @@ public class ProductInfo {
     public static class ActionButton {
         @Selector(".flat_button") public String title;
         @Selector(value = ".flat_button", attr = "onclick") public String onclick;
+        @Selector(value = ".flat_button", attr = "onclick", regex = ".+\\(this, [0-9]+, [0-9]+, '(.+)'\\);") public String hash;
     }
 
-    public static class ActionDropDown extends ActionButton {
+    public static class Action {
+        @Selector(value = ".bt_prod_one_actions") public String title;
+        @Selector(value = "a", attr = "onclick") public String onclick;
+        @Selector(value = "a", attr = "onclick", regex = ".+\\(this, [0-9]+, [0-9]+, '(.+)'\\);") public String hash;
+    }
+
+    public static class ActionDropDown {
         @Selector(".ui_actions_menu_item") public String title;
         @Selector(value = ".ui_actions_menu_item", attr = "onclick") public String onclick;
+        @Selector(value = ".ui_actions_menu_item", attr = "onclick", regex = ".+\\(this, [0-9]+, [0-9]+, '(.+)'\\);") public String hash;
     }
 }

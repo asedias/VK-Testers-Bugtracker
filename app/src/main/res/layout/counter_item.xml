@@ -19,7 +19,8 @@
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@android:color/black"
-        tools:text="19206" />
+        tools:text="19206"
+        android:fontFamily="@font/googlesans_medium"/>
 
     <TextView
         android:id="@+id/label"

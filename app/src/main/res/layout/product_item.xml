@@ -20,7 +20,7 @@
         android:gravity="fill_horizontal|center"
         android:orientation="vertical">
 
-        <ru.asedias.vkbugtracker.ui.text.MediumTextView
+        <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,9 +29,10 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
-            tools:text="VK для Android" />
+            tools:text="VK для Android"
+            android:fontFamily="@font/googlesans_medium"/>
 
-        <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        <TextView
             android:id="@+id/subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +42,7 @@
             android:textSize="14sp"
             tools:text="11,308 reports, 877 suggestions" />
 
-        <ru.asedias.vkbugtracker.ui.text.RegularTextView
+        <TextView
             android:id="@+id/version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

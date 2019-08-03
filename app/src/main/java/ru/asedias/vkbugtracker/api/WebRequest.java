@@ -8,6 +8,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.asedias.vkbugtracker.api.webmethods.ParamsRequestInterface;
 import ru.asedias.vkbugtracker.api.webmethods.models.ListModel;
 import ru.asedias.vkbugtracker.data.UserData;
 import ru.asedias.vkbugtracker.fragments.LoaderFragment;
@@ -18,12 +19,13 @@ import ru.asedias.vkbugtracker.ui.adapters.DataAdapter;
  * Created by rorom on 17.10.2018.
  */
 
-public class WebRequest<I> {
+public class WebRequest<I> implements ParamsRequestInterface {
 
     protected Callback<I> callback;
     protected Map<String, String> params = new HashMap<>();
     protected boolean canceled;
     protected Call<I> call;
+    protected boolean isAPI;
 
     public WebRequest(LoaderFragment fragment, SimpleCallback<I> simpleCallback, boolean isAPI) {
         this(new Callback<I>() {
@@ -65,20 +67,22 @@ public class WebRequest<I> {
         }, isAPI);
     }
 
-    protected void generateParams() { }
+    public void generateParams() { }
 
     public WebRequest(Callback<I> callback, boolean isAPI) {
         this.callback = callback;
+        this.isAPI = isAPI;
+    }
+
+
+    public void execute() {
         if(isAPI) {
             this.params.put("access_token", UserData.getAccessToken());
             this.params.put("v", "5.85");
         } else {
-            this.params.put("al", "0");
+            if(!this.params.containsKey("al")) this.params.put("al", "0");
             this.params.put("al_id", String.valueOf(UserData.getUID()));
         }
-    }
-
-    public void execute() {
         generateParams();
         this.call.enqueue(callback);
     }

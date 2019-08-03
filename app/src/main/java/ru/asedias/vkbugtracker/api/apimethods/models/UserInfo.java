@@ -15,6 +15,12 @@ public class UserInfo extends VKAPIResponse<UserInfo.User> {
         @SerializedName("last_name")
         @Expose
         private String lastName;
+        @SerializedName("photo_50")
+        @Expose
+        private String photo50;
+        @SerializedName("photo_100")
+        @Expose
+        private String photo100;
         @SerializedName("photo_200")
         @Expose
         private String photo200;
@@ -32,6 +38,14 @@ public class UserInfo extends VKAPIResponse<UserInfo.User> {
 
         public String getLastName() {
             return lastName;
+        }
+
+        public String getPhoto50() {
+            return photo50;
+        }
+
+        public String getPhoto100() {
+            return photo100;
         }
 
         public String getPhoto200() {

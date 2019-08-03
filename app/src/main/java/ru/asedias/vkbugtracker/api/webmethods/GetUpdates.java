@@ -28,7 +28,7 @@ public class GetUpdates extends WebRequest<UpdateList> {
     }
 
     @Override
-    protected void generateParams() {
+    public void generateParams() {
         this.params.put("act", "updates");
         if(liked) this.params.put("bookmarked", String.valueOf(1));
         this.call = API.WebApi.GetUpdates(this.params);

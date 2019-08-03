@@ -12,6 +12,7 @@
     android:textColor="@color/tag"
     android:textSize="12sp"
     tools:text="TAG"
-    android:gravity="center">
+    android:gravity="center"
+    android:fontFamily="@font/googlesans_medium">
 
 </TextView>

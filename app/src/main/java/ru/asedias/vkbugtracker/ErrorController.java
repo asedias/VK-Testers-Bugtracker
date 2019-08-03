@@ -58,7 +58,6 @@ public class ErrorController {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                Log.e("URL", "onPageStarted: " + url);
                 if (url.contains("blank.html")) {
                     UserData.cookie = CookieManager.getInstance().getCookie("https://vk.com");
 

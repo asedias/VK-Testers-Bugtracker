@@ -28,7 +28,7 @@ public class GetProducts extends WebRequest<ProductList> {
     }
 
     @Override
-    protected void generateParams() {
+    public void generateParams() {
         this.params.put("act", "products");
         if(all) this.params.put("section", "all");
         this.call = API.WebApi.GetProducts(params);

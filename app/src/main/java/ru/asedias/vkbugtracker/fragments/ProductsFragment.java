@@ -25,6 +25,6 @@ public class ProductsFragment extends TabbedFragment {
     public ProductsFragment() {
         this.title = BTApp.String(R.string.prefs_products);
         this.setTitleNeeded = true;
-        this.cardOffset = 48;
+        this.cardOffset = BTApp.dp(48);
     }
 }

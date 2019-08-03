@@ -51,7 +51,6 @@ public class ReportItemHolder extends  BindableHolder<ReportList.ReportItem> {
     public void bind(ReportList.ReportItem report) {
         super.bind(report);
         this.mTitle.setText(report.title);
-        this.mTitle.setTextColor(ThemeController.getTextColor());
         this.mTime.setText(report.details);
         Picasso.with(BTApp.context)
                 .load(report.user.getPhoto200())

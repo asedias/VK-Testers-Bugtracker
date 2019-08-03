@@ -20,7 +20,7 @@
         android:textSize="18sp"
         tools:text="VK для Android" />
 
-    <ru.asedias.vkbugtracker.ui.text.MediumTextView
+    <TextView
         android:id="@+id/hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,6 +33,7 @@
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:textColor="@color/colorAccent"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        android:fontFamily="@font/googlesans_medium" />
 
 </RelativeLayout>

@@ -148,16 +148,12 @@ public class LoginFragment extends LoaderFragment {
         }
     }
 
-    public static void clearCookies()
-    {
-
+    public static void clearCookies() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            Log.d("Login", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
         } else
         {
-            Log.d("Login", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
             CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(BTApp.context);
             cookieSyncMngr.startSync();
             CookieManager cookieManager=CookieManager.getInstance();

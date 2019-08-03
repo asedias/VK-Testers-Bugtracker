@@ -33,6 +33,8 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
     protected I mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     protected SwipeRefreshLayout mSwipeRefresh;
+    protected int topOffset = 0;
+    protected boolean enableOverlay = false;
 
     @Override
     protected View OnCreateContentView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
         this.mSwipeRefresh.setProgressViewOffset(true, BTApp.dp(56), BTApp.dp(112));
         this.mList.setLayoutManager(getLayoutManager());
         this.mList.setAdapter(getAdapter());
-        this.mList.setPadding(0, BTApp.dp(56 + cardOffset), 0, bottomOffset);
+        this.mList.setPadding(0, enableOverlay ? 0 : BTApp.dp(56) + cardOffset + topOffset, 0, bottomOffset);
         mList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -71,6 +73,7 @@ public class RecyclerFragment<I extends RecyclerView.Adapter> extends LoaderFrag
     }
 
     public I getAdapter() {
+        if(mAdapter == null) throw new RuntimeException("Set mAdapter in constructor");
         return mAdapter;
     }
 

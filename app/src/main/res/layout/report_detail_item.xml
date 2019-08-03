@@ -57,13 +57,21 @@
         android:textColor="@color/detail_text"
         android:textSize="14.0dip" />
 
-    <ImageView
-        android:id="@+id/photo"
-        android:layout_width="28dp"
+    <FrameLayout
+        android:id="@+id/photosWrap"
+        android:layout_width="wrap_content"
         android:layout_height="28.0dip"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="6dp"
-        app:srcCompat="@drawable/placeholder_user" />
+        android:layout_marginTop="6dp">
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="28dp"
+            android:layout_height="28.0dip"
+            app:srcCompat="@drawable/placeholder_user" />
+
+    </FrameLayout>
+
 </RelativeLayout>

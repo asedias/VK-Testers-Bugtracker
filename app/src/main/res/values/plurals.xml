@@ -6,4 +6,16 @@
         <item quantity="one">%,d comment</item>
         <item quantity="few">%,d comments</item>
     </plurals>
+    <plurals name="reports">
+        <item quantity="many">%,d reports</item>
+        <item quantity="other">%,d reports</item>
+        <item quantity="one">%,d report</item>
+        <item quantity="few">%,d reports</item>
+    </plurals>
+    <plurals name="products">
+        <item quantity="many">%,d products</item>
+        <item quantity="other">%,d products</item>
+        <item quantity="one">%,d product</item>
+        <item quantity="few">%,d products</item>
+    </plurals>
 </resources>

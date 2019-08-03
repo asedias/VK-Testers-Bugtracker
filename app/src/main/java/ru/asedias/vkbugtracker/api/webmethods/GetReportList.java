@@ -34,7 +34,7 @@ public class GetReportList extends WebRequest<ReportList> {
     }
 
     @Override
-    protected void generateParams() {
+    public void generateParams() {
         if(bookmarks) this.params.put("act", "bookmarks");
         this.params.put("load", "0");
         this.params.put("max_udate", String.valueOf(udate));

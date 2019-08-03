@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ru.asedias.vkbugtracker.ui.text.RegularTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -10,4 +10,5 @@
     android:paddingTop="3dp"
     android:text="@string/search"
     android:textColor="@color/colorIconsLight"
-    android:textSize="16sp" />
+    android:textSize="16sp"
+    android:fontFamily="@font/googlesans_regular"/>

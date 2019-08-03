@@ -52,7 +52,6 @@ public class PhotoViewerActivity extends AppCompatActivity {
     private Drawable background;
     private OnScrollPhotoListener scrollPhotoListener = (photo, distanceY) -> {
         float multiplier = ((float)Math.abs(photo.getScrollY()) / BTApp.mMetrics.heightPixels);
-        Log.d("APLHA", photo.getScrollY() + ": " + (255 - 255 * multiplier));
         this.background.setAlpha((int) (255 - 255 * multiplier));
     };
 

@@ -5,19 +5,19 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <FrameLayout
+    <ru.asedias.vkbugtracker.ui.FitSystemWindowsFragmentWrapperFrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:id="@+id/decor_content_parent">
 
         <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/coordinator"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:fitsSystemWindows="true">
+            android:layout_height="fill_parent">
 
             <FrameLayout
                 android:id="@+id/appkit_content"
@@ -49,7 +49,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:fitsSystemWindows="true"
                 app:elevation="0dp">
 
                 <include layout="@layout/appkit_toolbar" />
@@ -74,7 +73,7 @@
             app:itemIconTint="@color/bottom_nav_icon_tint"
             app:itemTextColor="@color/bottom_nav_icon_tint"
             app:menu="@menu/navigation" />
-    </FrameLayout>
+    </ru.asedias.vkbugtracker.ui.FitSystemWindowsFragmentWrapperFrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/drawer_list"

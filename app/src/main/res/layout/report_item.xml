@@ -39,7 +39,7 @@
             android:minHeight="28dp" />
     </LinearLayout>
 
-    <ru.asedias.vkbugtracker.ui.text.MediumTextView
+    <ru.asedias.vkbugtracker.ui.KeyColorTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,11 +48,12 @@
         android:layout_marginTop="8dp"
         android:layout_toRightOf="@id/author"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@android:color/black"
         android:textSize="14sp"
-        tools:text="При отписке от сообщества воспроизведение" />
+        tools:text="При отписке от сообщества воспроизведение"
+        android:fontFamily="@font/googlesans_medium"
+        app:themeKey="textColor"/>
 
-    <ru.asedias.vkbugtracker.ui.text.RegularTextView
+    <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

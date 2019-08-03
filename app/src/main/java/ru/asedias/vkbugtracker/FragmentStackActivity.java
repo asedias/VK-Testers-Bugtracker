@@ -38,12 +38,14 @@ import java.util.Stack;
 
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
+import ru.asedias.vkbugtracker.fragments.BTFragment;
 import ru.asedias.vkbugtracker.fragments.NotificationsFragment;
 import ru.asedias.vkbugtracker.fragments.ProductsFragment;
 import ru.asedias.vkbugtracker.fragments.RecyclerFragment;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
 import ru.asedias.vkbugtracker.fragments.UpdatesListFragment;
 import ru.asedias.vkbugtracker.ui.BottomNavigationViewEx;
+import ru.asedias.vkbugtracker.ui.FitSystemWindowsFragmentWrapperFrameLayout;
 import ru.asedias.vkbugtracker.ui.Fonts;
 import ru.asedias.vkbugtracker.ui.ThemeController;
 
@@ -71,7 +73,10 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
     private AppBarLayout appbar;
     private DrawerLayout drawerLayout;
     private RecyclerView drawerList;
+    private FrameLayout appkitContent;
     private View searchText;
+    private FitSystemWindowsFragmentWrapperFrameLayout decorContent;
+    private BTFragment currentFragment;
     private HashMap<Integer, Stack<Fragment>> mStacks;
     private ArrayList<String> queue;
     private int currentID;
@@ -113,7 +118,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
             this.getWindow().getDecorView().setSystemUiVisibility(visibility);
         }
         this.appbar = this.findViewById(R.id.appBarLayout);
-        FrameLayout content = this.findViewById(R.id.appkit_content);
+        this.decorContent = this.findViewById(R.id.decor_content_parent);
         this.tabLayout = this.findViewById(R.id.tabs);
         this.appbarBgContainer = this.findViewById(R.id.appbarBackground);
         this.appbarCard = this.findViewById(R.id.appbarCard);
@@ -130,6 +135,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         this.bottomNavView.setTextTypeface(Fonts.Medium);
         this.bottomNavView.setOnNavigationItemSelectedListener(this);
         this.bottomNavView.setBackgroundColor(ThemeController.getPrimaryColor());
+        this.appkitContent = this.findViewById(R.id.appkit_content);
         new QBadgeView(this)
                 .setBadgeNumber(11)
                 .setGravityOffset(42, 4, true)
@@ -141,6 +147,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         this.toolbar.inflateMenu(R.menu.menu);
         this.drawerLayout = this.findViewById(R.id.drawer_layout);
         this.drawerList = this.findViewById(R.id.drawer_list);
+        this.drawerList.setPadding(0, BTApp.getStatusBarHeight(), 0, 0);
         this.searchText = this.findViewById(R.id.search_text);
         this.searchText.setVisibility(View.GONE);
     }
@@ -151,6 +158,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
     }
 
     public void showFragment(Fragment fragment) {
+        this.currentFragment = (BTFragment) fragment;
         getFragmentManager().beginTransaction().replace(R.id.appkit_content, fragment).commit();
     }
 
@@ -274,8 +282,20 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
         return drawerList;
     }
 
+    public FrameLayout getAppkitContent() {
+        return appkitContent;
+    }
+
+    public FitSystemWindowsFragmentWrapperFrameLayout getDecorContent() {
+        return decorContent;
+    }
+
     public int getCurrentID() {
         return currentID;
+    }
+
+    public BTFragment getCurrentFragment() {
+        return currentFragment;
     }
 
     private int cardCurHeight;
@@ -283,11 +303,11 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
 
     public void toolbarToCard() { this.toolbarToCard(0); }
 
-    public void toolbarToCard(int offsetDP) {
+    public void toolbarToCard(int offset) {
         if(getToolbarState() != STATE_IN_CARD) {
             AnimatorSet animatorSet = new AnimatorSet();
             ObjectAnimator radiusAnim = ObjectAnimator.ofFloat(appbarCard, "radius", BTApp.dp(8));
-            int newHeight = BTApp.dp(50 + offsetDP);
+            int newHeight = BTApp.dp(50) + offset;
             ValueAnimator heightAnim = ValueAnimator.ofInt(cardCurHeight, newHeight);
             heightAnim.addUpdateListener(animation -> {
                 int value = (int) animation.getAnimatedValue();
@@ -310,7 +330,9 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
             animatorSet.setDuration(300);
             animatorSet.playTogether(radiusAnim, heightAnim, paddingAnim, shadowAnim);
             animatorSet.addListener(new Animator.AnimatorListener() {
-                @Override public void onAnimationStart(Animator animation) { }
+                @Override public void onAnimationStart(Animator animation) {
+                    setToolbarState(STATE_IN_CARD);
+                }
                 @Override public void onAnimationEnd(Animator animation) {
                     setToolbarState(STATE_IN_CARD);
                 }
@@ -322,7 +344,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
             cardCurAnimSet.start();
             searchText.setVisibility(View.VISIBLE);
         } else {
-            int newHeight = BTApp.dp(50 + offsetDP);
+            int newHeight = BTApp.dp(50) + offset;
             ValueAnimator heightAnim = ValueAnimator.ofInt(cardCurHeight, newHeight);
             heightAnim.addUpdateListener(animation -> {
                 int value = (int) animation.getAnimatedValue();
@@ -337,11 +359,11 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
 
     public void toolbarToFullWidth() { this.toolbarToFullWidth(0); }
 
-    public void toolbarToFullWidth(int offsetDP) {
+    public void toolbarToFullWidth(int offset) {
         if(getToolbarState() != STATE_FULL_WIDTH) {
             AnimatorSet animatorSet = new AnimatorSet();
             ObjectAnimator animator1 = ObjectAnimator.ofFloat(appbarCard, "radius", 0);
-            int newHeight = BTApp.dp(56 + offsetDP);
+            int newHeight = BTApp.dp(56) + offset;
             ValueAnimator animator2 = ValueAnimator.ofInt(cardCurHeight, newHeight);
             animator2.addUpdateListener(animation -> {
                 int value = (int) animation.getAnimatedValue();
@@ -364,9 +386,10 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
             animatorSet.setDuration(300);
             animatorSet.playTogether(animator1, animator2, animator3, animator4);
             animatorSet.addListener(new Animator.AnimatorListener() {
-                @Override public void onAnimationStart(Animator animation) { }
-                @Override public void onAnimationEnd(Animator animation) {
+                @Override public void onAnimationStart(Animator animation) {
                     setToolbarState(STATE_FULL_WIDTH);
+                }
+                @Override public void onAnimationEnd(Animator animation) {
                 }
                 @Override public void onAnimationCancel(Animator animation) { }
                 @Override public void onAnimationRepeat(Animator animation) { }
@@ -376,7 +399,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
             cardCurAnimSet.start();
             searchText.setVisibility(View.GONE);
         } else {
-            int newHeight = BTApp.dp(56 + offsetDP);
+            int newHeight = BTApp.dp(56) + offset;
             ValueAnimator heightAnim = ValueAnimator.ofInt(cardCurHeight, newHeight);
             heightAnim.addUpdateListener(animation -> {
                 int value = (int) animation.getAnimatedValue();
@@ -406,23 +429,7 @@ public class FragmentStackActivity extends AppCompatActivity  implements BottomN
 
     public void showTabBar() {
         tabLayout.setVisibility(View.VISIBLE);
-        /*ValueAnimator margin = ValueAnimator.ofInt(BTApp.dp(-48), 0);
-        margin.addUpdateListener(animation -> {
-            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) tabLayout.getLayoutParams();
-            mlp.topMargin = (int) animation.getAnimatedValue();
-        });
-        ValueAnimator alpha = ValueAnimator.ofFloat(0F, 1F);
-        alpha.addUpdateListener(animation -> tabLayout.setAlpha((Float) animation.getAnimatedValue()));
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(margin, alpha);
-        set.addListener(new Animator.AnimatorListener() {
-            @Override public void onAnimationStart(Animator animation) { }
-            @Override public void onAnimationEnd(Animator animation) { }
-            @Override public void onAnimationCancel(Animator animation) { }
-            @Override public void onAnimationRepeat(Animator animation) { }
-        });
-        set.setDuration(300);
-        set.start();*/
+        tabLayout.setTabTextColors(ThemeController.getTextColor(), ThemeController.getTextColor());
     }
 
     public void showTabBar(String... resids) {

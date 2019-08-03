@@ -37,7 +37,8 @@
             android:text="TextView"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            tools:text="@string/account_settings" />
+            tools:text="@string/account_settings"
+            android:fontFamily="@font/googlesans_regular"/>
 
         <TextView
             android:id="@+id/subtitle"

@@ -62,16 +62,17 @@ public abstract class CardRecyclerFragment<I extends RecyclerView.Adapter> exten
          var1 = 0;
       }
 
-      this.mList.setPadding(var1, BTApp.dp(56 + cardOffset), var1, bottomOffset);
+      this.mList.setPadding(var1, enableOverlay ? 0 : BTApp.dp(56) + cardOffset + topOffset, var1, bottomOffset);
       return var5;
    }
 
    public void onDestroyView() {
       super.onDestroyView();
-      this.decorator = null;
+      this.mList.removeItemDecoration(this.decorator);
    }
 
    public void onViewCreated(View var1, Bundle var2) {
+      updateDecorator();
       super.onViewCreated(var1, var2);
    }
 

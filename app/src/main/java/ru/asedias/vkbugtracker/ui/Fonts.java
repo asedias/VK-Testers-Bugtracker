@@ -2,6 +2,10 @@ package ru.asedias.vkbugtracker.ui;
 
 import android.graphics.Typeface;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.content.res.ResourcesCompat;
+
+import ru.asedias.vkbugtracker.BTApp;
+import ru.asedias.vkbugtracker.R;
 
 import static ru.asedias.vkbugtracker.BTApp.context;
 
@@ -19,11 +23,11 @@ public class Fonts {
     public static Typeface Regular;
 
     public Fonts() {
-        Bold = Typeface.createFromAsset(context.getAssets(), "fonts/GoogleSans-Bold.ttf");
-        BoldItalic = Typeface.createFromAsset(context.getAssets(), "fonts/GoogleSans-BoldItalic.ttf");
-        Italic = Typeface.createFromAsset(context.getAssets(), "fonts/GoogleSans-Italic.ttf");
-        Medium = Typeface.createFromAsset(context.getAssets(), "fonts/GoogleSans-Medium.ttf");
-        MediumItalic = Typeface.createFromAsset(context.getAssets(), "fonts/GoogleSans-MediumItalic.ttf");
-        Regular = Typeface.createFromAsset(context.getAssets(), "fonts/GoogleSans-Regular.ttf");
+        Bold = ResourcesCompat.getFont(BTApp.context, R.font.googlesans_bold);
+        BoldItalic = ResourcesCompat.getFont(BTApp.context, R.font.googlesans_bolditalic);
+        Italic = ResourcesCompat.getFont(BTApp.context, R.font.googlesans_italic);
+        Medium = ResourcesCompat.getFont(context, R.font.googlesans_medium);
+        MediumItalic = ResourcesCompat.getFont(BTApp.context, R.font.googlesans_mediumitalic);
+        Regular = ResourcesCompat.getFont(BTApp.context, R.font.googlesans_regular);
     }
 }

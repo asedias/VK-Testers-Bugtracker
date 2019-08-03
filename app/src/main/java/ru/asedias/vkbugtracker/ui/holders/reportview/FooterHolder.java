@@ -62,7 +62,6 @@ public class FooterHolder extends BindableHolder<Report.Footer> {
                         .into(photo);
             }
         }
-        this.reproduce.setTextColor(ThemeController.getTextColor());
         TextView count = (TextView) inflater.inflate(R.layout.footer_text, null);
         count.setText(String.valueOf(data.reproduce_count));
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(size, size);

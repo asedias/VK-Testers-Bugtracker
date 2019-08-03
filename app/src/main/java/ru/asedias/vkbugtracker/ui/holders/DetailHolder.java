@@ -26,7 +26,6 @@ public class DetailHolder extends BindableHolder<Report.Detail> {
     public void bind(Report.Detail data) {
         super.bind(data);
         this.title.setText(data.title);
-        this.subtitle.setTextColor(ThemeController.getTextColor());
         this.subtitle.setText(data.description);
     }
 }

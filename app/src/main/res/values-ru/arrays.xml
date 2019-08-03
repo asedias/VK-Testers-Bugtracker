@@ -28,4 +28,18 @@
 		<item>ноя</item>
 		<item>дек</item>
 	</string-array>
+	<string-array name="months">
+		<item>Янв</item>
+		<item>Фев</item>
+		<item>Март</item>
+		<item>Апр</item>
+		<item>Май</item>
+		<item>Июнь</item>
+		<item>Июль</item>
+		<item>Авг</item>
+		<item>Сен</item>
+		<item>Окт</item>
+		<item>Ноя</item>
+		<item>Дек</item>
+	</string-array>
 </resources>

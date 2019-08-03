@@ -24,7 +24,6 @@ public class HeaderHolder extends BindableHolder {
         super.bind(data);
         ((TextView) this.itemView).setMovementMethod(LinkMovementMethod.getInstance());
         ((TextView) this.itemView).setClickable(true);
-        ((TextView) this.itemView).setTextColor(ThemeController.getTextColor());
         if (data instanceof CharSequence) {
             ((TextView) this.itemView).setText((CharSequence) data);
         } else if(data instanceof SpannableStringBuilder) {

@@ -6,4 +6,16 @@
         <item quantity="one">%,d комментарий</item>
         <item quantity="few">%,d комментария</item>
     </plurals>
+    <plurals name="reports">
+        <item quantity="many">%,d отчётов</item>
+        <item quantity="other">%,d отчётов</item>
+        <item quantity="one">%,d отчёт</item>
+        <item quantity="few">%,d отчёта</item>
+    </plurals>
+    <plurals name="products">
+        <item quantity="many">%,d продуктов</item>
+        <item quantity="other">%,d продуктов</item>
+        <item quantity="one">%,d продукт</item>
+        <item quantity="few">%,d продукта</item>
+    </plurals>
 </resources>

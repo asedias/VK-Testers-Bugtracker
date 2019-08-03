@@ -1,15 +1,19 @@
 package ru.asedias.vkbugtracker.ui.adapters;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
+import ru.asedias.vkbugtracker.ui.CardItemDecorator;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
 import ru.asedias.vkbugtracker.ui.LayoutHelper;
 import ru.asedias.vkbugtracker.ui.holders.reportview.AttachmentHolder;
@@ -20,12 +24,13 @@ import ru.asedias.vkbugtracker.ui.holders.reportview.DetailItemHolder;
 import ru.asedias.vkbugtracker.ui.holders.reportview.FooterHolder;
 import ru.asedias.vkbugtracker.ui.holders.HeaderHolder;
 import ru.asedias.vkbugtracker.ui.holders.PhotosGridHolder;
+import ru.asedias.vkbugtracker.ui.holders.reportview.TextHolder;
 
 /**
  * Created by rorom on 10.11.2018.
  */
 
-public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> implements DividerItemDecoration.Provider {
+public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> implements DividerItemDecoration.Provider, CardItemDecorator.Provider {
 
     private Report data = new Report();
     private LayoutInflater mInflater;
@@ -55,7 +60,7 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
         switch (viewType) {
             case TYPE_HEADER: return new HeaderHolder(mInflater);
             case TYPE_AUTHOR: return new AuthorHolder(mInflater);
-            case TYPE_TEXT: return new HeaderHolder(mInflater);
+            case TYPE_TEXT: return new TextHolder(mInflater);
             case TYPE_PHOTOS: return new PhotosGridHolder((Activity) parent.getContext());
             case TYPE_ATTACHMENT: return new AttachmentHolder(mInflater);
             case TYPE_FOOTER: return new FooterHolder(mInflater, getRid());
@@ -96,8 +101,14 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
                 holder.bind(BTApp.QuantityString(R.plurals.good_comments, data.comments.size(), data.comments.size()));
                 break;
             }
-            case TYPE_AUTHOR: holder.bind(data.author); break;
-            case TYPE_TEXT: holder.bind(data.description); break;
+            case TYPE_AUTHOR: {
+                holder.bind(data.author);
+                break;
+            }
+            case TYPE_TEXT: {
+                holder.bind(data.description);
+                break;
+            }
             case TYPE_PHOTOS: {
                 holder.bind(data.photos); break;
             }
@@ -134,8 +145,8 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
     public boolean needDrawDividerAfter(int position) {
         int type = getItemViewType(position);
         if(type == TYPE_COMMENT) return true;
-        if(type == TYPE_FOOTER) return true;
-        if(type == TYPE_SHOW_MORE) return true;
+        //if(type == TYPE_FOOTER) return true;
+        //if(type == TYPE_SHOW_MORE) return true;
         if(type == TYPE_ATTACHMENT && getItemViewType(position+1) == TYPE_FOOTER) return true;
         return false;
     }
@@ -146,5 +157,13 @@ public class ViewReportAdapter extends RecyclerView.Adapter<BindableHolder> impl
         int type = getItemViewType(position);
         if(type == TYPE_ATTACHMENT && getItemViewType(position+1) == TYPE_FOOTER) return true;
         return false;
+    }
+
+    @Override
+    public int getBlockType(int var1) {
+        int type = getItemViewType(var1);
+        if(type == TYPE_FOOTER || type == TYPE_SHOW_MORE) return CardItemDecorator.BOTTOM;
+        if(type == TYPE_HEADER || type == TYPE_DETAIL_PHOTO) return CardItemDecorator.TOP;
+        return CardItemDecorator.MIDDLE;
     }
 }

@@ -18,6 +18,9 @@ import ru.asedias.vkbugtracker.BTApp;
 
 public class ScrollingBehavior extends CoordinatorLayout.Behavior<View> {
 
+    public ScrollingBehavior() {
+    }
+
     public ScrollingBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -25,7 +28,6 @@ public class ScrollingBehavior extends CoordinatorLayout.Behavior<View> {
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
         return dependency instanceof AppBarLayout;
-        //return super.layoutDependsOn(parent, child, dependency);
     }
 
     @Override
@@ -37,6 +39,7 @@ public class ScrollingBehavior extends CoordinatorLayout.Behavior<View> {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
+        child.requestLayout();
         child.setTranslationY(dependency.getY());
         return super.onDependentViewChanged(parent, child, dependency);
     }

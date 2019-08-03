@@ -6,4 +6,5 @@
     <attr name="navBackground" format="reference" />
     <attr name="drawerStyle" format="reference" />
     <attr name="heightRatio" format="float" />
+    <attr name="themeKey" format="string" />
 </resources>

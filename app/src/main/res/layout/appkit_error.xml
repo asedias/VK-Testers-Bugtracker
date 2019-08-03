@@ -9,7 +9,7 @@
         android:layout_height="84dp"
         app:srcCompat="@drawable/ic_about" />
 
-    <TextView
+    <ru.asedias.vkbugtracker.ui.KeyColorTextView
         android:id="@id/error_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -18,12 +18,15 @@
         android:gravity="center"
         android:text="@string/network_error_description"
         android:textColor="@android:color/black"
-        android:textSize="16.0dip" />
+        android:textSize="16.0dip"
+        app:themeKey="textColor"/>
 
     <Button
         android:id="@id/error_retry"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/googlesans_medium"
+        android:textAllCaps="false"
         android:text="@string/try_again" />
 </LinearLayout>

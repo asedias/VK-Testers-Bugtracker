@@ -22,7 +22,8 @@
         android:gravity="center_vertical"
         android:text="@string/title_activity_login"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:fontFamily="@font/googlesans_medium"/>
 
     <ProgressBar
         android:id="@+id/progress"

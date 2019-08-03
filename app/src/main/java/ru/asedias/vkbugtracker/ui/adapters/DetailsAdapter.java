@@ -13,6 +13,7 @@ import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.data.ProductsData;
+import ru.asedias.vkbugtracker.ui.CardItemDecorator;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
 import ru.asedias.vkbugtracker.ui.LayoutHelper;
 import ru.asedias.vkbugtracker.ui.holders.BindableHolder;
@@ -24,7 +25,7 @@ import ru.asedias.vkbugtracker.ui.holders.ProductHolder;
  * Created by rorom on 27.11.2018.
  */
 
-public class DetailsAdapter extends RecyclerView.Adapter<BindableHolder> implements DividerItemDecoration.Provider {
+public class DetailsAdapter extends RecyclerView.Adapter<BindableHolder> implements DividerItemDecoration.Provider, CardItemDecorator.Provider {
 
     private List<Report.Detail> data;
     private LayoutInflater mInflater;
@@ -54,7 +55,6 @@ public class DetailsAdapter extends RecyclerView.Adapter<BindableHolder> impleme
         int viewType = getItemViewType(position);
         if(viewType == TYPE_PRODUCT) {
             holder.bind(ProductsData.getProductByName(data.get(0).description));
-            lp.bottomMargin = BTApp.dp(8);
         }
         if(viewType == TYPE_HEADER) {
             int id = position == 0 ? R.string.addr_product : R.string.general_info;
@@ -81,7 +81,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<BindableHolder> impleme
 
     @Override
     public boolean needDrawDividerAfter(int var1) {
-        return getItemViewType(var1) == TYPE_DETAIL || getItemViewType(var1) == TYPE_PRODUCT;
+        return getItemViewType(var1) == TYPE_DETAIL && var1 != getItemCount() - 1;
     }
 
     @Nullable
@@ -89,5 +89,14 @@ public class DetailsAdapter extends RecyclerView.Adapter<BindableHolder> impleme
     public boolean needMarginBottom(int var1) {
         if(var1 == 1) return true;
         return false;
+    }
+
+    @Override
+    public int getBlockType(int var1) {
+        int type = getItemViewType(var1);
+        if(type == TYPE_HEADER) return CardItemDecorator.TOP;
+        if(var1 < getItemCount() - 2 && getItemViewType(var1 + 1) == TYPE_HEADER) return CardItemDecorator.BOTTOM;
+        if(var1 == getItemCount() - 1) return CardItemDecorator.BOTTOM;
+        return CardItemDecorator.MIDDLE;
     }
 }

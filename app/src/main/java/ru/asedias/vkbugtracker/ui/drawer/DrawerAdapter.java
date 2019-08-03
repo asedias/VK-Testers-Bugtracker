@@ -20,6 +20,8 @@ import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.FragmentStackActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.data.UserData;
+import ru.asedias.vkbugtracker.fragments.MembersFragment;
+import ru.asedias.vkbugtracker.fragments.ProfileFragment;
 import ru.asedias.vkbugtracker.fragments.ReportListFragment;
 import ru.asedias.vkbugtracker.ui.ThemeController;
 
@@ -83,14 +85,18 @@ public class DrawerAdapter extends RecyclerView.Adapter {
         this.items.clear();
         this.items.add(new ItemData(BTApp.String(R.string.add_report), BTApp.Drawable(R.drawable.ic_ab_add)));
         this.items.add(new ItemData());
-        this.items.add(new ItemData(BTApp.String(R.string.prefs_members), BTApp.Drawable(R.drawable.ic_members)));
+        this.items.add(new ItemData(BTApp.String(R.string.prefs_members), BTApp.Drawable(R.drawable.ic_members), () -> {
+            activity.replaceFragment(new MembersFragment(), 0);
+        }));
         if(UserData.isTester()) {
-            this.items.add(new ItemData(BTApp.String(R.string.title_home), BTApp.Drawable(R.drawable.ic_about), null));
+            this.items.add(new ItemData(BTApp.String(R.string.title_home), BTApp.Drawable(R.drawable.ic_about), () -> {
+                activity.replaceFragment(ProfileFragment.newInstance(UserData.getUID()), 0);
+            }));
             this.items.add(new ItemData(BTApp.String(R.string.prefs_reports), BTApp.Drawable(R.drawable.ic_reports), () -> {
-                activity.replaceFragment(ReportListFragment.newInstance(UserData.getUID(), 0, "", -1), R.id.navigation_reports);
+                activity.replaceFragment(ReportListFragment.newInstance(UserData.getUID(), 0, "", -1), 0);
             }));
             this.items.add(new ItemData(BTApp.String(R.string.my_bookmarks), BTApp.Drawable(R.drawable.ic_updates), () -> {
-                activity.replaceFragment(ReportListFragment.newInstance(true), R.id.navigation_reports);
+                activity.replaceFragment(ReportListFragment.newInstance(true), 0);
             }));
         }
     }

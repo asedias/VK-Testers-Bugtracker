@@ -16,8 +16,10 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import ru.asedias.vkbugtracker.BTApp;
+import ru.asedias.vkbugtracker.FragmentStackActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
+import ru.asedias.vkbugtracker.fragments.ProfileFragment;
 import ru.asedias.vkbugtracker.ui.CropCircleTransformation;
 import ru.asedias.vkbugtracker.ui.FlowLayout;
 import ru.asedias.vkbugtracker.ui.ImageGridParser;
@@ -56,9 +58,11 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
                 .load(data.author_photo.contains("http") ? data.author_photo : "https://vk.com"+data.author_photo)
                 .transform(new CropCircleTransformation())
                 .into(this.photo);
+        this.photo.setOnClickListener(v -> {
+            ((FragmentStackActivity)v.getContext()).replaceFragment(ProfileFragment.newInstance(data.uid), 0);
+        });
         this.name.setText(data.author_name);
         this.comment.setMovementMethod(LinkMovementMethod.getInstance());
-        this.comment.setTextColor(ThemeController.getTextColor());
         if(data.text.length() > 0) {
             this.comment.setText(Html.fromHtml(data.text));
             this.comment.setVisibility(View.VISIBLE);
@@ -84,6 +88,7 @@ public class CommentHolder extends BindableHolder<Report.Comment> {
         } else {
             this.meta.setVisibility(View.GONE);
         }
+
         this.attachments.removeAllViews();
         if(data.photos.size() > 0 || data.attachments.size() > 0) {
             this.attachments.setVisibility(View.VISIBLE);

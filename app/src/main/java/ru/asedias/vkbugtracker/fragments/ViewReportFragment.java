@@ -13,9 +13,14 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ru.asedias.vkbugtracker.BTApp;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.WebRequest;
+import ru.asedias.vkbugtracker.api.apimethods.GetUserInfo;
+import ru.asedias.vkbugtracker.api.apimethods.models.UserInfo;
 import ru.asedias.vkbugtracker.api.webmethods.GetReportInfo;
 import ru.asedias.vkbugtracker.api.webmethods.models.Report;
 import ru.asedias.vkbugtracker.ui.DividerItemDecoration;
@@ -25,7 +30,7 @@ import ru.asedias.vkbugtracker.ui.adapters.ViewReportAdapter;
  * Created by rorom on 10.11.2018.
  */
 
-public class ViewReportFragment extends RecyclerFragment<ViewReportAdapter> {
+public class ViewReportFragment extends CardRecyclerFragment<ViewReportAdapter> {
 
     private int rid;
 
@@ -63,8 +68,26 @@ public class ViewReportFragment extends RecyclerFragment<ViewReportAdapter> {
                 report.comments.get(i).photos = processPhotos(report.comments.get(i).photos);
             }
             getAdapter().setData(report);
+            loadAuthor(report);
             return report;
         });
+    }
+
+    private void loadAuthor(Report report) {
+        new GetUserInfo(report.author.uid, new Callback<UserInfo>() {
+            @Override
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                UserInfo.User user = response.body().getResponse().get(0);
+                if(user.getPhoto200() != null) report.author.author_photo = user.getPhoto200();
+                else if(user.getPhoto100() != null) report.author.author_photo = user.getPhoto100();
+                getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<UserInfo> call, Throwable t) {
+
+            }
+        }).execute();
     }
 
     private List<Report.Photo> processPhotos(List<Report.Photo> photos) {

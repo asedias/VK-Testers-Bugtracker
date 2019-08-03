@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.droidsonroids.jspoon.annotation.Selector;
+import pl.droidsonroids.jspoon.annotation.SkipOn;
 import ru.asedias.vkbugtracker.api.DescriptionConverter;
 import ru.asedias.vkbugtracker.api.TextConverter;
 
@@ -29,6 +30,8 @@ public class Report {
         @Selector(value = ".bt_report_one_author__img", attr="src", defValue = "https://vk.com/images/camera_200.png") public String author_photo;
         @Selector(".bt_report_one_author_content > a") public String author_name;
         @Selector(".bt_report_one_author_content > div") public String date;
+        @SkipOn(NumberFormatException.class)
+        @Selector(value = ".bt_report_one_author_content > a", attr = "href", defValue = "0", regex = ".+id=([0-9]*)") public int uid;
     }
 
     public static class Attachment { //page_doc_row
@@ -125,6 +128,8 @@ public class Report {
         @Selector(".page_doc_row") public List<Attachment> attachments = new ArrayList<>();
         @Selector(".page_post_sized_thumbs > .page_post_thumb_wrap") public List<Photo> photos = new ArrayList<>();
         @Selector(".bt_report_cmt_date") public String date;
+        @SkipOn(NumberFormatException.class)
+        @Selector(value = ".bt_report_cmt_author > a", attr = "href", defValue = "0", regex = ".+id=([0-9]*)") public int uid;
     }
 
 }

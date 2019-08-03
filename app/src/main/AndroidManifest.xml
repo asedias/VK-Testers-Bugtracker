@@ -24,11 +24,14 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:scheme="https"
                     android:host="vk.com"
                     android:pathPattern="/bugtracker" />
+                <data
+                    android:scheme="https"
+                    android:host="vk.com"
+                    android:pathPattern="/bugs" />
             </intent-filter>
         </activity>
         <activity

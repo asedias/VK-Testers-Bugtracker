@@ -9,21 +9,31 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import ru.asedias.vkbugtracker.BTApp;
+import ru.asedias.vkbugtracker.BuildConfig;
 import ru.asedias.vkbugtracker.MainActivity;
 import ru.asedias.vkbugtracker.R;
 import ru.asedias.vkbugtracker.api.WebRequest;
 import ru.asedias.vkbugtracker.data.ProductsData;
 import ru.asedias.vkbugtracker.data.UserData;
+import ru.asedias.vkbugtracker.ui.LayoutHelper;
 import ru.asedias.vkbugtracker.ui.MaterialDialogBuilder;
+import ru.asedias.vkbugtracker.ui.ThemeController;
 import ru.asedias.vkbugtracker.ui.adapters.SettingsAdapter;
 
 import static ru.asedias.vkbugtracker.ui.ThemeController.KEY_BACKGROUND;
@@ -66,21 +76,35 @@ public class SettingsFragment extends CardRecyclerFragment<SettingsAdapter> {
     
     private void buildData() {
         this.data.add(new SettingsAdapter.SettingsItem(R.string.general_settings));
-        /*this.data.add(new SettingsItem(R.string.debug_switch, BTApp.Drawable(R.drawable.ic_detail), UserData.debugEnabled, (buttonView, isChecked) -> {
-            UserData.debugEnabled = isChecked;
-            notifyDataSetChanged();
-        }));
-        if(UserData.debugEnabled) {
-            this.data.add(new SettingsItem(R.string.debug_settings));*/
-        SharedPreferences def = PreferenceManager.getDefaultSharedPreferences(BTApp.context);
         this.data.add(new SettingsAdapter.SettingsItem(R.string.dark_theme, isDark(), (buttonView, isChecked) -> {
             setTheme(isChecked ? THEME_DARK : THEME_LIGHT);
             animateChanges();
-            //Toast.makeText(parentActivity, R.string.restart_settings, Toast.LENGTH_SHORT).show();
         }));
-        //}
-        //this.data.add(new SettingsItem(R.string.change_theme, () -> {}));
-        this.data.add(new SettingsAdapter.SettingsItem(R.string.account_settings));
+        this.data.add(new SettingsAdapter.SettingsItem(R.string.others_settings));
+        this.data.add(new SettingsAdapter.SettingsItem(R.string.debug_settings, () -> {
+            MaterialDialogBuilder builder = new MaterialDialogBuilder(this.parent);
+            builder.setTitle(R.string.debug_settings);
+            TextInputLayout input = new TextInputLayout(this.parent);
+            input.addView(new TextInputEditText(this.parent));
+            input.setHint("Ключ");
+            input.setPadding(BTApp.dp(22), BTApp.dp(16), BTApp.dp(22), 0);
+            input.getEditText().setTextColor(ThemeController.getTextColor());
+            builder.setView(input);
+            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                checkDebug(input.getEditText().getText().toString());
+            });
+            builder.show();
+        }));
+        this.data.add(new SettingsAdapter.SettingsItem(R.string.prefs_about, () -> {
+            MaterialDialogBuilder builder = new MaterialDialogBuilder(this.parent);
+            View root = View.inflate(this.parent, R.layout.about, null);
+            TextView version = (TextView)root.findViewById(R.id.version);
+            version.setText(String.format(version.getText().toString(), BuildConfig.VERSION_NAME));
+            builder.setView(root);
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.show();
+        }));
         this.data.add(new SettingsAdapter.SettingsItem(R.string.prefs_logout, () -> {
             MaterialDialogBuilder builder = new MaterialDialogBuilder(this.parent);
             builder.setTitle(R.string.prefs_logout);
@@ -100,7 +124,6 @@ public class SettingsFragment extends CardRecyclerFragment<SettingsAdapter> {
     private void animateChanges() {
         int newTheme = currentTheme;
         int prevTheme = isDark() ? THEME_LIGHT : THEME_DARK;
-        Log.e("THEME", "Change from " + prevTheme + " to " + newTheme);
         ValueAnimator v1 = ValueAnimator.ofInt(getValue(KEY_PRIMARY, prevTheme), getValue(KEY_PRIMARY, newTheme));
         v1.setEvaluator(new ArgbEvaluator());
         v1.addUpdateListener(animation -> {
@@ -130,10 +153,10 @@ public class SettingsFragment extends CardRecyclerFragment<SettingsAdapter> {
         });
         AnimatorSet set = new AnimatorSet();
         set.addListener(new Animator.AnimatorListener() {
-            @Override public void onAnimationStart(Animator animation) {
+            @Override public void onAnimationStart(Animator animation) { }
+            @Override public void onAnimationEnd(Animator animation) {
                 updateDecorator();
             }
-            @Override public void onAnimationEnd(Animator animation) { }
             @Override public void onAnimationCancel(Animator animation) { }
             @Override public void onAnimationRepeat(Animator animation) { }
         });
@@ -156,6 +179,42 @@ public class SettingsFragment extends CardRecyclerFragment<SettingsAdapter> {
             } else if(view instanceof ViewGroup) {
                 getAllText((ViewGroup) view);
             }
+        }
+    }
+
+    private void checkDebug(String key) {
+        if(key.equalsIgnoreCase("profile")) {
+            MaterialDialogBuilder builder = new MaterialDialogBuilder(this.parent);
+            builder.setTitle("Открыть профиль по ID");
+            TextInputLayout input = new TextInputLayout(this.parent);
+            input.addView(new TextInputEditText(this.parent));
+            input.setHint("ID");
+            input.setPadding(BTApp.dp(22), BTApp.dp(16), BTApp.dp(22), 0);
+            input.getEditText().setTextColor(ThemeController.getTextColor());
+            builder.setView(input);
+            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                String text = input.getEditText().getText().toString();
+                int ID = Pattern.compile("[0-9]+").matcher(text).matches() ? Integer.parseInt(text) : 0;
+                if(ID > 0) parent.replaceFragment(ProfileFragment.newInstance(ID), 0);
+            });
+            builder.show();
+        } else if(key.equalsIgnoreCase("report")) {
+            MaterialDialogBuilder builder = new MaterialDialogBuilder(this.parent);
+            builder.setTitle("Открыть репорт по ID");
+            TextInputLayout input = new TextInputLayout(this.parent);
+            input.addView(new TextInputEditText(this.parent));
+            input.setHint("ID");
+            input.setPadding(BTApp.dp(22), BTApp.dp(16), BTApp.dp(22), 0);
+            input.getEditText().setTextColor(ThemeController.getTextColor());
+            builder.setView(input);
+            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.cancel());
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                String text = input.getEditText().getText().toString();
+                int ID = Pattern.compile("[0-9]+").matcher(text).matches() ? Integer.parseInt(text) : 0;
+                if(ID > 0) parent.replaceFragment(ViewReportFragment.newInstance(ID), 0);
+            });
+            builder.show();
         }
     }
 
